@@ -1,0 +1,284 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+import Countdown from './Countdown';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const yearWord = lang === 'de' ? 'Jahre' : 'Years';
+const hourWord = lang === 'de' ? 'Stunden' : 'Hours';
+---
+
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- ═══════════════════════════════════════════════
+       MATRIX CHURCH — Hero Background
+       Dark church photo + scanlines + matrix rain + CRT vignette
+       ═══════════════════════════════════════════════ -->
+  <div class="hero-sacred absolute inset-0" aria-hidden="true">
+    <!-- Photo layer -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/images/location/hero-church-aisle.jpg');"
+    ></div>
+    <!-- Dark overlay with green tint -->
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(5,10,5,0.82) 0%, rgba(5,10,5,0.65) 40%, rgba(5,10,5,0.88) 100%);"></div>
+    <!-- Scanlines -->
+    <div class="absolute inset-0 hero-scanlines"></div>
+    <!-- CRT vignette -->
+    <div class="absolute inset-0 hero-vignette"></div>
+    <!-- Matrix rain columns -->
+    <div class="absolute inset-0 overflow-hidden matrix-rain-container">
+      {Array.from({ length: 18 }).map((_, i) => (
+        <span
+          class="matrix-rain-col"
+          style={`left: ${5 + i * 5.5}%; animation-duration: ${8 + Math.random() * 12}s; animation-delay: ${Math.random() * 8}s; opacity: ${0.06 + Math.random() * 0.1};`}
+        >
+          {'01アクセス10ハック力教会未来AIコード'.split('').join('\n')}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       MONASTERY WARMTH — Hero Background
+       Bright cathedral arches + warm golden overlay
+       ═══════════════════════════════════════════════ -->
+  <div class="hero-warmth absolute inset-0" aria-hidden="true">
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/images/location/hero-cathedral-arches.jpg');"
+    ></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(246,240,228,0.55) 0%, rgba(246,240,228,0.75) 50%, rgba(246,240,228,0.95) 100%);"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       BRUTAL FUTURE — Hero Background
+       No image. Grid. Raw.
+       ═══════════════════════════════════════════════ -->
+  <div class="hero-bold absolute inset-0 brutal-grid" aria-hidden="true">
+    <!-- Diagonal slash accent -->
+    <div class="absolute -top-20 -right-20 w-[600px] h-[600px] opacity-[0.04]"
+      style="background: conic-gradient(from 45deg, #FF0066, #00D4FF, #FF0066);"
+    ></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       CONTENT — Adapts per mood via CSS
+       ═══════════════════════════════════════════════ -->
+  <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 hero-content">
+
+    <!-- ——— MATRIX layout: left-aligned terminal ——— -->
+    <div class="hero-layout-sacred pt-28 pb-20 sm:pt-32">
+      <!-- Terminal prompt prefix -->
+      <div class="animate-fade-in mb-4">
+        <span class="inline-block font-mono text-xs sm:text-sm tracking-widest uppercase" style="color: var(--accent); opacity: 0.6;">
+          <span style="color: var(--accent-alt);">~/hackathon $</span> cat event.conf
+        </span>
+      </div>
+
+      <!-- Headline — monospace, glowing green -->
+      <h1 class="animate-fade-in-delay-1 font-display glow-text-strong leading-[1.1] tracking-tight">
+        <span class="block text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold" style="color: var(--accent);">
+          10 {yearWord}.
+        </span>
+        <span class="block text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mt-1" style="color: var(--accent); opacity: 0.7;">
+          10 {hourWord}.
+        </span>
+        <span class="block text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mt-1" style="color: var(--accent);">
+          10× Output.
+        </span>
+      </h1>
+
+      <!-- Subtitle with terminal cursor -->
+      <p class="animate-fade-in-delay-2 mt-6 sm:mt-8 text-sm sm:text-base md:text-lg font-mono glow-text terminal-cursor max-w-2xl" style="color: var(--fg); opacity: 0.8;">
+        &gt; {t('hero.sub')}
+      </p>
+
+      <!-- Countdown — Matrix style -->
+      <div class="animate-fade-in-delay-3 mt-10">
+        <Countdown lang={lang} client:load />
+      </div>
+
+      <!-- Meta chips -->
+      <div class="animate-fade-in-delay-3 mt-8 flex flex-wrap items-center gap-3">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono border" style="border-color: rgba(0,255,65,0.2); color: var(--accent);">
+          [{t('hero.date')}]
+        </span>
+        <a href="#location" class="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono border hover:border-[var(--accent)] transition-colors" style="border-color: rgba(0,255,65,0.2); color: var(--fg-muted);">
+          [{t('hero.location')}]
+        </a>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono" style="color: var(--accent-alt);">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--accent-alt);"></span>
+          {t('hero.scarcity')}
+        </span>
+        <span class="inline-flex items-center px-3 py-1.5 text-xs font-mono" style="color: var(--fg-muted);">
+          {t('hero.social_proof')}
+        </span>
+      </div>
+
+      <!-- CTAs -->
+      <div class="animate-fade-in-delay-3 mt-8 flex flex-wrap items-center gap-4">
+        <a href="#signup"
+          class="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono font-bold tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,65,0.3)]"
+          style="background-color: var(--accent); color: var(--bg);"
+        >
+          {t('hero.cta.primary')}
+          <span class="transition-transform group-hover:translate-x-1">→</span>
+        </a>
+        <a href="#challenges"
+          class="inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider uppercase border transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          style="border-color: rgba(0,255,65,0.3); color: var(--fg-muted);"
+        >
+          {t('hero.cta.secondary')}
+        </a>
+      </div>
+    </div>
+
+    <!-- ——— WARMTH layout: centered, elegant, serene ——— -->
+    <div class="hero-layout-warmth text-center pt-32 pb-20">
+      <!-- Decorative flourish -->
+      <div class="animate-fade-in mb-6 flex items-center justify-center gap-4 text-[var(--fg-muted)] opacity-30">
+        <span class="block w-12 h-px" style="background: var(--accent);"></span>
+        <span class="text-xs tracking-[0.4em] uppercase" style="font-family: var(--font-mono); color: var(--accent);">{t('hero.event')}</span>
+        <span class="block w-12 h-px" style="background: var(--accent);"></span>
+      </div>
+
+      <!-- Headline — large serif, warm -->
+      <h1 class="animate-fade-in-delay-1 font-display leading-[1.05] tracking-tight">
+        <span class="block text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal">10 {yearWord}.</span>
+        <span class="block text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal mt-2" style="color: var(--accent);">10 {hourWord}.</span>
+        <span class="block text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal mt-2">10× Output.</span>
+      </h1>
+
+      <!-- Subtitle — italic serif -->
+      <p class="animate-fade-in-delay-2 mt-8 sm:mt-10 text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto font-light leading-relaxed" style="font-family: var(--font-display); color: var(--fg-muted); font-style: italic;">
+        {t('hero.sub')}
+      </p>
+
+      <!-- Countdown — gentle, understated -->
+      <div class="animate-fade-in-delay-3 mt-12">
+        <Countdown lang={lang} client:load />
+      </div>
+
+      <!-- Date + Location -->
+      <div class="animate-fade-in-delay-3 mt-10 flex flex-wrap items-center justify-center gap-4">
+        <span class="inline-flex items-center gap-2 px-5 py-2.5 text-sm rounded-full" style="background: rgba(196,80,26,0.08); color: var(--accent);">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          {t('hero.date')}
+        </span>
+        <a href="#location" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm rounded-full transition-colors hover:text-[var(--accent)]" style="background: rgba(196,80,26,0.08); color: var(--fg-muted);">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+          {t('hero.location')}
+        </a>
+      </div>
+
+      <!-- CTAs — soft, rounded -->
+      <div class="animate-fade-in-delay-3 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#signup"
+          class="group inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-full transition-all duration-400 hover:scale-105 hover:shadow-xl"
+          style="background-color: var(--accent); color: white;"
+        >
+          {t('hero.cta.primary')}
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <a href="#challenges"
+          class="inline-flex items-center gap-2 px-8 py-4 text-base font-medium rounded-full border transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          style="border-color: rgba(44,36,22,0.15);"
+        >
+          {t('hero.cta.secondary')}
+        </a>
+      </div>
+
+      <p class="animate-fade-in-delay-3 mt-6 text-xs tracking-widest uppercase" style="color: var(--fg-muted); opacity: 0.6;">
+        {t('hero.scarcity')} · {t('hero.social_proof')}
+      </p>
+    </div>
+
+    <!-- ——— BOLD layout: massive typography, no image, raw ——— -->
+    <div class="hero-layout-bold pt-24 pb-16 sm:pt-28">
+      <!-- Oversized headline that bleeds -->
+      <h1 class="animate-fade-in font-display leading-[0.82] tracking-[-0.04em]">
+        <span class="block text-[clamp(3rem,12vw,10rem)] font-bold">10</span>
+        <span class="block text-[clamp(1.5rem,5vw,3.5rem)] font-medium mt-2 uppercase tracking-[0.1em]" style="color: var(--fg-muted);">{yearWord}</span>
+        <span class="block text-[clamp(3rem,12vw,10rem)] font-bold neon-text mt-2">10</span>
+        <span class="block text-[clamp(1.5rem,5vw,3.5rem)] font-medium mt-2 uppercase tracking-[0.1em]" style="color: var(--fg-muted);">{hourWord}</span>
+        <span class="block text-[clamp(3rem,12vw,10rem)] font-bold mt-2">10×</span>
+      </h1>
+
+      <!-- Subtitle — stark, flush left -->
+      <div class="animate-fade-in-delay-1 mt-8 max-w-xl">
+        <div class="w-16 h-1 mb-4" style="background: var(--accent);"></div>
+        <p class="text-base sm:text-lg md:text-xl font-medium leading-snug">
+          {t('hero.sub')}
+        </p>
+      </div>
+
+      <!-- Countdown — inline, massive, raw -->
+      <div class="animate-fade-in-delay-2 mt-10">
+        <Countdown lang={lang} client:load />
+      </div>
+
+      <!-- Meta — horizontal bar -->
+      <div class="animate-fade-in-delay-3 mt-10 flex flex-wrap items-center gap-6 text-sm font-mono">
+        <span style="color: var(--accent);">{t('hero.date')}</span>
+        <span style="color: var(--fg-muted);">|</span>
+        <a href="#location" class="hover:text-[var(--accent)] transition-colors" style="color: var(--fg-muted);">{t('hero.location')}</a>
+        <span style="color: var(--fg-muted);">|</span>
+        <span style="color: var(--accent-alt);">{t('hero.scarcity')}</span>
+        <span style="color: var(--fg-muted);">|</span>
+        <span style="color: var(--fg-muted);">{t('hero.social_proof')}</span>
+      </div>
+
+      <!-- CTAs — blocky, sharp -->
+      <div class="animate-fade-in-delay-3 mt-8 flex flex-wrap items-center gap-3">
+        <a href="#signup"
+          class="group inline-flex items-center gap-2 px-8 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-200 brutal-border-anim"
+          style="background: #000; color: #fff; border: 2px solid #FF0066;"
+        >
+          {t('hero.cta.primary')}
+          <span class="transition-transform group-hover:translate-x-2">→</span>
+        </a>
+        <a href="#challenges"
+          class="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold uppercase tracking-widest border-2 transition-all duration-200 hover:bg-black hover:text-white"
+          style="border-color: #000;"
+        >
+          {t('hero.cta.secondary')}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom fade -->
+  <div class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
+    style="background: linear-gradient(to top, var(--bg), transparent);"
+  ></div>
+</section>
+
+<!-- Mood-specific layout visibility -->
+<style>
+  /* === SACRED (Matrix) === */
+  .hero-sacred { display: block; }
+  .hero-warmth { display: none; }
+  .hero-bold { display: none; }
+  .hero-layout-sacred { display: block; }
+  .hero-layout-warmth { display: none; }
+  .hero-layout-bold { display: none; }
+
+  :global([data-mood="warmth"]) .hero-sacred { display: none; }
+  :global([data-mood="warmth"]) .hero-warmth { display: block; }
+  :global([data-mood="warmth"]) .hero-bold { display: none; }
+  :global([data-mood="warmth"]) .hero-layout-sacred { display: none; }
+  :global([data-mood="warmth"]) .hero-layout-warmth { display: block; }
+  :global([data-mood="warmth"]) .hero-layout-bold { display: none; }
+
+  :global([data-mood="bold"]) .hero-sacred { display: none; }
+  :global([data-mood="bold"]) .hero-warmth { display: none; }
+  :global([data-mood="bold"]) .hero-bold { display: block; }
+  :global([data-mood="bold"]) .hero-layout-sacred { display: none; }
+  :global([data-mood="bold"]) .hero-layout-warmth { display: none; }
+  :global([data-mood="bold"]) .hero-layout-bold { display: block; }
+</style>

@@ -1,0 +1,62 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const faqs = [
+  { q: t('faq.q1'), a: t('faq.a1') },
+  { q: t('faq.q2'), a: t('faq.a2') },
+  { q: t('faq.q3'), a: t('faq.a3') },
+  { q: t('faq.q4'), a: t('faq.a4') },
+  { q: t('faq.q5'), a: t('faq.a5') },
+  { q: t('faq.q6'), a: t('faq.a6') },
+  { q: t('faq.q7'), a: t('faq.a7') },
+  { q: t('faq.q8'), a: t('faq.a8') },
+  { q: t('faq.q9'), a: t('faq.a9') },
+];
+---
+
+<section id="faq" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+        {t('faq.label')}
+      </span>
+    </div>
+
+    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-16">
+      {t('faq.headline')}
+    </h2>
+
+    <div class="space-y-3">
+      {faqs.map((faq, i) => (
+        <details
+          class="group rounded-2xl border transition-all duration-300 open:border-accent/30"
+          style="border-color: color-mix(in srgb, var(--fg) 8%, transparent);"
+        >
+          <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-5 text-base font-semibold select-none list-none [&::-webkit-details-marker]:hidden">
+            <span>{faq.q}</span>
+            <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-open:rotate-45"
+              style="background: color-mix(in srgb, var(--accent) 10%, transparent);"
+            >
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </span>
+          </summary>
+          <div class="px-6 pb-5 pt-0">
+            <p class="text-sm text-muted leading-relaxed">{faq.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

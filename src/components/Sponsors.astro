@@ -1,0 +1,71 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const tiers = [
+  { name: t('sponsors.tier.challenge'), count: 3, size: 'lg' },
+  { name: t('sponsors.tier.gold'), count: 3, size: 'md' },
+  { name: t('sponsors.tier.silver'), count: 4, size: 'sm' },
+  { name: t('sponsors.tier.tool'), count: 3, size: 'sm' },
+  { name: t('sponsors.tier.community'), count: 4, size: 'sm' },
+];
+---
+
+<section id="sponsors" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+        {t('sponsors.label')}
+      </span>
+    </div>
+
+    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-16">
+      {t('sponsors.headline')}
+    </h2>
+
+    <!-- Sponsor tiers -->
+    <div class="space-y-12">
+      {tiers.map((tier) => (
+        <div>
+          <h3 class="text-xs font-mono tracking-[0.2em] uppercase text-muted text-center mb-6">{tier.name}</h3>
+          <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            {Array.from({ length: tier.count }).map((_, i) => (
+              <div
+                class:list={[
+                  'flex items-center justify-center rounded-xl border transition-all duration-300 hover:border-accent/30',
+                  tier.size === 'lg' ? 'w-40 h-20 sm:w-52 sm:h-24' : tier.size === 'md' ? 'w-32 h-16 sm:w-40 sm:h-20' : 'w-24 h-12 sm:w-32 sm:h-16',
+                ]}
+                style="border-color: color-mix(in srgb, var(--fg) 8%, transparent); background: color-mix(in srgb, var(--bg-raised) 50%, transparent);"
+              >
+                <span class="text-xs font-mono text-muted/40 tracking-wider">LOGO</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-16 text-center">
+      <a
+        href="mailto:hackathon@powercoders.org"
+        class="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold rounded-full border-2 transition-all duration-300 hover:scale-105"
+        style="border-color: var(--accent); color: var(--accent);"
+      >
+        {t('sponsors.cta')}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

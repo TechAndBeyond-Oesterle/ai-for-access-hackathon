@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import type { Lang } from '../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'de' } }, { params: { lang: 'en' } }];
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const mood = (Astro.url.searchParams.get('mood') as string) || 'sacred';
+const isDE = lang === 'de';
+---
+
+<BaseLayout title={isDE ? 'Datenschutz — AI for Access' : 'Privacy Policy — AI for Access'}>
+  <Header lang={lang} mood={mood} />
+  <main class="pt-28 pb-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold mb-8 text-accent">{isDE ? 'Datenschutz' : 'Privacy Policy'}</h1>
+
+      <div class="space-y-6 text-sm sm:text-base leading-relaxed" style="color: var(--fg-muted);">
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Datenerhebung' : 'Data Collection'}</h2>
+          <p>{isDE
+            ? 'Bei der Anmeldung zum Hackathon erheben wir: Name, E-Mail-Adresse, Rolle, Sprachpräferenz und optional eine Motivationsnachricht. Diese Daten werden ausschliesslich für die Organisation des Events verwendet.'
+            : 'When registering for the hackathon, we collect: name, email address, role, language preference, and optionally a motivation message. This data is used exclusively for organizing the event.'
+          }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Verwendungszweck' : 'Purpose'}</h2>
+          <p>{isDE
+            ? 'Deine Daten werden verwendet für: Bestätigung der Anmeldung, Event-Kommunikation (Ablauf, Updates, Vorbereitung), Teamzusammenstellung und anonyme Statistik zur Erfolgsmessung.'
+            : 'Your data is used for: registration confirmation, event communication (schedule, updates, preparation), team composition, and anonymous statistics for success measurement.'
+          }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Weitergabe' : 'Data Sharing'}</h2>
+          <p>{isDE
+            ? 'Wir geben deine Daten nicht an Dritte weiter. Sponsor-Unternehmen erhalten keinen Zugang zu Teilnehmer-Daten, es sei denn, du gibst dem ausdrücklich zu.'
+            : 'We do not share your data with third parties. Sponsor companies do not receive access to participant data unless you explicitly consent.'
+          }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Löschung' : 'Deletion'}</h2>
+          <p>{isDE
+            ? 'Du kannst jederzeit die Löschung deiner Daten verlangen per E-Mail an hackathon@powercoders.org. Deine Daten werden spätestens 6 Monate nach dem Event gelöscht.'
+            : 'You can request deletion of your data at any time by emailing hackathon@powercoders.org. Your data will be deleted no later than 6 months after the event.'
+          }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Fotos & Videos' : 'Photos & Videos'}</h2>
+          <p>{isDE
+            ? 'Während des Events werden Fotos und Videos gemacht. Mit deiner Teilnahme erklärst du dich damit einverstanden, dass diese für die Dokumentation und Kommunikation des Events verwendet werden können. Wenn du nicht fotografiert werden möchtest, teile dies bitte dem Organisationsteam mit.'
+            : 'Photos and videos will be taken during the event. By participating, you agree that these may be used for event documentation and communication. If you do not wish to be photographed, please inform the organizing team.'
+          }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Kontakt' : 'Contact'}</h2>
+          <p>E-Mail: <a href="mailto:hackathon@powercoders.org" class="text-accent hover:underline">hackathon@powercoders.org</a></p>
+        </div>
+      </div>
+
+      <div class="mt-12">
+        <a href={`/${lang}/`} class="text-sm text-accent hover:underline">← {isDE ? 'Zurück zur Startseite' : 'Back to homepage'}</a>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

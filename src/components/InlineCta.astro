@@ -1,0 +1,26 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  text?: string;
+}
+
+const { lang, text } = Astro.props;
+const t = useTranslations(lang);
+const label = text || t('cta.inline.signup');
+---
+
+<div class="py-12 text-center">
+  <a
+    href="#signup"
+    class="group inline-flex items-center gap-3 px-8 py-4 text-base font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl"
+    style="background-color: var(--accent); color: var(--bg);"
+  >
+    {label}
+    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  </a>
+</div>

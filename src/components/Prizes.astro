@@ -1,0 +1,78 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const prizes = [
+  { title: t('prizes.main'), desc: t('prizes.main.desc'), icon: '🏆', accent: true },
+  { title: t('prizes.newcomer'), desc: t('prizes.newcomer.desc'), icon: '🌍', accent: false },
+  { title: t('prizes.company'), desc: t('prizes.company.desc'), icon: '🏢', accent: false },
+  { title: t('prizes.public'), desc: t('prizes.public.desc'), icon: '👏', accent: false },
+];
+
+const criteria = [
+  t('prizes.c1'),
+  t('prizes.c2'),
+  t('prizes.c3'),
+  t('prizes.c4'),
+  t('prizes.c5'),
+];
+---
+
+<section id="prizes" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+        {t('prizes.label')}
+      </span>
+    </div>
+
+    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-16">
+      {t('prizes.headline')}
+    </h2>
+
+    <!-- Prize Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-16">
+      {prizes.map((prize) => (
+        <div
+          class:list={[
+            'relative p-6 sm:p-8 rounded-2xl border transition-all duration-300',
+            prize.accent ? 'border-accent/40' : '',
+          ]}
+          style={`border-color: ${prize.accent ? 'var(--accent)' : 'color-mix(in srgb, var(--fg) 8%, transparent)'}; background: ${prize.accent ? 'color-mix(in srgb, var(--accent) 5%, var(--bg-raised))' : 'color-mix(in srgb, var(--bg-raised) 50%, transparent)'};`}
+        >
+          <span class="text-3xl mb-4 block">{prize.icon}</span>
+          <h3 class="font-display text-lg sm:text-xl font-bold mb-2">{prize.title}</h3>
+          <p class="text-sm text-muted">{prize.desc}</p>
+          {prize.accent && (
+            <div class="absolute top-4 right-4 w-2 h-2 rounded-full" style="background: var(--accent);"></div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Criteria -->
+    <div class="text-center">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-muted mb-4 block">
+        {t('prizes.criteria')}
+      </span>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {criteria.map((c) => (
+          <span class="px-4 py-2 text-sm font-medium rounded-full border"
+            style="border-color: color-mix(in srgb, var(--accent) 25%, transparent); color: var(--accent);"
+          >
+            {c}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

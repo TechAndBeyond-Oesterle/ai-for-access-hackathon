@@ -1,0 +1,89 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations, getAlternateLang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const altLang = getAlternateLang(lang);
+---
+
+<footer class="relative py-16 sm:py-20">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Organizer logos -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 mb-12">
+      <a href="https://powercoders.org" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
+        <span class="w-10 h-10 rounded-xl flex items-center justify-center font-display text-lg font-bold" style="background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent);">P</span>
+        <span class="text-sm font-semibold group-hover:text-accent transition-colors">Powercoders</span>
+      </a>
+      <span class="text-xl font-light" style="color: var(--fg-muted);">×</span>
+      <a href="https://jonasoesterle.de/tech" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
+        <span class="w-10 h-10 rounded-xl flex items-center justify-center font-display text-sm font-bold" style="background: color-mix(in srgb, var(--accent-alt) 10%, transparent); color: var(--accent-alt);">T&B</span>
+        <span class="text-sm font-semibold group-hover:text-accent transition-colors">Tech & Beyond</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+      <!-- Brand -->
+      <div>
+        <a href={`/${lang}/`} class="font-display text-xl font-bold text-accent">
+          AI for Access
+        </a>
+        <p class="mt-2 text-sm text-muted">
+          {t('footer.org')}
+        </p>
+        <p class="mt-1 text-xs text-muted" style="opacity: 0.6;">
+          {t('footer.tagline')}
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div class="flex flex-col gap-2">
+        <a href="#timeline" class="text-sm text-muted hover:text-accent transition-colors">{t('nav.schedule')}</a>
+        <a href="#challenges" class="text-sm text-muted hover:text-accent transition-colors">{t('nav.challenges')}</a>
+        <a href="#mentoring" class="text-sm text-muted hover:text-accent transition-colors">{t('mentoring.label')}</a>
+        <a href="#location" class="text-sm text-muted hover:text-accent transition-colors">{t('nav.location')}</a>
+        <a href="#signup" class="text-sm text-muted hover:text-accent transition-colors">{t('nav.signup')}</a>
+      </div>
+
+      <!-- Meta -->
+      <div class="flex flex-col gap-2">
+        <a href="mailto:hackathon@powercoders.org" class="text-sm text-muted hover:text-accent transition-colors">
+          {t('footer.contact')}
+        </a>
+        <a href={`/${lang}/coc/`} class="text-sm text-muted hover:text-accent transition-colors">{t('footer.coc')}</a>
+        <a href={`/${lang}/legal/`} class="text-sm text-muted hover:text-accent transition-colors">{t('footer.legal')}</a>
+        <a href={`/${lang}/privacy/`} class="text-sm text-muted hover:text-accent transition-colors">{t('footer.privacy')}</a>
+        <a
+          href={`/${altLang}/${Astro.url.search}`}
+          class="text-sm font-mono text-muted hover:text-accent transition-colors uppercase tracking-wider"
+        >
+          {altLang === 'de' ? 'Deutsch' : 'English'}
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+      style="border-top: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);"
+    >
+      <p class="text-xs text-muted">
+        &copy; 2026 Powercoders × Tech & Beyond. {lang === 'de' ? 'Alle Rechte vorbehalten.' : 'All rights reserved.'}
+      </p>
+      <div class="flex items-center gap-4 text-xs font-mono text-muted">
+        <a href="https://powercoders.org" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors tracking-wider">
+          powercoders.org
+        </a>
+        <span style="opacity: 0.3;">·</span>
+        <a href="https://jonasoesterle.de/tech" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors tracking-wider">
+          jonasoesterle.de
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

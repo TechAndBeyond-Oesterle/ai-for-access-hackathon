@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import type { Lang } from '../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'de' } }, { params: { lang: 'en' } }];
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const mood = (Astro.url.searchParams.get('mood') as string) || 'sacred';
+---
+
+<BaseLayout title={lang === 'de' ? 'Impressum — AI for Access' : 'Legal — AI for Access'}>
+  <Header lang={lang} mood={mood} />
+  <main class="pt-28 pb-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold mb-8 text-accent">{lang === 'de' ? 'Impressum' : 'Legal Notice'}</h1>
+
+      <div class="space-y-6 text-sm sm:text-base leading-relaxed" style="color: var(--fg-muted);">
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{lang === 'de' ? 'Veranstalter' : 'Organizers'}</h2>
+          <p><strong style="color: var(--fg);">Powercoders</strong><br/>
+          {lang === 'de' ? 'Gemeinnütziger Verein' : 'Non-profit organization'}<br/>
+          <a href="https://powercoders.org" target="_blank" class="text-accent hover:underline">powercoders.org</a></p>
+
+          <p class="mt-4"><strong style="color: var(--fg);">Tech & Beyond — Jonas Österle</strong><br/>
+          {lang === 'de' ? 'Einzelunternehmen' : 'Sole proprietorship'}<br/>
+          <a href="https://jonasoesterle.de/tech" target="_blank" class="text-accent hover:underline">jonasoesterle.de/tech</a></p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{lang === 'de' ? 'Kontakt' : 'Contact'}</h2>
+          <p>E-Mail: <a href="mailto:hackathon@powercoders.org" class="text-accent hover:underline">hackathon@powercoders.org</a></p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{lang === 'de' ? 'Haftungsausschluss' : 'Disclaimer'}</h2>
+          <p>{lang === 'de'
+            ? 'Die Inhalte dieser Website werden mit grösstmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.'
+            : 'The contents of this website are created with the greatest possible care. However, we cannot guarantee the accuracy, completeness, and timeliness of the content.'
+          }</p>
+        </div>
+      </div>
+
+      <div class="mt-12">
+        <a href={`/${lang}/`} class="text-sm text-accent hover:underline">← {lang === 'de' ? 'Zurück zur Startseite' : 'Back to homepage'}</a>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

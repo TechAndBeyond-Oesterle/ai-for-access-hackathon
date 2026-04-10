@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import type { Lang } from '../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'de' } }, { params: { lang: 'en' } }];
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const mood = (Astro.url.searchParams.get('mood') as string) || 'sacred';
+const isDE = lang === 'de';
+---
+
+<BaseLayout title={isDE ? 'Code of Conduct — AI for Access' : 'Code of Conduct — AI for Access'}>
+  <Header lang={lang} mood={mood} />
+  <main class="pt-28 pb-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose-custom">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold mb-8 text-accent">Code of Conduct</h1>
+
+      {isDE ? (
+        <div class="space-y-6 text-sm sm:text-base leading-relaxed" style="color: var(--fg-muted);">
+          <p><strong style="color: var(--fg);">AI for Access</strong> ist ein inklusiver Hackathon. Wir verpflichten uns, eine belästigungsfreie Erfahrung für alle zu bieten — unabhängig von Geschlecht, Geschlechtsidentität, sexueller Orientierung, Behinderung, Aussehen, Körpergrösse, ethnischer Zugehörigkeit, Alter, Religion oder Technologie-Erfahrung.</p>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Erwartetes Verhalten</h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Sei respektvoll gegenüber allen Teilnehmer:innen, Mentor:innen, Sponsor:innen und Organisator:innen.</li>
+            <li>Verwende inklusive Sprache und respektiere Pronomen.</li>
+            <li>Akzeptiere konstruktive Kritik. Sei offen für andere Perspektiven.</li>
+            <li>Fokussiere dich auf das, was am besten für die Community ist.</li>
+            <li>Zeige Empathie gegenüber anderen Teilnehmer:innen.</li>
+          </ul>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Inakzeptables Verhalten</h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Belästigung in jeglicher Form (verbal, physisch, visuell).</li>
+            <li>Diskriminierende Witze oder Sprache.</li>
+            <li>Unerwünschte sexuelle Aufmerksamkeit oder Annäherung.</li>
+            <li>Einschüchterung, Stalking oder Verfolgung.</li>
+            <li>Veröffentlichung privater Informationen anderer ohne Zustimmung.</li>
+          </ul>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Meldung</h2>
+          <p>Wenn du Belästigung erlebst oder beobachtest, wende dich bitte sofort an das Organisationsteam. Wir nehmen jede Meldung ernst und handeln vertraulich.</p>
+          <p><strong style="color: var(--fg);">Kontakt:</strong> <a href="mailto:hackathon@powercoders.org" class="text-accent hover:underline">hackathon@powercoders.org</a></p>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Konsequenzen</h2>
+          <p>Teilnehmer:innen, die gegen diesen Code of Conduct verstossen, können nach Ermessen der Organisator:innen vom Event ausgeschlossen werden — ohne Rückerstattung.</p>
+
+          <p class="mt-8 text-xs" style="opacity: 0.5;">Basierend auf dem <a href="https://berlincodeofconduct.org/de/" target="_blank" class="text-accent hover:underline">Berlin Code of Conduct</a>.</p>
+        </div>
+      ) : (
+        <div class="space-y-6 text-sm sm:text-base leading-relaxed" style="color: var(--fg-muted);">
+          <p><strong style="color: var(--fg);">AI for Access</strong> is an inclusive hackathon. We are committed to providing a harassment-free experience for everyone — regardless of gender, gender identity, sexual orientation, disability, appearance, body size, ethnicity, age, religion, or technology experience.</p>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Expected Behavior</h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Be respectful towards all participants, mentors, sponsors, and organizers.</li>
+            <li>Use inclusive language and respect pronouns.</li>
+            <li>Accept constructive criticism. Be open to different perspectives.</li>
+            <li>Focus on what is best for the community.</li>
+            <li>Show empathy towards other participants.</li>
+          </ul>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Unacceptable Behavior</h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Harassment in any form (verbal, physical, visual).</li>
+            <li>Discriminatory jokes or language.</li>
+            <li>Unwanted sexual attention or advances.</li>
+            <li>Intimidation, stalking, or following.</li>
+            <li>Publishing others' private information without consent.</li>
+          </ul>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Reporting</h2>
+          <p>If you experience or witness harassment, please contact the organizing team immediately. We take every report seriously and handle them confidentially.</p>
+          <p><strong style="color: var(--fg);">Contact:</strong> <a href="mailto:hackathon@powercoders.org" class="text-accent hover:underline">hackathon@powercoders.org</a></p>
+
+          <h2 class="font-display text-xl font-bold mt-8 mb-4" style="color: var(--fg);">Consequences</h2>
+          <p>Participants who violate this Code of Conduct may be removed from the event at the discretion of the organizers — without refund.</p>
+
+          <p class="mt-8 text-xs" style="opacity: 0.5;">Based on the <a href="https://berlincodeofconduct.org/" target="_blank" class="text-accent hover:underline">Berlin Code of Conduct</a>.</p>
+        </div>
+      )}
+
+      <div class="mt-12">
+        <a href={`/${lang}/`} class="text-sm text-accent hover:underline">← {isDE ? 'Zurück zur Startseite' : 'Back to homepage'}</a>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

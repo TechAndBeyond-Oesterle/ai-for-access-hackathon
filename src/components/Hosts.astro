@@ -1,0 +1,117 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const hosts = [
+  {
+    name: 'Powercoders',
+    role: lang === 'de' ? 'Veranstalter' : 'Organizer',
+    desc: lang === 'de'
+      ? 'Powercoders ist ein gemeinnütziges Programm, das geflüchteten Menschen und Migrant:innen den Einstieg in die Tech-Branche ermöglicht. Seit 2016 haben über 500 Absolvent:innen den Sprung in die IT geschafft. Zum 10-jährigen Jubiläum organisiert Powercoders diesen Hackathon — als Statement, dass AI die Zugänge weiter demokratisiert.'
+      : 'Powercoders is a non-profit program enabling refugees and migrants to enter the tech industry. Since 2016, over 500 graduates have launched careers in IT. For their 10th anniversary, Powercoders organizes this hackathon — a statement that AI further democratizes access.',
+    url: 'https://powercoders.org',
+    urlLabel: 'powercoders.org',
+    logo: null, // Placeholder
+  },
+  {
+    name: 'Jonas Österle',
+    role: 'Tech & Beyond',
+    desc: lang === 'de'
+      ? 'Jonas baut MVPs mit AI-First-Workflow — als One-Person Product Team mit Claude, Cursor und Co. als Architekten-Toolkit. 7+ Jahre Enterprise-Entwicklung (Full-Stack, .NET, Azure), danach der Sprung in eigene Produkte. Er ist Initiator und technischer Host dieses Hackathons: Mentorenrolle, AI-Tool-Setup und das Beweisen, dass interdisziplinäre Teams in 10 Stunden echte Prototypen bauen können.'
+      : 'Jonas builds MVPs with an AI-first workflow — a one-person product team using Claude, Cursor & Co. as his architect toolkit. 7+ years in enterprise development (Full-Stack, .NET, Azure), then the leap to building his own products. He is the initiator and technical host of this hackathon: mentoring, AI tool setup, and proving that interdisciplinary teams can build real prototypes in 10 hours.',
+    url: 'https://jonasoesterle.de/tech',
+    urlLabel: 'jonasoesterle.de/tech',
+    logo: null, // Placeholder
+    skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Go', 'Claude', 'Cursor', 'AI-First'],
+  },
+];
+---
+
+<section id="hosts" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+        {lang === 'de' ? 'Die Gastgeber' : 'The Hosts'}
+      </span>
+    </div>
+
+    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-4">
+      Powercoders <span class="text-accent">×</span> Tech & Beyond
+    </h2>
+    <p class="text-lg text-muted text-center mb-16 max-w-xl mx-auto">
+      {lang === 'de' ? 'Zwei Organisationen, eine Mission: Zugänge schaffen.' : 'Two organizations, one mission: creating access.'}
+    </p>
+
+    <div class="space-y-8">
+      {hosts.map((host) => (
+        <div class="group relative p-8 sm:p-10 rounded-3xl border transition-all duration-500 hover:border-accent/30"
+          style="border-color: color-mix(in srgb, var(--fg) 10%, transparent); background: color-mix(in srgb, var(--bg-raised) 50%, transparent);"
+        >
+          <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
+            <!-- Avatar / Logo placeholder -->
+            <div class="flex-shrink-0">
+              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center overflow-hidden"
+                style="background: color-mix(in srgb, var(--accent) 10%, var(--bg-raised));"
+              >
+                {host.name === 'Powercoders' ? (
+                  <span class="text-3xl font-display font-bold text-accent">P</span>
+                ) : (
+                  <span class="text-3xl font-display font-bold text-accent">JÖ</span>
+                )}
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-3 mb-2">
+                <h3 class="font-display text-xl sm:text-2xl font-bold">{host.name}</h3>
+                <span class="px-3 py-0.5 text-xs font-mono rounded-full tracking-wider"
+                  style="background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent);"
+                >
+                  {host.role}
+                </span>
+              </div>
+
+              <p class="text-sm sm:text-base text-muted leading-relaxed mb-4">
+                {host.desc}
+              </p>
+
+              {host.skills && (
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {host.skills.map((skill) => (
+                    <span class="px-2.5 py-1 text-[11px] font-mono rounded-lg tracking-wider"
+                      style="background: color-mix(in srgb, var(--accent-alt) 10%, transparent); color: var(--accent-alt);"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <a
+                href={host.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline underline-offset-4 transition-all"
+              >
+                {host.urlLabel}
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

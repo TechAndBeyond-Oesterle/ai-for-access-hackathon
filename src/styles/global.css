@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════
+   MOOD A — "MATRIX CHURCH"
+   Terminal green meets gothic architecture.
+   Dark. Reverent. Electric.
+   ═══════════════════════════════════════════════════════ */
+:root,
+[data-mood="sacred"] {
+  --bg: #050a05;
+  --bg-raised: #0a120a;
+  --fg: #c8d4c8;
+  --fg-muted: #6a8a6a;
+  --accent: #00FF41;
+  --accent-alt: #D4A24C;
+  --accent-glow: rgba(0, 255, 65, 0.15);
+
+  --font-display: 'IBM Plex Mono', monospace;
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius: 2px;
+  --hero-image: url('/images/location/hero-church-aisle.jpg');
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOOD B — "MONASTERY WARMTH"
+   Gathered around a table in the cloister.
+   Linen, candlelight, aged paper, human warmth.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="warmth"] {
+  --bg: #F6F0E4;
+  --bg-raised: #FFFDF7;
+  --fg: #2C2416;
+  --fg-muted: #8A7D6B;
+  --accent: #C4501A;
+  --accent-alt: #3D7A56;
+  --accent-glow: rgba(196, 80, 26, 0.1);
+
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius: 1rem;
+  --hero-image: url('/images/location/hero-cathedral-arches.jpg');
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOOD C — "BRUTAL FUTURE"
+   Manifesto. Poster. Statement.
+   Black ink on white paper, then NEON screams.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="bold"] {
+  --bg: #FAFAFA;
+  --bg-raised: #FFFFFF;
+  --fg: #000000;
+  --fg-muted: #666666;
+  --accent: #FF0066;
+  --accent-alt: #00D4FF;
+  --accent-glow: rgba(255, 0, 102, 0.08);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --radius: 0;
+  --hero-image: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth theme transitions */
+html[style*="--transition-speed"] *,
+html[style*="--transition-speed"] *::before,
+html[style*="--transition-speed"] *::after {
+  transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+/* ═══════════════════════════════════════════════════════
+   TAILWIND UTILITIES
+   ═══════════════════════════════════════════════════════ */
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+@utility text-accent {
+  color: var(--accent);
+}
+
+@utility text-accent-alt {
+  color: var(--accent-alt);
+}
+
+@utility bg-theme {
+  background-color: var(--bg);
+}
+
+@utility bg-raised {
+  background-color: var(--bg-raised);
+}
+
+@utility text-muted {
+  color: var(--fg-muted);
+}
+
+@utility border-accent {
+  border-color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS — SHARED
+   ═══════════════════════════════════════════════════════ */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fade-in 0.8s ease-out both; }
+.animate-fade-in-delay-1 { animation: fade-in 0.8s ease-out 0.15s both; }
+.animate-fade-in-delay-2 { animation: fade-in 0.8s ease-out 0.3s both; }
+.animate-fade-in-delay-3 { animation: fade-in 0.8s ease-out 0.45s both; }
+
+/* ═══════════════════════════════════════════════════════
+   MATRIX CHURCH — MOOD-SPECIFIC EFFECTS
+   ═══════════════════════════════════════════════════════ */
+
+/* Scanlines overlay */
+[data-mood="sacred"] .hero-scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Green text glow */
+[data-mood="sacred"] .glow-text {
+  text-shadow:
+    0 0 7px rgba(0, 255, 65, 0.4),
+    0 0 20px rgba(0, 255, 65, 0.15),
+    0 0 40px rgba(0, 255, 65, 0.05);
+}
+
+[data-mood="sacred"] .glow-text-strong {
+  text-shadow:
+    0 0 10px rgba(0, 255, 65, 0.6),
+    0 0 30px rgba(0, 255, 65, 0.3),
+    0 0 60px rgba(0, 255, 65, 0.1);
+}
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+[data-mood="sacred"] .terminal-cursor::after {
+  content: '█';
+  color: var(--accent);
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* Matrix rain columns */
+@keyframes matrix-rain {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+[data-mood="sacred"] .matrix-rain-col {
+  position: absolute;
+  top: 0;
+  width: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.2;
+  color: rgba(0, 255, 65, 0.15);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  animation: matrix-rain linear infinite;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Green border glow on cards */
+[data-mood="sacred"] .card-matrix {
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  background: rgba(0, 255, 65, 0.02);
+  transition: all 0.3s ease;
+}
+[data-mood="sacred"] .card-matrix:hover {
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.08), inset 0 0 20px rgba(0, 255, 65, 0.03);
+}
+
+/* CRT vignette on hero */
+[data-mood="sacred"] .hero-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MONASTERY WARMTH — MOOD-SPECIFIC EFFECTS
+   ═══════════════════════════════════════════════════════ */
+
+/* Soft paper texture via noise */
+[data-mood="warmth"] body {
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Warm shadow style */
+[data-mood="warmth"] .card-warmth {
+  border: 1px solid rgba(44, 36, 22, 0.08);
+  background: var(--bg-raised);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 1px 3px rgba(44, 36, 22, 0.04),
+    0 8px 24px rgba(44, 36, 22, 0.06);
+  transition: all 0.4s ease;
+}
+[data-mood="warmth"] .card-warmth:hover {
+  box-shadow:
+    0 2px 8px rgba(44, 36, 22, 0.06),
+    0 16px 40px rgba(44, 36, 22, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Decorative serif flourish */
+[data-mood="warmth"] .warmth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--fg-muted);
+  opacity: 0.3;
+}
+[data-mood="warmth"] .warmth-divider::before,
+[data-mood="warmth"] .warmth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BRUTAL FUTURE — MOOD-SPECIFIC EFFECTS
+   ═══════════════════════════════════════════════════════ */
+
+/* Grid overlay */
+[data-mood="bold"] .brutal-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* Neon gradient text */
+[data-mood="bold"] .neon-text {
+  background: linear-gradient(135deg, #FF0066, #00D4FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Stark card style */
+[data-mood="bold"] .card-brutal {
+  border: 2px solid #000;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+[data-mood="bold"] .card-brutal:hover {
+  background: #000;
+  color: #fff;
+}
+[data-mood="bold"] .card-brutal:hover .brutal-accent {
+  color: var(--accent) !important;
+}
+
+/* Oversized number treatment */
+[data-mood="bold"] .brutal-number {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Rotating border animation */
+@keyframes border-rotate {
+  0% { border-color: #FF0066; }
+  50% { border-color: #00D4FF; }
+  100% { border-color: #FF0066; }
+}
+
+[data-mood="bold"] .brutal-border-anim {
+  animation: border-rotate 4s ease infinite;
+}

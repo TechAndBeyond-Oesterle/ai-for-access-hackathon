@@ -1,0 +1,197 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const paths = [
+  { num: '01', title: t('challenges.path1.title'), desc: t('challenges.path1.desc'), icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' },
+  { num: '02', title: t('challenges.path2.title'), desc: t('challenges.path2.desc'), icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z' },
+  { num: '03', title: t('challenges.path3.title'), desc: t('challenges.path3.desc'), icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+];
+
+const examples = [
+  { title: t('challenges.ex1.title'), desc: t('challenges.ex1.desc'), tag: 'Digital Inclusion' },
+  { title: t('challenges.ex2.title'), desc: t('challenges.ex2.desc'), tag: 'Legal Tech' },
+  { title: t('challenges.ex3.title'), desc: t('challenges.ex3.desc'), tag: 'Accessibility' },
+  { title: t('challenges.ex4.title'), desc: t('challenges.ex4.desc'), tag: 'Integration' },
+  { title: t('challenges.ex5.title'), desc: t('challenges.ex5.desc'), tag: 'Health' },
+  { title: t('challenges.ex6.title'), desc: t('challenges.ex6.desc'), tag: 'Employment' },
+];
+---
+
+<section id="challenges" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent challenges-label">
+        {t('challenges.label')}
+      </span>
+    </div>
+
+    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-16 sm:mb-20 challenges-headline">
+      {t('challenges.headline')}
+    </h2>
+
+    <!-- ═══════════ MATRIX: Terminal cards ═══════════ -->
+    <div class="challenges-sacred">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+        {paths.map((path) => (
+          <div class="card-matrix p-6">
+            <div class="flex items-center gap-2 mb-4 font-mono text-xs" style="color: var(--accent); opacity: 0.5;">
+              <span>┌──</span>
+              <span class="uppercase tracking-widest">{path.num}</span>
+              <span class="flex-1 overflow-hidden whitespace-nowrap" style="color: rgba(0,255,65,0.15);">{'─'.repeat(40)}</span>
+            </div>
+            <h3 class="font-mono text-base sm:text-lg font-bold mb-3 glow-text" style="color: var(--accent);">
+              $ {path.title}
+            </h3>
+            <p class="font-mono text-sm sm:text-base leading-relaxed" style="color: var(--fg);">
+              &gt; {path.desc}
+            </p>
+            <div class="mt-4 font-mono text-xs" style="color: var(--accent); opacity: 0.3;">
+              └──────────
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Example challenges — terminal list -->
+      <div class="mb-6">
+        <span class="font-mono text-xs tracking-widest uppercase" style="color: var(--accent); opacity: 0.5;">
+          // {t('challenges.examples')}
+        </span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {examples.map((ex) => (
+          <div class="card-matrix p-5 group">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h4 class="font-mono text-sm sm:text-base font-bold glow-text" style="color: var(--accent);">{ex.title}</h4>
+              <span class="font-mono text-[10px] px-2 py-0.5 shrink-0 uppercase tracking-wider" style="border: 1px solid rgba(0,255,65,0.2); color: var(--accent);">
+                {ex.tag}
+              </span>
+            </div>
+            <p class="font-mono text-sm leading-relaxed" style="color: var(--fg);">&gt; {ex.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ═══════════ WARMTH: Soft rounded cards ═══════════ -->
+    <div class="challenges-warmth">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        {paths.map((path) => (
+          <div class="card-warmth p-7 sm:p-8">
+            <!-- Decorative icon circle -->
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background: rgba(196,80,26,0.08);">
+              <svg class="w-7 h-7" fill="none" stroke="var(--accent)" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d={path.icon} />
+              </svg>
+            </div>
+            <span class="text-xs font-mono tracking-widest uppercase mb-2 block" style="color: var(--accent); opacity: 0.6;">
+              {path.num}
+            </span>
+            <h3 class="font-display text-xl sm:text-2xl mb-3" style="font-weight: 400;">
+              {path.title}
+            </h3>
+            <p class="text-sm leading-relaxed" style="color: var(--fg-muted);">{path.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Example challenges — warm cards -->
+      <div class="warmth-divider mb-10">
+        <span class="text-xs tracking-[0.3em] uppercase" style="color: var(--fg-muted);">{t('challenges.examples')}</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {examples.map((ex) => (
+          <div class="card-warmth p-5">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h4 class="font-display text-base" style="font-weight: 400;">{ex.title}</h4>
+              <span class="text-[10px] font-mono px-2.5 py-1 rounded-full shrink-0" style="background: rgba(196,80,26,0.06); color: var(--accent);">
+                {ex.tag}
+              </span>
+            </div>
+            <p class="text-sm leading-relaxed" style="color: var(--fg-muted);">{ex.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ═══════════ BOLD: Flat list, massive numbers ═══════════ -->
+    <div class="challenges-bold">
+      <div class="space-y-0 mb-16">
+        {paths.map((path) => (
+          <div class="card-brutal group flex items-start gap-6 sm:gap-10 p-6 sm:p-8 -mt-[2px]">
+            <span class="brutal-number brutal-accent shrink-0" style="color: var(--fg-muted); opacity: 0.15;">
+              {path.num}
+            </span>
+            <div class="pt-4 sm:pt-6">
+              <h3 class="font-display text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide mb-2">
+                {path.title}
+              </h3>
+              <p class="text-sm sm:text-base leading-relaxed max-w-lg" style="color: var(--fg-muted);">{path.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Example challenges — stark grid -->
+      <div class="mb-8 flex items-center gap-4">
+        <span class="text-xs font-mono tracking-[0.3em] uppercase" style="color: var(--fg-muted);">{t('challenges.examples')}</span>
+        <div class="flex-1 h-[2px]" style="background: #000;"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
+        {examples.map((ex, i) => (
+          <div class="card-brutal p-5 -mt-[2px] -ml-[2px] group">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h4 class="font-display text-sm sm:text-base font-bold uppercase tracking-wide">{ex.title}</h4>
+              <span class="text-[9px] font-mono px-2 py-0.5 uppercase tracking-widest shrink-0 brutal-accent" style="border: 1px solid currentColor; color: var(--fg-muted);">
+                {ex.tag}
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--fg-muted);">{ex.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mood-specific layout visibility -->
+<style>
+  .challenges-sacred { display: block; }
+  .challenges-warmth { display: none; }
+  .challenges-bold { display: none; }
+
+  :global([data-mood="warmth"]) .challenges-sacred { display: none; }
+  :global([data-mood="warmth"]) .challenges-warmth { display: block; }
+  :global([data-mood="warmth"]) .challenges-bold { display: none; }
+
+  :global([data-mood="bold"]) .challenges-sacred { display: none; }
+  :global([data-mood="bold"]) .challenges-warmth { display: none; }
+  :global([data-mood="bold"]) .challenges-bold { display: block; }
+
+  /* Warmth headline override */
+  :global([data-mood="warmth"]) .challenges-headline {
+    font-weight: 400;
+  }
+
+  /* Sacred label override */
+  :global([data-mood="sacred"]) .challenges-label {
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+  }
+
+  /* Bold headline override */
+  :global([data-mood="bold"]) .challenges-headline {
+    font-size: clamp(2rem, 8vw, 5rem);
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+  }
+</style>
