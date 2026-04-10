@@ -41,9 +41,18 @@ const isDE = lang === 'de';
         <div>
           <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Weitergabe' : 'Data Sharing'}</h2>
           <p>{isDE
-            ? 'Wir geben deine Daten nicht an Dritte weiter. Sponsor-Unternehmen erhalten keinen Zugang zu Teilnehmer-Daten, es sei denn, du gibst dem ausdrücklich zu.'
-            : 'We do not share your data with third parties. Sponsor companies do not receive access to participant data unless you explicitly consent.'
+            ? 'Wir geben deine Daten nicht an Dritte weiter, mit Ausnahme des unten genannten Auftragsverarbeiters. Sponsor-Unternehmen erhalten keinen Zugang zu Teilnehmer-Daten, es sei denn, du gibst dem ausdrücklich zu.'
+            : 'We do not share your data with third parties, except for the data processor mentioned below. Sponsor companies do not receive access to participant data unless you explicitly consent.'
           }</p>
+        </div>
+
+        <div>
+          <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Auftragsverarbeiter' : 'Data Processor'}</h2>
+          <p>{isDE
+            ? 'Zur Verwaltung der Anmeldungen nutzen wir Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA). Deine Daten (Name, E-Mail, Rolle) werden auf Servern von Airtable in den USA gespeichert. Airtable ist nach SOC 2 Type II zertifiziert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) bzw. deine Einwilligung bei der Anmeldung.'
+            : 'To manage registrations, we use Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA). Your data (name, email, role) is stored on Airtable servers in the USA. Airtable is SOC 2 Type II certified. Legal basis is Art. 6(1)(b) GDPR (contract performance) or your consent upon registration.'
+          }</p>
+          <p class="mt-2"><a href="https://www.airtable.com/privacy" target="_blank" class="text-accent hover:underline">{isDE ? 'Datenschutzerklärung von Airtable' : 'Airtable Privacy Policy'}</a></p>
         </div>
 
         <div>
