@@ -12,86 +12,50 @@ const t = useTranslations(lang);
 
 <section id="vision" class="relative py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <!-- Label -->
     <div class="text-center mb-4">
       <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
         {t('vision.label')}
       </span>
     </div>
 
-    <!-- Headline -->
-    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight leading-tight mb-16 sm:mb-20">
+    <h2 class="font-display text-[clamp(2rem,8vw,5rem)] font-bold text-center tracking-[-0.03em] uppercase mb-16 sm:mb-20">
       {t('vision.headline')}
     </h2>
 
-    <!-- Two theses -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+    <!-- Two theses — bold flat cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
       <!-- Thesis 1 -->
-      <div class="group relative p-8 sm:p-10 rounded-3xl border transition-all duration-500 hover:border-accent/30"
-        style="border-color: color-mix(in srgb, var(--fg) 10%, transparent); background: color-mix(in srgb, var(--bg-raised) 50%, transparent);"
-      >
-        <!-- Number -->
+      <div class="card-bold group p-8 sm:p-10 lg:border-r-0 -mt-[2px]">
         <div class="mb-6 flex items-center gap-4">
-          <span class="flex items-center justify-center w-12 h-12 rounded-2xl text-2xl font-bold font-mono"
-            style="background-color: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);"
-          >
+          <span class="flex items-center justify-center w-14 h-14 text-3xl font-bold font-mono" style="background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent);">
             1
           </span>
-          <div class="h-px flex-1" style="background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.3;"></div>
+          <div class="h-[2px] flex-1" style="background: linear-gradient(90deg, var(--accent), transparent);"></div>
         </div>
 
-        <!-- Icon — Users/People -->
-        <div class="mb-4">
-          <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </div>
-
-        <h3 class="font-display text-xl sm:text-2xl font-bold mb-4">
+        <h3 class="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide mb-4">
           {t('vision.thesis1.title')}
         </h3>
         <p class="text-muted leading-relaxed text-base sm:text-lg">
           {t('vision.thesis1.text')}
         </p>
-
-        <!-- Decorative corner -->
-        <div class="absolute top-4 right-4 w-8 h-8 opacity-10">
-          <div class="absolute top-0 right-0 w-full h-px" style="background: var(--accent);"></div>
-          <div class="absolute top-0 right-0 h-full w-px" style="background: var(--accent);"></div>
-        </div>
       </div>
 
       <!-- Thesis 2 -->
-      <div class="group relative p-8 sm:p-10 rounded-3xl border transition-all duration-500 hover:border-accent-alt/30"
-        style="border-color: color-mix(in srgb, var(--fg) 10%, transparent); background: color-mix(in srgb, var(--bg-raised) 50%, transparent);"
-      >
+      <div class="card-bold group p-8 sm:p-10 -mt-[2px]">
         <div class="mb-6 flex items-center gap-4">
-          <span class="flex items-center justify-center w-12 h-12 rounded-2xl text-2xl font-bold font-mono"
-            style="background-color: color-mix(in srgb, var(--accent-alt) 15%, transparent); color: var(--accent-alt);"
-          >
+          <span class="flex items-center justify-center w-14 h-14 text-3xl font-bold font-mono" style="background: color-mix(in srgb, var(--accent-alt) 10%, transparent); color: var(--accent-alt);">
             2
           </span>
-          <div class="h-px flex-1" style="background: linear-gradient(90deg, var(--accent-alt), transparent); opacity: 0.3;"></div>
+          <div class="h-[2px] flex-1" style="background: linear-gradient(90deg, var(--accent-alt), transparent);"></div>
         </div>
 
-        <!-- Icon — Code/Terminal -->
-        <div class="mb-4">
-          <svg class="w-8 h-8 text-accent-alt" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-        </div>
-
-        <h3 class="font-display text-xl sm:text-2xl font-bold mb-4">
+        <h3 class="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide mb-4">
           {t('vision.thesis2.title')}
         </h3>
         <p class="text-muted leading-relaxed text-base sm:text-lg">
           {t('vision.thesis2.text')}
         </p>
-
-        <div class="absolute top-4 right-4 w-8 h-8 opacity-10">
-          <div class="absolute top-0 right-0 w-full h-px" style="background: var(--accent-alt);"></div>
-          <div class="absolute top-0 right-0 h-full w-px" style="background: var(--accent-alt);"></div>
-        </div>
       </div>
     </div>
   </div>

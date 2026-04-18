@@ -10,23 +10,23 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const friday = [
-  { time: t('timeline.fri.1.time'), title: t('timeline.fri.1.title'), desc: t('timeline.fri.1.desc'), highlight: false, tag: 'INIT' },
-  { time: t('timeline.fri.2.time'), title: t('timeline.fri.2.title'), desc: t('timeline.fri.2.desc'), highlight: true, tag: 'KEYNOTE' },
-  { time: t('timeline.fri.3.time'), title: t('timeline.fri.3.title'), desc: t('timeline.fri.3.desc'), highlight: true, tag: 'TEAMS' },
-  { time: t('timeline.fri.4.time'), title: t('timeline.fri.4.title'), desc: t('timeline.fri.4.desc'), highlight: false, tag: 'CONCEPT' },
-  { time: t('timeline.fri.5.time'), title: t('timeline.fri.5.title'), desc: t('timeline.fri.5.desc'), highlight: false, tag: 'EXIT' },
+  { time: t('timeline.fri.1.time'), title: t('timeline.fri.1.title'), desc: t('timeline.fri.1.desc'), highlight: false, dur: 0.5 },
+  { time: t('timeline.fri.2.time'), title: t('timeline.fri.2.title'), desc: t('timeline.fri.2.desc'), highlight: true, dur: 0.75 },
+  { time: t('timeline.fri.3.time'), title: t('timeline.fri.3.title'), desc: t('timeline.fri.3.desc'), highlight: true, dur: 1.25 },
+  { time: t('timeline.fri.4.time'), title: t('timeline.fri.4.title'), desc: t('timeline.fri.4.desc'), highlight: false, dur: 0.5 },
+  { time: t('timeline.fri.5.time'), title: t('timeline.fri.5.title'), desc: t('timeline.fri.5.desc'), highlight: false, dur: 0 },
 ];
 
 const saturday = [
-  { time: t('timeline.sat.1.time'), title: t('timeline.sat.1.title'), desc: t('timeline.sat.1.desc'), highlight: false, tag: 'BOOT', dur: 0.5 },
-  { time: t('timeline.sat.2.time'), title: t('timeline.sat.2.title'), desc: t('timeline.sat.2.desc'), highlight: true, tag: 'HACK', dur: 1 },
-  { time: t('timeline.sat.2b.time'), title: t('timeline.sat.2b.title'), desc: t('timeline.sat.2b.desc'), highlight: false, tag: 'TALKS', dur: 2 },
-  { time: t('timeline.sat.3.time'), title: t('timeline.sat.3.title'), desc: t('timeline.sat.3.desc'), highlight: false, tag: 'FUEL', dur: 1.5 },
-  { time: t('timeline.sat.3b.time'), title: t('timeline.sat.3b.title'), desc: t('timeline.sat.3b.desc'), highlight: false, tag: 'ENERGY', dur: 1 },
-  { time: t('timeline.sat.4.time'), title: t('timeline.sat.4.title'), desc: t('timeline.sat.4.desc'), highlight: false, tag: 'CHECK', dur: 3.5 },
-  { time: t('timeline.sat.5.time'), title: t('timeline.sat.5.title'), desc: t('timeline.sat.5.desc'), highlight: true, tag: 'FREEZE', dur: 0.5 },
-  { time: t('timeline.sat.6.time'), title: t('timeline.sat.6.title'), desc: t('timeline.sat.6.desc'), highlight: true, tag: 'PITCH', dur: 1.5 },
-  { time: t('timeline.sat.7.time'), title: t('timeline.sat.7.title'), desc: t('timeline.sat.7.desc'), highlight: true, tag: 'AWARD', dur: 1 },
+  { time: t('timeline.sat.1.time'), title: t('timeline.sat.1.title'), desc: t('timeline.sat.1.desc'), highlight: false, dur: 0.5 },
+  { time: t('timeline.sat.2.time'), title: t('timeline.sat.2.title'), desc: t('timeline.sat.2.desc'), highlight: true, dur: 1 },
+  { time: t('timeline.sat.2b.time'), title: t('timeline.sat.2b.title'), desc: t('timeline.sat.2b.desc'), highlight: false, dur: 2 },
+  { time: t('timeline.sat.3.time'), title: t('timeline.sat.3.title'), desc: t('timeline.sat.3.desc'), highlight: false, dur: 1.5 },
+  { time: t('timeline.sat.3b.time'), title: t('timeline.sat.3b.title'), desc: t('timeline.sat.3b.desc'), highlight: false, dur: 1 },
+  { time: t('timeline.sat.4.time'), title: t('timeline.sat.4.title'), desc: t('timeline.sat.4.desc'), highlight: false, dur: 3.5 },
+  { time: t('timeline.sat.5.time'), title: t('timeline.sat.5.title'), desc: t('timeline.sat.5.desc'), highlight: true, dur: 0.5 },
+  { time: t('timeline.sat.6.time'), title: t('timeline.sat.6.title'), desc: t('timeline.sat.6.desc'), highlight: true, dur: 1.5 },
+  { time: t('timeline.sat.7.time'), title: t('timeline.sat.7.title'), desc: t('timeline.sat.7.desc'), highlight: true, dur: 1 },
 ];
 
 const friLabel = t('timeline.friday');
@@ -34,250 +34,73 @@ const satLabel = t('timeline.saturday');
 ---
 
 <section id="timeline" class="relative py-24 sm:py-32">
-  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+  <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
 
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-4">
-      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent timeline-label">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
         {t('timeline.label')}
       </span>
     </div>
 
-    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-16 sm:mb-20 timeline-headline">
+    <h2 class="font-display text-[clamp(2rem,8vw,5rem)] font-bold text-center tracking-[-0.03em] uppercase mb-16 sm:mb-20">
       {t('timeline.headline')}
     </h2>
 
-    <!-- ═══════════════════════════════════════════════
-         SACRED: Server Boot Sequence
-         ═══════════════════════════════════════════════ -->
-    <div class="timeline-sacred">
-      <div class="card-matrix p-6 sm:p-8 font-mono text-sm overflow-x-auto">
-        <!-- Boot header -->
-        <div class="mb-6 text-xs" style="color: var(--fg-muted);">
-          <span class="glow-text" style="color: var(--accent);">HACKATHON SYSTEM v10.0</span> — boot sequence initiated<br/>
-          <span>Location: stadtkloster-frieden.local</span><br/>
-          <span>Capacity: 100 nodes | Status: <span class="glow-text" style="color: var(--accent);">ARMED</span></span>
-        </div>
+    <!-- Railway Timetable layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-0">
 
-        <!-- Friday block -->
-        <div class="mb-2 flex items-center gap-2">
-          <span style="color: var(--accent-alt);">═══</span>
-          <span class="uppercase tracking-[0.3em] text-xs" style="color: var(--accent-alt);">{friLabel}</span>
-          <span class="flex-1 overflow-hidden whitespace-nowrap" style="color: rgba(212,162,76,0.15);">{'═'.repeat(60)}</span>
-        </div>
-
-        <div class="space-y-1 mb-8">
-          {friday.map((item, i) => (
-            <div class:list={['flex items-start gap-2 py-1.5 px-2 -mx-2 rounded transition-colors hover:bg-[rgba(0,255,65,0.03)]', item.highlight && 'bg-[rgba(0,255,65,0.02)]']}>
-              <span class="shrink-0 w-12 tabular-nums" style="color: var(--accent);">{item.time}</span>
-              <span class="shrink-0 w-20 text-xs py-0.5 text-center" style={`color: ${item.highlight ? 'var(--bg)' : 'var(--accent)'}; background: ${item.highlight ? 'var(--accent)' : 'rgba(0,255,65,0.08)'};`}>
-                [{item.tag}]
-              </span>
-              <span class:list={[item.highlight ? 'glow-text' : '', 'flex-1']} style={`color: ${item.highlight ? 'var(--accent)' : 'var(--fg)'};`}>
-                {item.title}
-                <span class="ml-2" style="color: var(--fg-muted);">— {item.desc}</span>
-              </span>
-              <span class="shrink-0 text-xs" style="color: var(--accent); opacity: 0.4;">OK</span>
+      <!-- Friday sidebar -->
+      <div class="border-2 p-6 lg:border-r-0" style="border-color: color-mix(in srgb, var(--fg) 15%, transparent);">
+        <h3 class="text-xs font-mono uppercase tracking-[0.3em] mb-6 text-muted">{friLabel}</h3>
+        {friday.map((item) => (
+          <div class="flex items-baseline gap-3 py-3" style="border-bottom: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);">
+            <span class="font-display text-2xl sm:text-3xl font-bold leading-none tracking-tight">{item.time}</span>
+            <div>
+              <span class="text-sm font-bold uppercase tracking-wide">{item.title}</span>
+              <p class="text-xs mt-0.5 text-muted">{item.desc}</p>
             </div>
-          ))}
-        </div>
-
-        <!-- Saturday block -->
-        <div class="mb-2 flex items-center gap-2">
-          <span style="color: var(--accent);">═══</span>
-          <span class="uppercase tracking-[0.3em] text-xs" style="color: var(--accent);">{satLabel}</span>
-          <span class="flex-1 overflow-hidden whitespace-nowrap" style="color: rgba(0,255,65,0.1);">{'═'.repeat(60)}</span>
-        </div>
-
-        <div class="space-y-1 mb-6">
-          {saturday.map((item, i) => (
-            <div class:list={['flex items-start gap-2 py-1.5 px-2 -mx-2 rounded transition-colors hover:bg-[rgba(0,255,65,0.03)]', item.highlight && 'bg-[rgba(0,255,65,0.02)]']}>
-              <span class="shrink-0 w-12 tabular-nums" style="color: var(--accent);">{item.time}</span>
-              <span class="shrink-0 w-20 text-xs py-0.5 text-center" style={`color: ${item.highlight ? 'var(--bg)' : 'var(--accent)'}; background: ${item.highlight ? 'var(--accent)' : 'rgba(0,255,65,0.08)'};`}>
-                [{item.tag}]
-              </span>
-              <span class:list={[item.highlight ? 'glow-text' : '', 'flex-1']} style={`color: ${item.highlight ? 'var(--accent)' : 'var(--fg)'};`}>
-                {item.title}
-                <span class="ml-2" style="color: var(--fg-muted);">— {item.desc}</span>
-              </span>
-              <span class="shrink-0 text-xs" style={`color: ${item.tag === 'FREEZE' ? 'var(--accent-alt)' : 'var(--accent)'}; opacity: 0.4;`}>
-                {item.tag === 'FREEZE' ? '!!' : 'OK'}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <!-- Boot complete -->
-        <div class="pt-4 text-xs" style="border-top: 1px dashed rgba(0,255,65,0.15);">
-          <span class="glow-text-strong" style="color: var(--accent);">
-            ✓ All systems ready. 100 nodes standing by. Hack begins in T-minus <span class="terminal-cursor">{t('countdown.days')}</span>
-          </span>
-        </div>
+          </div>
+        ))}
       </div>
-    </div>
 
-    <!-- ═══════════════════════════════════════════════
-         WARMTH: Monastery Horae / Stundenplan
-         ═══════════════════════════════════════════════ -->
-    <div class="timeline-warmth">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        <!-- Friday column -->
-        <div>
-          <div class="flex items-center gap-4 mb-8">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: rgba(196,80,26,0.08);">
-              <span class="font-display text-2xl" style="color: var(--accent);">Fr</span>
-            </div>
-            <div>
-              <h3 class="font-display text-xl sm:text-2xl">{friLabel}</h3>
-              <p class="text-xs" style="color: var(--fg-muted);">18:00 – 21:00</p>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            {friday.map((item) => (
-              <div class:list={['card-warmth p-5 relative', item.highlight && 'border-l-4']} style={item.highlight ? 'border-left-color: var(--accent);' : ''}>
-                <div class="flex items-baseline gap-3 mb-1.5">
-                  <span class="font-mono text-xs tracking-wider" style="color: var(--accent);">{item.time}</span>
-                  <h4 class="font-display text-base sm:text-lg">{item.title}</h4>
-                </div>
-                <p class="text-sm leading-relaxed" style="color: var(--fg-muted);">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+      <!-- Saturday main grid -->
+      <div class="border-2" style="border-color: color-mix(in srgb, var(--fg) 15%, transparent);">
+        <div class="p-4 border-b-2 flex items-center justify-between" style="border-color: color-mix(in srgb, var(--fg) 15%, transparent);">
+          <h3 class="text-xs font-mono uppercase tracking-[0.3em] text-muted">{satLabel}</h3>
+          <span class="text-xs font-mono uppercase tracking-wider text-accent">12h</span>
         </div>
 
-        <!-- Decorative divider (visible only on lg) -->
-        <div class="hidden lg:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        </div>
-
-        <!-- Saturday column -->
-        <div>
-          <div class="flex items-center gap-4 mb-8">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: rgba(196,80,26,0.08);">
-              <span class="font-display text-2xl" style="color: var(--accent);">Sa</span>
-            </div>
-            <div>
-              <h3 class="font-display text-xl sm:text-2xl">{satLabel}</h3>
-              <p class="text-xs" style="color: var(--fg-muted);">09:00 – 21:00</p>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            {saturday.map((item) => (
-              <div class:list={['card-warmth p-5 relative', item.highlight && 'border-l-4']} style={item.highlight ? 'border-left-color: var(--accent);' : ''}>
-                <div class="flex items-baseline gap-3 mb-1.5">
-                  <span class="font-mono text-xs tracking-wider" style="color: var(--accent);">{item.time}</span>
-                  <h4 class="font-display text-base sm:text-lg">{item.title}</h4>
+        <!-- Time blocks -->
+        <div class="divide-y-2" style="border-color: color-mix(in srgb, var(--fg) 15%, transparent);">
+          {saturday.map((item) => (
+            <div
+              class:list={[
+                'group p-4 sm:p-5 transition-colors duration-150',
+                item.highlight ? 'hover:bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]' : '',
+              ]}
+              style={`min-height: ${Math.max(item.dur * 35, 60)}px; border-color: color-mix(in srgb, var(--fg) 15%, transparent);`}
+            >
+              <div class="flex items-start gap-4 sm:gap-6">
+                <span class="font-display text-[clamp(1.5rem,4vw,3rem)] font-bold shrink-0 leading-none tracking-tight" style={`color: ${item.highlight ? 'var(--accent)' : 'color-mix(in srgb, var(--fg) 10%, transparent)'};`}>
+                  {item.time}
+                </span>
+                <div class="pt-1">
+                  <h4 class="text-sm sm:text-base font-bold uppercase tracking-wide">
+                    {item.title}
+                  </h4>
+                  <p class="text-xs sm:text-sm mt-1 text-muted">
+                    {item.desc}
+                  </p>
                 </div>
-                <p class="text-sm leading-relaxed" style="color: var(--fg-muted);">{item.desc}</p>
                 {item.highlight && (
-                  <div class="absolute top-3 right-4 w-2 h-2 rounded-full" style="background: var(--accent); opacity: 0.5;"></div>
+                  <span class="ml-auto shrink-0 w-3 h-3 mt-2 group-hover:scale-150 transition-transform" style="background: var(--accent);"></span>
                 )}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <!-- Warmth flourish -->
-      <div class="warmth-divider mt-12">
-        <span class="font-display text-sm italic" style="color: var(--fg-muted);">
-          {lang === 'de' ? 'Ora et labora — bete und arbeite' : 'Ora et labora — pray and work'}
-        </span>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════
-         BOLD: Railway Timetable × Punk Poster
-         ═══════════════════════════════════════════════ -->
-    <div class="timeline-bold">
-      <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-0">
-
-        <!-- Friday sidebar -->
-        <div class="border-2 border-black p-6 lg:border-r-0">
-          <h3 class="text-xs font-mono uppercase tracking-[0.3em] mb-6" style="color: var(--fg-muted);">{friLabel}</h3>
-          {friday.map((item) => (
-            <div class:list={['flex items-baseline gap-3 py-3', item.highlight ? '' : '']} style={`border-bottom: 1px solid rgba(0,0,0,0.1);`}>
-              <span class="font-display text-2xl sm:text-3xl font-bold leading-none tracking-tight">{item.time}</span>
-              <div>
-                <span class="text-sm font-bold uppercase tracking-wide">{item.title}</span>
-                <p class="text-xs mt-0.5" style="color: var(--fg-muted);">{item.desc}</p>
-              </div>
             </div>
           ))}
         </div>
-
-        <!-- Saturday main grid -->
-        <div class="border-2 border-black">
-          <div class="p-4 border-b-2 border-black flex items-center justify-between">
-            <h3 class="text-xs font-mono uppercase tracking-[0.3em]" style="color: var(--fg-muted);">{satLabel}</h3>
-            <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--accent);">12h</span>
-          </div>
-
-          <!-- Proportional time blocks -->
-          <div class="grid grid-rows-[auto] divide-y-2 divide-black">
-            {saturday.map((item) => (
-              <div
-                class:list={[
-                  'group p-4 sm:p-5 transition-colors duration-150',
-                  item.highlight ? 'hover:bg-black hover:text-white' : 'hover:bg-[rgba(0,0,0,0.02)]',
-                ]}
-                style={`min-height: ${Math.max(item.dur * 35, 60)}px;`}
-              >
-                <div class="flex items-start gap-4 sm:gap-6">
-                  <span class="brutal-number shrink-0 leading-none" style={`font-size: clamp(1.5rem, 4vw, 3rem); color: ${item.highlight ? 'var(--accent)' : 'rgba(0,0,0,0.08)'};`}>
-                    {item.time}
-                  </span>
-                  <div class="pt-1">
-                    <h4 class="text-sm sm:text-base font-bold uppercase tracking-wide">
-                      {item.title}
-                    </h4>
-                    <p class="text-xs sm:text-sm mt-1" style="color: var(--fg-muted);">
-                      {item.desc}
-                    </p>
-                  </div>
-                  {item.highlight && (
-                    <span class="ml-auto shrink-0 w-3 h-3 mt-2 group-hover:scale-150 transition-transform" style={`background: var(--accent);`}></span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
-
   </div>
 </section>
-
-<!-- Mood-specific visibility -->
-<style>
-  .timeline-sacred { display: block; }
-  .timeline-warmth { display: none; }
-  .timeline-bold { display: none; }
-
-  :global([data-mood="warmth"]) .timeline-sacred { display: none; }
-  :global([data-mood="warmth"]) .timeline-warmth { display: block; }
-  :global([data-mood="warmth"]) .timeline-bold { display: none; }
-
-  :global([data-mood="bold"]) .timeline-sacred { display: none; }
-  :global([data-mood="bold"]) .timeline-warmth { display: none; }
-  :global([data-mood="bold"]) .timeline-bold { display: block; }
-
-  /* Sacred: glow on label */
-  :global([data-mood="sacred"]) .timeline-label {
-    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
-  }
-
-  /* Warmth: elegant headline */
-  :global([data-mood="warmth"]) .timeline-headline {
-    font-weight: 400;
-  }
-
-  /* Bold: massive uppercase headline */
-  :global([data-mood="bold"]) .timeline-headline {
-    font-size: clamp(2rem, 8vw, 5rem);
-    text-transform: uppercase;
-    letter-spacing: -0.03em;
-  }
-</style>

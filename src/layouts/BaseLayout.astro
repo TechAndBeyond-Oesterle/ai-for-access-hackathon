@@ -8,7 +8,7 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const mood = (Astro.url.searchParams.get('mood') as 'sacred' | 'warmth' | 'bold') || 'sacred';
+const mood = (Astro.url.searchParams.get('mood') as string) || 'violet';
 
 const defaultTitle = lang === 'de'
   ? 'AI for Access — 10 Jahre Powercoders Hackathon'
@@ -30,8 +30,8 @@ const currentUrl = `${siteUrl}/${lang}/`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" hreflang="de" href={`/de/${Astro.url.search}`} />
-    <link rel="alternate" hreflang="en" href={`/en/${Astro.url.search}`} />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="en" href="/en/" />
     <title>{title}</title>
 
     <!-- Open Graph -->

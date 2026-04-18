@@ -10,6 +10,9 @@ export const translations = {
 
     // Hero
     'hero.tagline': '10 Jahre. 10 Stunden. 10× Output.',
+    'hero.title.line1': 'AI for Access',
+    'hero.title.line2': 'Hackathon',
+    'hero.subtitle': 'Vibe Coding × Domain Expertise — bau mit AI deinen Prototyp.',
     'hero.sub': 'Du musst nicht coden können. Du musst ein Problem verstehen.',
     'hero.date': '20.–21. November 2026',
     'hero.location': 'Stadtkloster Frieden · Bern',
@@ -25,15 +28,6 @@ export const translations = {
     'countdown.minutes': 'Min',
     'countdown.seconds': 'Sek',
     'countdown.prefix': 'Noch',
-
-    // Hack in Church
-    'church.label': 'Das Ungewöhnliche',
-    'church.headline': 'Wir hacken in der Kirche.',
-    'church.statement': '800 Sitzplätze. 20 Meter Kirchenschiff. Ein Ort, an dem seit 100 Jahren über Zukunft nachgedacht wird — jetzt mit AI.',
-    'church.cta': 'Mehr zum Stadtkloster',
-    'church.img1': 'Kirchenschiff — 20 Meter Deckenhöhe',
-    'church.img2': 'Grosser Saal — Hack-Space',
-    'church.img3': 'Fassade der Friedenskirche',
 
     // Vision
     'vision.label': 'Die Vision',
@@ -173,7 +167,7 @@ export const translations = {
 
     // Signup (Waitlist mode)
     'signup.label': 'Warteliste',
-    'signup.headline': 'Dein Platz im Kirchenschiff.',
+    'signup.headline': 'Dein Platz wartet.',
     'signup.sub': '100 Plätze. Sichere dir jetzt deinen Platz auf der Warteliste.',
     'signup.name': 'Vorname',
     'signup.email': 'E-Mail',
@@ -251,6 +245,22 @@ export const translations = {
     // Code of Conduct
     'coc.title': 'Code of Conduct',
 
+    // Hosts teaser (index page)
+    'hosts.label': 'Die Gastgeber',
+    'hosts.headline': 'Powercoders × Tech & Beyond',
+    'hosts.teaser': 'Zwei Organisationen, eine Mission: Zugänge schaffen.',
+    'hosts.cta': 'Mehr erfahren',
+
+    // Sponsors teaser (index page)
+    'sponsors.teaser': 'Challenge-Partner, Tool-Partner und Community-Supporter gesucht.',
+    'sponsors.slot.open': 'Frei',
+
+    // Location venue note
+    'location.venue_note': 'Fun Fact: Das Stadtkloster ist eine umgenutzte Kirche aus dem Jahr 1920 — 20 Meter Deckenhöhe, 800 Plätze und eine einzigartige Atmosphäre für kreatives Arbeiten.',
+
+    // Subpage nav
+    'nav.back': 'Zurück zur Übersicht',
+
     // Footer
     'footer.org': 'Ein Event von Powercoders × Tech & Beyond',
     'footer.tagline': '10 Jahre Brücken bauen. Jetzt mit AI.',
@@ -258,6 +268,8 @@ export const translations = {
     'footer.legal': 'Impressum',
     'footer.privacy': 'Datenschutz',
     'footer.coc': 'Code of Conduct',
+    'footer.about': 'Über uns',
+    'footer.sponsors': 'Sponsoren',
   },
 
   en: {
@@ -271,6 +283,9 @@ export const translations = {
 
     // Hero
     'hero.tagline': '10 Years. 10 Hours. 10× Output.',
+    'hero.title.line1': 'AI for Access',
+    'hero.title.line2': 'Hackathon',
+    'hero.subtitle': 'Vibe Coding × Domain Expertise — build your prototype with AI.',
     'hero.sub': 'You don\'t need to code. You need to understand a problem.',
     'hero.date': 'November 20–21, 2026',
     'hero.location': 'Stadtkloster Frieden · Bern',
@@ -286,15 +301,6 @@ export const translations = {
     'countdown.minutes': 'Min',
     'countdown.seconds': 'Sec',
     'countdown.prefix': '',
-
-    // Hack in Church
-    'church.label': 'The Unusual',
-    'church.headline': 'We hack in a church.',
-    'church.statement': '800 seats. 20 meters of nave. A place where people have been thinking about the future for 100 years — now with AI.',
-    'church.cta': 'More about the venue',
-    'church.img1': 'Nave — 20 meter ceiling height',
-    'church.img2': 'Great Hall — Hack Space',
-    'church.img3': 'Friedenskirche Facade',
 
     // Vision
     'vision.label': 'The Vision',
@@ -434,7 +440,7 @@ export const translations = {
 
     // Signup (Waitlist mode)
     'signup.label': 'Waitlist',
-    'signup.headline': 'Your seat in the nave.',
+    'signup.headline': 'Your spot awaits.',
     'signup.sub': '100 spots. Secure your place on the waitlist now.',
     'signup.name': 'First name',
     'signup.email': 'Email',
@@ -512,6 +518,22 @@ export const translations = {
     // Code of Conduct
     'coc.title': 'Code of Conduct',
 
+    // Hosts teaser (index page)
+    'hosts.label': 'The Hosts',
+    'hosts.headline': 'Powercoders × Tech & Beyond',
+    'hosts.teaser': 'Two organizations, one mission: creating access.',
+    'hosts.cta': 'Learn more',
+
+    // Sponsors teaser (index page)
+    'sponsors.teaser': 'Looking for challenge partners, tool partners, and community supporters.',
+    'sponsors.slot.open': 'Open',
+
+    // Location venue note
+    'location.venue_note': 'Fun fact: The venue is a repurposed 1920s church — 20-meter ceilings, 800 seats, and a unique atmosphere for creative work.',
+
+    // Subpage nav
+    'nav.back': 'Back to overview',
+
     // Footer
     'footer.org': 'An event by Powercoders × Tech & Beyond',
     'footer.tagline': '10 years of building bridges. Now with AI.',
@@ -519,6 +541,8 @@ export const translations = {
     'footer.legal': 'Legal',
     'footer.privacy': 'Privacy',
     'footer.coc': 'Code of Conduct',
+    'footer.about': 'About us',
+    'footer.sponsors': 'Sponsors',
   },
 } as const;
 

@@ -10,35 +10,15 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const mentors = [
-  {
-    title: t('mentoring.sherpa.title'),
-    desc: t('mentoring.sherpa.desc'),
-    icon: 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z',
-    highlight: true,
-  },
-  {
-    title: t('mentoring.domain.title'),
-    desc: t('mentoring.domain.desc'),
-    icon: 'M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342',
-    highlight: false,
-  },
-  {
-    title: t('mentoring.tech.title'),
-    desc: t('mentoring.tech.desc'),
-    icon: 'M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5',
-    highlight: false,
-  },
-  {
-    title: t('mentoring.pitch.title'),
-    desc: t('mentoring.pitch.desc'),
-    icon: 'M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z',
-    highlight: false,
-  },
+  { title: t('mentoring.sherpa.title'), desc: t('mentoring.sherpa.desc'), highlight: true },
+  { title: t('mentoring.domain.title'), desc: t('mentoring.domain.desc'), highlight: false },
+  { title: t('mentoring.tech.title'), desc: t('mentoring.tech.desc'), highlight: false },
+  { title: t('mentoring.pitch.title'), desc: t('mentoring.pitch.desc'), highlight: false },
 ];
 ---
 
 <section id="mentoring" class="relative py-24 sm:py-32">
-  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15;"></div>
+  <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
 
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-4">
@@ -47,7 +27,7 @@ const mentors = [
       </span>
     </div>
 
-    <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-4">
+    <h2 class="font-display text-[clamp(2rem,8vw,5rem)] font-bold text-center tracking-[-0.03em] uppercase mb-4">
       {t('mentoring.headline')}
     </h2>
 
@@ -55,25 +35,15 @@ const mentors = [
       {t('mentoring.sub')}
     </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
       {mentors.map((m) => (
-        <div class:list={[
-          'relative p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1',
-          m.highlight ? 'border-accent/40' : '',
-        ]}
-          style={`border-color: ${m.highlight ? 'var(--accent)' : 'color-mix(in srgb, var(--fg) 8%, transparent)'}; background: ${m.highlight ? 'color-mix(in srgb, var(--accent) 5%, var(--bg-raised))' : 'color-mix(in srgb, var(--bg-raised) 50%, transparent)'};`}
+        <div class:list={['card-bold p-6 -mt-[2px] -ml-[2px] relative', m.highlight && 'border-accent!']}
+          style={m.highlight ? `border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));` : ''}
         >
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-            style={`background: color-mix(in srgb, ${m.highlight ? 'var(--accent)' : 'var(--accent)'} ${m.highlight ? '15%' : '8%'}, transparent);`}
-          >
-            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d={m.icon} />
-            </svg>
-          </div>
-          <h3 class="font-display text-base sm:text-lg font-bold mb-2">{m.title}</h3>
+          <h3 class="font-display text-base sm:text-lg font-bold uppercase tracking-wide mb-3">{m.title}</h3>
           <p class="text-sm text-muted leading-relaxed">{m.desc}</p>
           {m.highlight && (
-            <div class="absolute top-3 right-3 w-2 h-2 rounded-full" style="background: var(--accent);"></div>
+            <div class="absolute top-3 right-3 w-3 h-3" style="background: var(--accent);"></div>
           )}
         </div>
       ))}
@@ -83,12 +53,10 @@ const mentors = [
     <div class="mt-12 text-center">
       <a
         href="mailto:make@jonasoesterle.de?subject=Mentor%20Bewerbung%20AI%20for%20Access"
-        class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline underline-offset-4 transition-all"
+        class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-accent hover:underline underline-offset-4 transition-all"
       >
         {t('mentoring.cta')}
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
+        <span>&rarr;</span>
       </a>
     </div>
   </div>

@@ -1,71 +1,143 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════
-   MOOD A — "MATRIX CHURCH"
-   Terminal green meets gothic architecture.
-   Dark. Reverent. Electric.
+   PALETTE A — "ELECTRIC DEPTH" (Default)
+   Violet energy. Cyan access.
    ═══════════════════════════════════════════════════════ */
 :root,
-[data-mood="sacred"] {
-  --bg: #050a05;
-  --bg-raised: #0a120a;
-  --fg: #c8d4c8;
-  --fg-muted: #6a8a6a;
-  --accent: #00FF41;
-  --accent-alt: #D4A24C;
-  --accent-glow: rgba(0, 255, 65, 0.15);
-
-  --font-display: 'IBM Plex Mono', monospace;
-  --font-body: 'IBM Plex Mono', monospace;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --radius: 2px;
-  --hero-image: url('/images/location/hero-church-aisle.jpg');
+[data-mood="violet"] {
+  --bg: #0B0B14;
+  --bg-raised: #151524;
+  --fg: #E8E8F0;
+  --fg-muted: #7878A0;
+  --accent: #8B5CF6;
+  --accent-alt: #06B6D4;
+  --accent-glow: rgba(139, 92, 246, 0.12);
+  --neon-from: #8B5CF6;
+  --neon-to: #06B6D4;
 }
 
 /* ═══════════════════════════════════════════════════════
-   MOOD B — "MONASTERY WARMTH"
-   Gathered around a table in the cloister.
-   Linen, candlelight, aged paper, human warmth.
+   PALETTE B — "NEON EMBER"
+   Hot orange meets electric teal.
    ═══════════════════════════════════════════════════════ */
-[data-mood="warmth"] {
-  --bg: #F6F0E4;
-  --bg-raised: #FFFDF7;
-  --fg: #2C2416;
-  --fg-muted: #8A7D6B;
-  --accent: #C4501A;
-  --accent-alt: #3D7A56;
-  --accent-glow: rgba(196, 80, 26, 0.1);
-
-  --font-display: 'Instrument Serif', serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --radius: 1rem;
-  --hero-image: url('/images/location/hero-cathedral-arches.jpg');
+[data-mood="ember"] {
+  --bg: #0C0A08;
+  --bg-raised: #1A1510;
+  --fg: #F0EBE4;
+  --fg-muted: #9A8E7A;
+  --accent: #F97316;
+  --accent-alt: #14B8A6;
+  --accent-glow: rgba(249, 115, 22, 0.12);
+  --neon-from: #F97316;
+  --neon-to: #14B8A6;
 }
 
 /* ═══════════════════════════════════════════════════════
-   MOOD C — "BRUTAL FUTURE"
-   Manifesto. Poster. Statement.
-   Black ink on white paper, then NEON screams.
+   PALETTE C — "ACID GREEN"
+   Hacker energy. Sharp lime meets magenta.
    ═══════════════════════════════════════════════════════ */
-[data-mood="bold"] {
-  --bg: #FAFAFA;
+[data-mood="acid"] {
+  --bg: #080A08;
+  --bg-raised: #111612;
+  --fg: #E4F0E4;
+  --fg-muted: #6A9A6A;
+  --accent: #84CC16;
+  --accent-alt: #EC4899;
+  --accent-glow: rgba(132, 204, 22, 0.12);
+  --neon-from: #84CC16;
+  --neon-to: #EC4899;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PALETTE D — "ARCTIC BLUE"
+   Cool precision. Ice blue meets warm gold.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="arctic"] {
+  --bg: #080B10;
+  --bg-raised: #0F1520;
+  --fg: #E0E8F0;
+  --fg-muted: #6888A8;
+  --accent: #3B82F6;
+  --accent-alt: #EAB308;
+  --accent-glow: rgba(59, 130, 246, 0.12);
+  --neon-from: #3B82F6;
+  --neon-to: #EAB308;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PALETTE E — "VIOLET LIGHT"
+   Same violet/cyan accents on clean white canvas.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="violet-light"] {
+  --bg: #FAFAFE;
   --bg-raised: #FFFFFF;
-  --fg: #000000;
-  --fg-muted: #666666;
-  --accent: #FF0066;
-  --accent-alt: #00D4FF;
-  --accent-glow: rgba(255, 0, 102, 0.08);
+  --fg: #0B0B14;
+  --fg-muted: #6868A0;
+  --accent: #7C3AED;
+  --accent-alt: #0891B2;
+  --accent-glow: rgba(124, 58, 237, 0.1);
+  --neon-from: #7C3AED;
+  --neon-to: #0891B2;
+}
 
+/* ═══════════════════════════════════════════════════════
+   PALETTE F — "EMBER LIGHT"
+   Hot orange/teal on warm off-white.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="ember-light"] {
+  --bg: #FEFCF9;
+  --bg-raised: #FFFFFF;
+  --fg: #1A1510;
+  --fg-muted: #8A7D6B;
+  --accent: #EA580C;
+  --accent-alt: #0D9488;
+  --accent-glow: rgba(234, 88, 12, 0.1);
+  --neon-from: #EA580C;
+  --neon-to: #0D9488;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PALETTE G — "ACID LIGHT"
+   Lime/magenta on stark white.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="acid-light"] {
+  --bg: #FAFCFA;
+  --bg-raised: #FFFFFF;
+  --fg: #0A120A;
+  --fg-muted: #4A7A4A;
+  --accent: #65A30D;
+  --accent-alt: #DB2777;
+  --accent-glow: rgba(101, 163, 13, 0.1);
+  --neon-from: #65A30D;
+  --neon-to: #DB2777;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PALETTE H — "ARCTIC LIGHT"
+   Ice blue/gold on cool white.
+   ═══════════════════════════════════════════════════════ */
+[data-mood="arctic-light"] {
+  --bg: #F8FAFC;
+  --bg-raised: #FFFFFF;
+  --fg: #0F172A;
+  --fg-muted: #6480A8;
+  --accent: #2563EB;
+  --accent-alt: #CA8A04;
+  --accent-glow: rgba(37, 99, 235, 0.1);
+  --neon-from: #2563EB;
+  --neon-to: #CA8A04;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SHARED DESIGN TOKENS
+   ═══════════════════════════════════════════════════════ */
+:root {
   --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-mono: 'Space Mono', monospace;
-
   --radius: 0;
-  --hero-image: none;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -84,11 +156,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth theme transitions */
+/* Smooth palette transitions */
 html[style*="--transition-speed"] *,
 html[style*="--transition-speed"] *::before,
 html[style*="--transition-speed"] *::after {
-  transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 ::selection {
@@ -132,15 +204,10 @@ html[style*="--transition-speed"] *::after {
 }
 
 /* ═══════════════════════════════════════════════════════
-   ANIMATIONS — SHARED
+   ANIMATIONS
    ═══════════════════════════════════════════════════════ */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -150,194 +217,95 @@ html[style*="--transition-speed"] *::after {
 .animate-fade-in-delay-3 { animation: fade-in 0.8s ease-out 0.45s both; }
 
 /* ═══════════════════════════════════════════════════════
-   MATRIX CHURCH — MOOD-SPECIFIC EFFECTS
+   EFFECTS
    ═══════════════════════════════════════════════════════ */
 
-/* Scanlines overlay */
-[data-mood="sacred"] .hero-scanlines::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 255, 65, 0.03) 2px,
-    rgba(0, 255, 65, 0.03) 4px
-  );
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Green text glow */
-[data-mood="sacred"] .glow-text {
-  text-shadow:
-    0 0 7px rgba(0, 255, 65, 0.4),
-    0 0 20px rgba(0, 255, 65, 0.15),
-    0 0 40px rgba(0, 255, 65, 0.05);
-}
-
-[data-mood="sacred"] .glow-text-strong {
-  text-shadow:
-    0 0 10px rgba(0, 255, 65, 0.6),
-    0 0 30px rgba(0, 255, 65, 0.3),
-    0 0 60px rgba(0, 255, 65, 0.1);
-}
-
-/* Terminal cursor blink */
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-[data-mood="sacred"] .terminal-cursor::after {
-  content: '█';
-  color: var(--accent);
-  animation: cursor-blink 1s step-end infinite;
-  margin-left: 2px;
-}
-
-/* Matrix rain columns */
-@keyframes matrix-rain {
-  0% { transform: translateY(-100%); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
-}
-
-[data-mood="sacred"] .matrix-rain-col {
-  position: absolute;
-  top: 0;
-  width: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  line-height: 1.2;
-  color: rgba(0, 255, 65, 0.15);
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  animation: matrix-rain linear infinite;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Green border glow on cards */
-[data-mood="sacred"] .card-matrix {
-  border: 1px solid rgba(0, 255, 65, 0.2);
-  background: rgba(0, 255, 65, 0.02);
-  transition: all 0.3s ease;
-}
-[data-mood="sacred"] .card-matrix:hover {
-  border-color: rgba(0, 255, 65, 0.5);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.08), inset 0 0 20px rgba(0, 255, 65, 0.03);
-}
-
-/* CRT vignette on hero */
-[data-mood="sacred"] .hero-vignette::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ═══════════════════════════════════════════════════════
-   MONASTERY WARMTH — MOOD-SPECIFIC EFFECTS
-   ═══════════════════════════════════════════════════════ */
-
-/* Soft paper texture via noise */
-[data-mood="warmth"] body {
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-}
-
-/* Warm shadow style */
-[data-mood="warmth"] .card-warmth {
-  border: 1px solid rgba(44, 36, 22, 0.08);
-  background: var(--bg-raised);
-  border-radius: 1.25rem;
-  box-shadow:
-    0 1px 3px rgba(44, 36, 22, 0.04),
-    0 8px 24px rgba(44, 36, 22, 0.06);
-  transition: all 0.4s ease;
-}
-[data-mood="warmth"] .card-warmth:hover {
-  box-shadow:
-    0 2px 8px rgba(44, 36, 22, 0.06),
-    0 16px 40px rgba(44, 36, 22, 0.1);
-  transform: translateY(-4px);
-}
-
-/* Decorative serif flourish */
-[data-mood="warmth"] .warmth-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: var(--fg-muted);
-  opacity: 0.3;
-}
-[data-mood="warmth"] .warmth-divider::before,
-[data-mood="warmth"] .warmth-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: currentColor;
-}
-
-/* ═══════════════════════════════════════════════════════
-   BRUTAL FUTURE — MOOD-SPECIFIC EFFECTS
-   ═══════════════════════════════════════════════════════ */
-
-/* Grid overlay */
-[data-mood="bold"] .brutal-grid::before {
+/* Subtle grid overlay for hero */
+.hero-grid::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
-    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
 
-/* Neon gradient text */
-[data-mood="bold"] .neon-text {
-  background: linear-gradient(135deg, #FF0066, #00D4FF);
+/* Neon gradient text — uses palette-specific gradient */
+.neon-text {
+  background: linear-gradient(135deg, var(--neon-from), var(--neon-to));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Stark card style */
-[data-mood="bold"] .card-brutal {
-  border: 2px solid #000;
-  background: #fff;
+/* Card — bold/brutal style: sharp, 2px borders */
+.card-bold {
+  border: 2px solid color-mix(in srgb, var(--fg) 15%, transparent);
+  background: var(--bg-raised);
   transition: all 0.15s ease;
 }
-[data-mood="bold"] .card-brutal:hover {
-  background: #000;
-  color: #fff;
-}
-[data-mood="bold"] .card-brutal:hover .brutal-accent {
-  color: var(--accent) !important;
+.card-bold:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));
 }
 
 /* Oversized number treatment */
-[data-mood="bold"] .brutal-number {
-  font-size: clamp(4rem, 10vw, 8rem);
+.brutal-number {
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
   line-height: 0.85;
   letter-spacing: -0.06em;
   font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Rotating border animation */
-@keyframes border-rotate {
-  0% { border-color: #FF0066; }
-  50% { border-color: #00D4FF; }
-  100% { border-color: #FF0066; }
+/* Accent line divider */
+.accent-divider {
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.15;
 }
 
-[data-mood="bold"] .brutal-border-anim {
-  animation: border-rotate 4s ease infinite;
+/* CTA glow on hover */
+@keyframes border-glow {
+  0% { box-shadow: 0 0 15px var(--accent-glow); }
+  50% { box-shadow: 0 0 25px color-mix(in srgb, var(--accent-alt) 30%, transparent); }
+  100% { box-shadow: 0 0 15px var(--accent-glow); }
+}
+
+.cta-glow:hover {
+  animation: border-glow 3s ease infinite;
+}
+
+/* Hero overlay — adapts to dark/light themes */
+.hero-overlay {
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg) 90%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 78%, transparent) 40%,
+    color-mix(in srgb, var(--bg) 94%, transparent) 100%
+  );
+}
+
+/* Hero photo — desaturate in light mode for better contrast */
+[data-mood="violet-light"] .hero-photo,
+[data-mood="ember-light"] .hero-photo,
+[data-mood="acid-light"] .hero-photo,
+[data-mood="arctic-light"] .hero-photo {
+  filter: grayscale(0.3) brightness(0.95);
+}
+
+/* Hero bottom fade — uses theme bg */
+.hero-bottom-fade {
+  background: linear-gradient(to top, var(--bg), transparent);
+}
+
+/* SVG logo inversion — dark modes invert to white, light modes keep dark */
+.logo-svg {
+  filter: brightness(0) invert(1);
+}
+[data-mood="violet-light"] .logo-svg,
+[data-mood="ember-light"] .logo-svg,
+[data-mood="acid-light"] .logo-svg,
+[data-mood="arctic-light"] .logo-svg {
+  filter: brightness(0) invert(0);
 }
