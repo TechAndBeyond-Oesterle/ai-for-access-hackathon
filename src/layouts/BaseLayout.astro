@@ -8,7 +8,6 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const mood = (Astro.url.searchParams.get('mood') as string) || 'violet';
 
 const defaultTitle = lang === 'de'
   ? 'AI for Access — 10 Jahre Powercoders Hackathon'
@@ -24,7 +23,7 @@ const currentUrl = `${siteUrl}/${lang}/`;
 ---
 
 <!doctype html>
-<html lang={lang} data-mood={mood}>
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -11,12 +11,11 @@ export function getStaticPaths() {
 }
 
 const lang = (Astro.params.lang as Lang) || 'de';
-const mood = (Astro.url.searchParams.get('mood') as string) || 'sacred';
 const isDE = lang === 'de';
 ---
 
 <BaseLayout title={isDE ? 'Code of Conduct — AI for Access' : 'Code of Conduct — AI for Access'}>
-  <Header lang={lang} mood={mood} />
+  <Header lang={lang} />
   <main class="pt-28 pb-20">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose-custom">
       <h1 class="font-display text-3xl sm:text-5xl font-bold mb-8 text-accent">Code of Conduct</h1>

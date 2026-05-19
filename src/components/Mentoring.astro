@@ -37,7 +37,12 @@ const mentors = [
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
       {mentors.map((m) => (
-        <div class:list={['card-bold p-6 -mt-[2px] -ml-[2px] relative', m.highlight && 'border-accent!']}
+        <div
+          class:list={[
+            'card-bold p-6 -mt-[2px] -ml-[2px] relative',
+            m.highlight && 'border-accent!',
+            m.highlight && 'card-bold--elevated',
+          ]}
           style={m.highlight ? `border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));` : ''}
         >
           <h3 class="font-display text-base sm:text-lg font-bold uppercase tracking-wide mb-3">{m.title}</h3>
