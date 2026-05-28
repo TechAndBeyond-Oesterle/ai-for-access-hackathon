@@ -9,25 +9,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const altLang = getAlternateLang(lang);
-
-/**
- * ╔══════════════════════════════════════════════════════════╗
- * ║  VARIANT TOGGLE — change to 'A' or 'B' to compare      ║
- * ╚══════════════════════════════════════════════════════════╝
- *
- *  A = "Dispatch Ticker" — separate top banner + nav below
- *  B = "Slab Header"     — date/city baked into the nav bar
- */
-const VARIANT = 'A' as const;
+/** Hash targets live on the homepage; use absolute path so subpages don't get `/de/legal/#section`. */
+const idx = `/${lang}/`;
 ---
 
-{/* ═══════════════════════════════════════════════════════════
-    VARIANT A — "DISPATCH TICKER"
-    A taut data-feed strip pinned above the nav.
-    BERN and date as monospaced status fields.
-    The strip feels like a live mission briefing.
-   ═══════════════════════════════════════════════════════════ */}
-{VARIANT === 'A' && (
+{/* Dispatch ticker: top status strip + nav */}
 <div id="site-header-wrap" class="fixed top-0 left-0 right-0 z-50">
   {/* ——— TICKER BANNER ——— */}
   <div class="header-ticker border-b-2" style="border-color: color-mix(in srgb, var(--accent) 25%, transparent); background: var(--bg-raised);">
@@ -80,33 +66,26 @@ const VARIANT = 'A' as const;
         {/* Logo */}
         <a
           href={`/${lang}/`}
-          class="font-display text-lg sm:text-xl font-bold tracking-tight text-accent transition-opacity hover:opacity-80"
+          class="inline-flex items-center gap-2 sm:gap-3 transition-opacity hover:opacity-80"
+          aria-label="Powercoders"
         >
-          {t('nav.logo')}
+          <img
+            src="/images/logos/powercoders.svg"
+            alt="Powercoders"
+            class="h-5 sm:h-6 w-auto"
+            loading="eager"
+            decoding="async"
+          />
+          <span class="font-mono text-md sm:text-lg font-bold uppercase tracking-wide" style="color: var(--fg);">
+            x Tech&amp;Beyond
+          </span>
         </a>
 
         {/* Desktop Nav */}
         <div class="hidden md:flex items-center gap-6 lg:gap-8">
-          <a href="#timeline" class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.schedule')}</a>
-          <a href="#challenges" class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.challenges')}</a>
-          <a href="#location" class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.location')}</a>
-
-          {/* Palette Switcher — dark + light rows */}
-          <div class="flex items-center gap-2" aria-label="Color palette">
-            <div class="flex items-center gap-1.5" title="Dark">
-              <button data-set-mood="violet" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #8B5CF6;" title="Violet Dark" />
-              <button data-set-mood="ember" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #F97316;" title="Ember Dark" />
-              <button data-set-mood="acid" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #84CC16;" title="Acid Dark" />
-              <button data-set-mood="arctic" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #3B82F6;" title="Arctic Dark" />
-            </div>
-            <span class="text-[8px] text-muted" style="opacity: 0.3;">|</span>
-            <div class="flex items-center gap-1.5" title="Light">
-              <button data-set-mood="violet-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FAFAFE; border-color: #7C3AED;" title="Violet Light" />
-              <button data-set-mood="ember-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FEFCF9; border-color: #EA580C;" title="Ember Light" />
-              <button data-set-mood="acid-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FAFCFA; border-color: #65A30D;" title="Acid Light" />
-              <button data-set-mood="arctic-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #F8FAFC; border-color: #2563EB;" title="Arctic Light" />
-            </div>
-          </div>
+          <a href={`${idx}#timeline`} class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.schedule')}</a>
+          <a href={`${idx}#challenges`} class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.challenges')}</a>
+          <a href={`${idx}#location`} class="text-sm text-muted hover:text-accent transition-colors font-mono text-xs uppercase tracking-widest">{t('nav.location')}</a>
 
           {/* Language */}
           <a
@@ -118,7 +97,7 @@ const VARIANT = 'A' as const;
 
           {/* CTA */}
           <a
-            href="#signup"
+            href={`${idx}#signup`}
             class="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-200 hover:scale-105 cta-glow"
             style="background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, var(--accent-alt))); color: #fff;"
           >
@@ -147,32 +126,17 @@ const VARIANT = 'A' as const;
       style="background-color: var(--bg); border-color: color-mix(in srgb, var(--fg) 15%, transparent);"
     >
       <div class="px-4 py-6 space-y-4">
-        <a href="#timeline" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.schedule')}</a>
-        <a href="#challenges" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.challenges')}</a>
-        <a href="#location" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.location')}</a>
+        <a href={`${idx}#timeline`} class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.schedule')}</a>
+        <a href={`${idx}#challenges`} class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.challenges')}</a>
+        <a href={`${idx}#location`} class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.location')}</a>
         <hr style="border-color: var(--fg-muted); opacity: 0.15;" />
         <div class="flex items-center justify-between">
           <a href={`/${altLang}/`} class="text-sm font-mono text-muted hover:text-accent uppercase tracking-wider">
             {altLang === 'de' ? 'Deutsch' : 'English'}
           </a>
-          <div class="flex items-center gap-3">
-            <div class="flex items-center gap-1.5">
-              <button data-set-mood="violet" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #8B5CF6;" title="Violet" />
-              <button data-set-mood="ember" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #F97316;" title="Ember" />
-              <button data-set-mood="acid" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #84CC16;" title="Acid" />
-              <button data-set-mood="arctic" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #3B82F6;" title="Arctic" />
-            </div>
-            <span class="text-[8px] text-muted" style="opacity: 0.3;">|</span>
-            <div class="flex items-center gap-1.5">
-              <button data-set-mood="violet-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FAFAFE; border-color: #7C3AED;" title="Violet Light" />
-              <button data-set-mood="ember-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FEFCF9; border-color: #EA580C;" title="Ember Light" />
-              <button data-set-mood="acid-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #FAFCFA; border-color: #65A30D;" title="Acid Light" />
-              <button data-set-mood="arctic-light" class="palette-dot w-3 h-3 transition-all cursor-pointer border" style="background: #F8FAFC; border-color: #2563EB;" title="Arctic Light" />
-            </div>
-          </div>
         </div>
         <a
-          href="#signup"
+          href={`${idx}#signup`}
           class="block text-center px-5 py-3 text-sm font-bold uppercase tracking-widest"
           style="background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, var(--accent-alt))); color: #fff;"
         >
@@ -182,169 +146,21 @@ const VARIANT = 'A' as const;
     </div>
   </header>
 </div>
-)}
 
 
-{/* ═══════════════════════════════════════════════════════════
-    VARIANT B — "SLAB HEADER"
-    No separate banner. Instead, BERN and the date are
-    typographically oversized INSIDE the nav bar itself.
-    The city name becomes the visual anchor — a massive
-    slab that makes the nav links feel like footnotes.
-   ═══════════════════════════════════════════════════════════ */}
-{VARIANT === 'B' && (
-<header
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  id="site-header"
->
-  {/* Top edge line */}
-  <div class="h-[3px] w-full" style="background: linear-gradient(90deg, var(--accent), var(--accent-alt), var(--accent));"></div>
-
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    {/* Main nav row */}
-    <nav class="flex items-center h-14 sm:h-16 gap-6 lg:gap-8">
-      {/* Logo — compact */}
-      <a
-        href={`/${lang}/`}
-        class="font-display text-base sm:text-lg font-bold tracking-tight text-accent transition-opacity hover:opacity-80 shrink-0"
-      >
-        {t('nav.logo')}
-      </a>
-
-      {/* Separator slash */}
-      <span class="hidden md:block text-xl font-light" style="color: var(--fg-muted); opacity: 0.2;">/</span>
-
-      {/* SLAB: City + Date — oversized, commanding */}
-      <div class="hidden md:flex items-baseline gap-3 shrink-0">
-        <span class="font-display text-2xl lg:text-3xl font-bold uppercase tracking-tight leading-none">
-          Bern
-        </span>
-        <span class="font-mono text-[10px] lg:text-xs tracking-[0.15em] uppercase" style="color: var(--accent-alt);">
-          {t('hero.date')}
-        </span>
-      </div>
-
-      {/* Mobile: compact city + date */}
-      <div class="md:hidden flex items-baseline gap-2 min-w-0">
-        <span class="font-display text-base font-bold uppercase tracking-tight">Bern</span>
-        <span class="font-mono text-[9px] tracking-wider truncate" style="color: var(--accent-alt);">
-          20.–21.11.26
-        </span>
-      </div>
-
-      {/* Spacer */}
-      <div class="flex-1"></div>
-
-      {/* Desktop Nav — pushed right, smaller to contrast the slab */}
-      <div class="hidden md:flex items-center gap-5 lg:gap-6">
-        <a href="#timeline" class="font-mono text-[10px] lg:text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors">{t('nav.schedule')}</a>
-        <a href="#challenges" class="font-mono text-[10px] lg:text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors">{t('nav.challenges')}</a>
-        <a href="#location" class="font-mono text-[10px] lg:text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors">{t('nav.location')}</a>
-
-        {/* Palette */}
-        <div class="flex items-center gap-1.5" aria-label="Color palette">
-          <button data-set-mood="violet" class="palette-dot w-2.5 h-2.5 transition-all cursor-pointer" style="background: #8B5CF6;" title="Violet" />
-          <button data-set-mood="ember" class="palette-dot w-2.5 h-2.5 transition-all cursor-pointer" style="background: #F97316;" title="Ember" />
-          <button data-set-mood="acid" class="palette-dot w-2.5 h-2.5 transition-all cursor-pointer" style="background: #84CC16;" title="Acid" />
-          <button data-set-mood="arctic" class="palette-dot w-2.5 h-2.5 transition-all cursor-pointer" style="background: #3B82F6;" title="Arctic" />
-        </div>
-
-        {/* Lang */}
-        <a
-          href={`/${altLang}/`}
-          class="font-mono text-[10px] text-muted hover:text-accent transition-colors uppercase tracking-wider"
-        >
-          {altLang}
-        </a>
-
-        {/* CTA — sharp block */}
-        <a
-          href="#signup"
-          class="inline-flex items-center px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-[0.2em] transition-all duration-150 border-2 hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)]"
-          style="border-color: var(--accent); color: var(--accent);"
-        >
-          {t('nav.cta')}
-        </a>
-      </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        id="mobile-menu-btn"
-        class="md:hidden flex flex-col gap-1.5 p-2"
-        aria-label="Menu"
-        aria-expanded="false"
-      >
-        <span class="block w-6 h-0.5 transition-all" style="background-color: var(--fg);"></span>
-        <span class="block w-6 h-0.5 transition-all" style="background-color: var(--fg);"></span>
-        <span class="block w-4 h-0.5 transition-all ml-auto" style="background-color: var(--fg);"></span>
-      </button>
-    </nav>
-  </div>
-
-  {/* Bottom border — only visible when scrolled, applied via JS */}
-  <div class="h-[2px] w-full header-bottom-line" style="background: color-mix(in srgb, var(--fg) 10%, transparent); opacity: 0;"></div>
-
-  {/* Mobile Menu */}
-  <div
-    id="mobile-menu"
-    class="md:hidden hidden absolute top-full left-0 right-0 border-t-2"
-    style="background-color: var(--bg); border-color: color-mix(in srgb, var(--fg) 15%, transparent);"
-  >
-    <div class="px-4 py-6 space-y-4">
-      <a href="#timeline" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.schedule')}</a>
-      <a href="#challenges" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.challenges')}</a>
-      <a href="#location" class="block text-base font-mono uppercase tracking-widest text-muted hover:text-accent transition-colors">{t('nav.location')}</a>
-      <hr style="border-color: var(--fg-muted); opacity: 0.15;" />
-      <div class="flex items-center justify-between">
-        <a href={`/${altLang}/`} class="text-sm font-mono text-muted hover:text-accent uppercase tracking-wider">
-          {altLang === 'de' ? 'Deutsch' : 'English'}
-        </a>
-        <div class="flex items-center gap-2">
-          <button data-set-mood="violet" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #8B5CF6;" title="Violet" />
-          <button data-set-mood="ember" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #F97316;" title="Ember" />
-          <button data-set-mood="acid" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #84CC16;" title="Acid" />
-          <button data-set-mood="arctic" class="palette-dot w-3 h-3 transition-all cursor-pointer" style="background: #3B82F6;" title="Arctic" />
-        </div>
-      </div>
-      <a
-        href="#signup"
-        class="block text-center px-5 py-3 text-sm font-bold uppercase tracking-widest border-2 transition-colors hover:bg-[var(--accent)] hover:text-white"
-        style="border-color: var(--accent); color: var(--accent);"
-      >
-        {t('nav.cta')}
-      </a>
-    </div>
-  </div>
-</header>
-)}
-
-
-<!-- Header behavior: scroll bg, mobile menu, palette switcher -->
+<!-- Header behavior: scroll background, mobile menu -->
 <script>
-  const headerWrap = document.getElementById('site-header-wrap');
-  const header = document.getElementById('site-header')!;
+  const headerWrap = document.getElementById('site-header-wrap')!;
   const btn = document.getElementById('mobile-menu-btn')!;
   const menu = document.getElementById('mobile-menu')!;
-  const bottomLine = document.querySelector('.header-bottom-line') as HTMLElement | null;
 
   // Scroll background
   window.addEventListener('scroll', () => {
     const scrolled = window.scrollY > 50;
-
-    // For Variant A: style the nav bar within the wrap
-    if (headerWrap) {
-      const navBar = headerWrap.querySelector('.header-nav-bar') as HTMLElement;
-      if (navBar) {
-        navBar.classList.toggle('backdrop-blur-xl', scrolled);
-        navBar.style.backgroundColor = scrolled ? 'color-mix(in srgb, var(--bg) 90%, transparent)' : 'transparent';
-      }
-    } else {
-      // Variant B: style header directly
-      header.classList.toggle('backdrop-blur-xl', scrolled);
-      header.style.backgroundColor = scrolled ? 'color-mix(in srgb, var(--bg) 90%, transparent)' : 'transparent';
-      if (bottomLine) {
-        bottomLine.style.opacity = scrolled ? '1' : '0';
-      }
+    const navBar = headerWrap.querySelector('.header-nav-bar') as HTMLElement;
+    if (navBar) {
+      navBar.classList.toggle('backdrop-blur-xl', scrolled);
+      navBar.style.backgroundColor = scrolled ? 'color-mix(in srgb, var(--bg) 90%, transparent)' : 'transparent';
     }
   });
 
@@ -354,36 +170,11 @@ const VARIANT = 'A' as const;
     btn.setAttribute('aria-expanded', String(!expanded));
     menu.classList.toggle('hidden');
   });
-  menu.querySelectorAll('a[href^="#"]').forEach(link => {
+  menu.querySelectorAll('a[href*="#"]').forEach(link => {
     link.addEventListener('click', () => {
       menu.classList.add('hidden');
       btn.setAttribute('aria-expanded', 'false');
     });
   });
 
-  // Palette switcher
-  function updatePaletteDots(activeMood: string) {
-    document.querySelectorAll<HTMLButtonElement>('.palette-dot').forEach(dot => {
-      const m = dot.dataset.setMood!;
-      const isActive = m === activeMood;
-      dot.style.transform = isActive ? 'scale(1.6)' : 'scale(1)';
-      dot.style.boxShadow = isActive ? `0 0 8px ${dot.style.backgroundColor}` : 'none';
-    });
-  }
-
-  const initialMood = document.documentElement.dataset.mood || 'violet';
-  updatePaletteDots(initialMood);
-
-  document.querySelectorAll<HTMLButtonElement>('[data-set-mood]').forEach(dot => {
-    dot.addEventListener('click', () => {
-      const mood = dot.dataset.setMood!;
-      document.documentElement.style.setProperty('--transition-speed', '0.5s');
-      document.body.style.transition = 'background-color 0.5s ease, color 0.5s ease';
-      document.documentElement.dataset.mood = mood;
-      updatePaletteDots(mood);
-      const url = new URL(window.location.href);
-      url.searchParams.set('mood', mood);
-      history.replaceState(null, '', url.toString());
-    });
-  });
 </script>

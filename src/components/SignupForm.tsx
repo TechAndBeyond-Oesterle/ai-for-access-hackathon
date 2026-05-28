@@ -11,26 +11,13 @@ const API_ENDPOINT = '/api/waitlist';
 export default function SignupForm({ lang }: Props) {
   const t = useTranslations(lang);
 
-  const [form, setForm] = useState({ name: '', email: '', role: '' });
+  const [form, setForm] = useState({ email: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const roles = [
-    { value: 'domain', label: t('signup.role.domain') },
-    { value: 'design', label: t('signup.role.design') },
-    { value: 'dev', label: t('signup.role.dev') },
-    { value: 'pm', label: t('signup.role.pm') },
-    { value: 'student', label: t('signup.role.student') },
-    { value: 'alumni', label: t('signup.role.alumni') },
-    { value: 'newcomer', label: t('signup.role.newcomer') },
-    { value: 'career', label: t('signup.role.career') },
-    { value: 'other', label: t('signup.role.other') },
-  ];
-
   function validate() {
     const errs: Record<string, string> = {};
-    if (!form.name.trim()) errs.name = t('signup.error.name');
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.email = t('signup.error.email');
     return errs;
@@ -49,9 +36,7 @@ export default function SignupForm({ lang }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.name,
           email: form.email,
-          role: form.role || '',
         }),
       });
       setSubmitting(false);
@@ -117,22 +102,6 @@ export default function SignupForm({ lang }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto">
-      {/* Name */}
-      <div>
-        <label htmlFor="signup-name" className="block mb-1.5" style={labelStyle}>
-          {t('signup.name')} *
-        </label>
-        <input
-          id="signup-name"
-          type="text"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)]"
-          style={errors.name ? errorStyle : inputStyle}
-        />
-        {errors.name && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.name}</p>}
-      </div>
-
       {/* Email */}
       <div>
         <label htmlFor="signup-email" className="block mb-1.5" style={labelStyle}>
@@ -147,23 +116,6 @@ export default function SignupForm({ lang }: Props) {
           style={errors.email ? errorStyle : inputStyle}
         />
         {errors.email && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.email}</p>}
-      </div>
-
-      {/* Role (optional) */}
-      <div>
-        <label htmlFor="signup-role" className="block mb-1.5" style={labelStyle}>
-          {t('signup.role')}
-        </label>
-        <select
-          id="signup-role"
-          value={form.role}
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] appearance-none"
-          style={inputStyle}
-        >
-          <option value="">—</option>
-          {roles.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
-        </select>
       </div>
 
       {/* Submit */}

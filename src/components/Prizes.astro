@@ -42,7 +42,12 @@ const criteria = [
     <!-- Prize Cards — bold flat grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-16">
       {prizes.map((prize) => (
-        <div class:list={['card-bold p-6 sm:p-8 -mt-[2px] -ml-[2px] relative', prize.accent && 'border-accent!']}
+        <div
+          class:list={[
+            'card-bold p-6 sm:p-8 -mt-[2px] -ml-[2px] relative',
+            prize.accent && 'border-accent!',
+            prize.accent && 'card-bold--elevated',
+          ]}
           style={prize.accent ? `border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));` : ''}
         >
           <h3 class="font-display text-lg sm:text-xl font-bold uppercase tracking-wide mb-2">{prize.title}</h3>
@@ -61,8 +66,8 @@ const criteria = [
       </span>
       <div class="flex flex-wrap items-center justify-center gap-3">
         {criteria.map((c) => (
-          <span class="px-4 py-2 text-sm font-bold uppercase tracking-widest border-2 transition-colors hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)]"
-            style="border-color: var(--accent); color: var(--accent);"
+          <span
+            class="px-4 py-2 text-sm font-bold uppercase tracking-widest border-2 border-accent text-accent transition-colors hover:bg-accent hover:text-white hover:border-accent"
           >
             {c}
           </span>

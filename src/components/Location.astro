@@ -147,9 +147,6 @@ const stats = [
               </div>
             </div>
             <!-- Corner data labels -->
-            <div class="absolute top-3 left-4 text-[9px] font-mono uppercase tracking-widest text-accent" style="opacity: 0.5;">
-              MAP_EMBED
-            </div>
             <div class="absolute bottom-3 right-4 text-[9px] font-mono text-muted" style="opacity: 0.4;">
               OpenStreetMap
             </div>
@@ -172,9 +169,12 @@ const stats = [
   /* Stat cells — accent border flash on hover */
   .location-stat-cell {
     transition: all 0.15s ease;
+    position: relative;
+    z-index: 0;
   }
   .location-stat-cell:hover {
     border-color: var(--accent) !important;
     background: color-mix(in srgb, var(--accent) 4%, var(--bg-raised)) !important;
+    z-index: 2;
   }
 </style>

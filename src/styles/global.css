@@ -1,140 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════
-   PALETTE A — "ELECTRIC DEPTH" (Default)
-   Violet energy. Cyan access.
+   THEME — White base, Powercoders red, black type
    ═══════════════════════════════════════════════════════ */
-:root,
-[data-mood="violet"] {
-  --bg: #0B0B14;
-  --bg-raised: #151524;
-  --fg: #E8E8F0;
-  --fg-muted: #7878A0;
-  --accent: #8B5CF6;
-  --accent-alt: #06B6D4;
-  --accent-glow: rgba(139, 92, 246, 0.12);
-  --neon-from: #8B5CF6;
-  --neon-to: #06B6D4;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE B — "NEON EMBER"
-   Hot orange meets electric teal.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="ember"] {
-  --bg: #0C0A08;
-  --bg-raised: #1A1510;
-  --fg: #F0EBE4;
-  --fg-muted: #9A8E7A;
-  --accent: #F97316;
-  --accent-alt: #14B8A6;
-  --accent-glow: rgba(249, 115, 22, 0.12);
-  --neon-from: #F97316;
-  --neon-to: #14B8A6;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE C — "ACID GREEN"
-   Hacker energy. Sharp lime meets magenta.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="acid"] {
-  --bg: #080A08;
-  --bg-raised: #111612;
-  --fg: #E4F0E4;
-  --fg-muted: #6A9A6A;
-  --accent: #84CC16;
-  --accent-alt: #EC4899;
-  --accent-glow: rgba(132, 204, 22, 0.12);
-  --neon-from: #84CC16;
-  --neon-to: #EC4899;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE D — "ARCTIC BLUE"
-   Cool precision. Ice blue meets warm gold.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="arctic"] {
-  --bg: #080B10;
-  --bg-raised: #0F1520;
-  --fg: #E0E8F0;
-  --fg-muted: #6888A8;
-  --accent: #3B82F6;
-  --accent-alt: #EAB308;
-  --accent-glow: rgba(59, 130, 246, 0.12);
-  --neon-from: #3B82F6;
-  --neon-to: #EAB308;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE E — "VIOLET LIGHT"
-   Same violet/cyan accents on clean white canvas.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="violet-light"] {
-  --bg: #FAFAFE;
-  --bg-raised: #FFFFFF;
-  --fg: #0B0B14;
-  --fg-muted: #6868A0;
-  --accent: #7C3AED;
-  --accent-alt: #0891B2;
-  --accent-glow: rgba(124, 58, 237, 0.1);
-  --neon-from: #7C3AED;
-  --neon-to: #0891B2;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE F — "EMBER LIGHT"
-   Hot orange/teal on warm off-white.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="ember-light"] {
-  --bg: #FEFCF9;
-  --bg-raised: #FFFFFF;
-  --fg: #1A1510;
-  --fg-muted: #8A7D6B;
-  --accent: #EA580C;
-  --accent-alt: #0D9488;
-  --accent-glow: rgba(234, 88, 12, 0.1);
-  --neon-from: #EA580C;
-  --neon-to: #0D9488;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE G — "ACID LIGHT"
-   Lime/magenta on stark white.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="acid-light"] {
-  --bg: #FAFCFA;
-  --bg-raised: #FFFFFF;
-  --fg: #0A120A;
-  --fg-muted: #4A7A4A;
-  --accent: #65A30D;
-  --accent-alt: #DB2777;
-  --accent-glow: rgba(101, 163, 13, 0.1);
-  --neon-from: #65A30D;
-  --neon-to: #DB2777;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PALETTE H — "ARCTIC LIGHT"
-   Ice blue/gold on cool white.
-   ═══════════════════════════════════════════════════════ */
-[data-mood="arctic-light"] {
-  --bg: #F8FAFC;
-  --bg-raised: #FFFFFF;
-  --fg: #0F172A;
-  --fg-muted: #6480A8;
-  --accent: #2563EB;
-  --accent-alt: #CA8A04;
-  --accent-glow: rgba(37, 99, 235, 0.1);
-  --neon-from: #2563EB;
-  --neon-to: #CA8A04;
+:root {
+  --bg: #ffffff;
+  --bg-raised: #f5f5f5;
+  --fg: #000000;
+  --fg-muted: #555555;
+  --accent: #c53350;
+  --accent-alt: #000000;
+  --accent-glow: rgba(197, 51, 80, 0.12);
+  --neon-from: #c53350;
+  --neon-to: #000000;
 }
 
 /* ═══════════════════════════════════════════════════════
    SHARED DESIGN TOKENS
    ═══════════════════════════════════════════════════════ */
 :root {
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'Space Mono', monospace;
   --radius: 0;
@@ -156,11 +42,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth palette transitions */
-html[style*="--transition-speed"] *,
-html[style*="--transition-speed"] *::before,
-html[style*="--transition-speed"] *::after {
-  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+/* In-page anchors: clear fixed ticker + nav (~88–100px) */
+main section[id] {
+  scroll-margin-top: 7rem;
 }
 
 ::selection {
@@ -203,6 +87,10 @@ html[style*="--transition-speed"] *::after {
   border-color: var(--accent);
 }
 
+@utility bg-accent {
+  background-color: var(--accent);
+}
+
 /* ═══════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════ */
@@ -232,12 +120,9 @@ html[style*="--transition-speed"] *::after {
   pointer-events: none;
 }
 
-/* Neon gradient text — uses palette-specific gradient */
+/* Accent text treatment for poster theme */
 .neon-text {
-  background: linear-gradient(135deg, var(--neon-from), var(--neon-to));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
 }
 
 /* Card — bold/brutal style: sharp, 2px borders */
@@ -245,10 +130,18 @@ html[style*="--transition-speed"] *::after {
   border: 2px solid color-mix(in srgb, var(--fg) 15%, transparent);
   background: var(--bg-raised);
   transition: all 0.15s ease;
+  position: relative;
+  z-index: 0;
 }
 .card-bold:hover {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));
+  z-index: 2;
+}
+
+/* Same stacking as :hover — Tailwind z-* can lose to `.card-bold { z-index: 0 }` order */
+.card-bold.card-bold--elevated {
+  z-index: 2;
 }
 
 /* Oversized number treatment */
@@ -257,7 +150,7 @@ html[style*="--transition-speed"] *::after {
   font-weight: 700;
   line-height: 0.85;
   letter-spacing: -0.06em;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
 }
 
 /* Accent line divider */
@@ -266,15 +159,8 @@ html[style*="--transition-speed"] *::after {
   opacity: 0.15;
 }
 
-/* CTA glow on hover */
-@keyframes border-glow {
-  0% { box-shadow: 0 0 15px var(--accent-glow); }
-  50% { box-shadow: 0 0 25px color-mix(in srgb, var(--accent-alt) 30%, transparent); }
-  100% { box-shadow: 0 0 15px var(--accent-glow); }
-}
-
 .cta-glow:hover {
-  animation: border-glow 3s ease infinite;
+  box-shadow: none;
 }
 
 /* Hero overlay — adapts to dark/light themes */
@@ -286,26 +172,12 @@ html[style*="--transition-speed"] *::after {
   );
 }
 
-/* Hero photo — desaturate in light mode for better contrast */
-[data-mood="violet-light"] .hero-photo,
-[data-mood="ember-light"] .hero-photo,
-[data-mood="acid-light"] .hero-photo,
-[data-mood="arctic-light"] .hero-photo {
-  filter: grayscale(0.3) brightness(0.95);
-}
-
 /* Hero bottom fade — uses theme bg */
 .hero-bottom-fade {
   background: linear-gradient(to top, var(--bg), transparent);
 }
 
-/* SVG logo inversion — dark modes invert to white, light modes keep dark */
+/* SVG logo treatment for light poster background */
 .logo-svg {
-  filter: brightness(0) invert(1);
-}
-[data-mood="violet-light"] .logo-svg,
-[data-mood="ember-light"] .logo-svg,
-[data-mood="acid-light"] .logo-svg,
-[data-mood="arctic-light"] .logo-svg {
-  filter: brightness(0) invert(0);
+  filter: brightness(0);
 }

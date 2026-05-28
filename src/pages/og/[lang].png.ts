@@ -36,9 +36,9 @@ export const GET: APIRoute = async ({ params }) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '60px 70px',
-          background: 'linear-gradient(135deg, #050a05 0%, #0a150a 50%, #050a05 100%)',
+          background: '#ffffff',
           fontFamily: 'Inter',
-          color: '#c8d4c8',
+          color: '#000000',
         },
         children: [
           // Top bar
@@ -50,14 +50,14 @@ export const GET: APIRoute = async ({ params }) => {
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: 22, color: '#00FF41', letterSpacing: '0.15em' },
+                    style: { fontSize: 22, color: '#c53350', letterSpacing: '0.15em', fontWeight: 700 },
                     children: 'AI FOR ACCESS',
                   },
                 },
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: 18, color: '#6a8a6a' },
+                    style: { fontSize: 18, color: '#555555' },
                     children: 'Powercoders × Tech & Beyond',
                   },
                 },
@@ -77,8 +77,7 @@ export const GET: APIRoute = async ({ params }) => {
                       fontSize: 72,
                       fontWeight: 700,
                       lineHeight: 1.05,
-                      color: '#00FF41',
-                      textShadow: '0 0 30px rgba(0,255,65,0.3)',
+                      color: '#000000',
                     },
                     children: isDE
                       ? '10 Jahre.\n10 Stunden.\n10× Output.'
@@ -88,7 +87,7 @@ export const GET: APIRoute = async ({ params }) => {
                 {
                   type: 'div',
                   props: {
-                    style: { fontSize: 24, color: '#6a8a6a', maxWidth: '600px', lineHeight: 1.4 },
+                    style: { fontSize: 24, color: '#555555', maxWidth: '600px', lineHeight: 1.4 },
                     children: isDE
                       ? 'Du musst nicht coden können. Du musst ein Problem verstehen.'
                       : 'You don\'t need to code. You need to understand a problem.',
@@ -105,21 +104,21 @@ export const GET: APIRoute = async ({ params }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                borderTop: '1px solid rgba(0,255,65,0.2)',
+                borderTop: '1px solid rgba(0,0,0,0.1)',
                 paddingTop: '24px',
               },
               children: [
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: 20, color: '#D4A24C' },
+                    style: { fontSize: 20, color: '#c53350', fontWeight: 700 },
                     children: isDE ? '20.–21. November 2026' : 'November 20–21, 2026',
                   },
                 },
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: 18, color: '#6a8a6a' },
+                    style: { fontSize: 18, color: '#555555' },
                     children: 'Stadtkloster Frieden · Bern',
                   },
                 },
@@ -128,10 +127,11 @@ export const GET: APIRoute = async ({ params }) => {
                   props: {
                     style: {
                       fontSize: 16,
-                      color: '#050a05',
-                      background: '#00FF41',
+                      color: '#ffffff',
+                      background: '#c53350',
                       padding: '6px 16px',
                       borderRadius: '4px',
+                      fontWeight: 700,
                     },
                     children: isDE ? 'Nur 100 Plätze' : 'Only 100 spots',
                   },

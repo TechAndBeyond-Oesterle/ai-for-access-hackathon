@@ -10,10 +10,10 @@ const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { name, email, role } = body;
+    const { email } = body;
 
-    if (!name || !email) {
-      return new Response(JSON.stringify({ error: 'Name and email required' }), {
+    if (!email) {
+      return new Response(JSON.stringify({ error: 'Email required' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -29,9 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
         typecast: true,
         records: [{
           fields: {
-            Name: name,
             'E-Mail': email,
-            ...(role ? { Rolle: [role] } : {}),
             Status: '0 Waitlist',
             RegisteredAt: new Date().toISOString(),
           },
