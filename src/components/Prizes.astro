@@ -35,9 +35,30 @@ const criteria = [
       </span>
     </div>
 
-    <h2 class="font-display text-[clamp(2rem,8vw,5rem)] font-bold text-center tracking-[-0.03em] uppercase mb-16">
+    <h2 class="font-display text-[clamp(2rem,8vw,5rem)] font-bold text-center tracking-[-0.03em] uppercase mb-12">
       {t('prizes.headline')}
     </h2>
+
+    <!-- Prize pool — funding to keep building -->
+    <div
+      class="card-bold card-bold--elevated mx-auto max-w-2xl text-center p-8 sm:p-10 mb-16 border-accent!"
+      style="border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 6%, var(--bg-raised));"
+    >
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-muted block mb-3">
+        {t('prizes.pool.label')}
+      </span>
+      <div class="flex items-baseline justify-center gap-2">
+        <span class="text-sm sm:text-base font-mono uppercase tracking-widest text-muted">
+          {t('prizes.pool.upto')}
+        </span>
+        <span class="font-display font-bold tracking-[-0.02em] text-[clamp(2.5rem,10vw,4.5rem)] leading-none text-accent">
+          {t('prizes.pool.amount')}
+        </span>
+      </div>
+      <p class="text-sm sm:text-base text-muted mt-4 max-w-md mx-auto">
+        {t('prizes.pool.note')}
+      </p>
+    </div>
 
     <!-- Prize Cards — bold flat grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-16">

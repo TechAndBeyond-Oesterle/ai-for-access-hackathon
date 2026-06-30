@@ -15,6 +15,7 @@ const confirmedSponsors = [
     logo: '/images/logos/bfh.svg',
     url: 'https://www.bfh.ch',
     tier: 'challenge',
+    keepColor: true,
   },
   {
     name: 'Powercoders',
@@ -73,8 +74,8 @@ const tiers = [
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
-                    class:list={['max-w-full max-h-full object-contain', sponsor.logo.endsWith('.svg') ? 'logo-svg' : '']}
-                    style={sponsor.logo.endsWith('.svg') ? 'opacity: 0.7;' : 'opacity: 0.85;'}
+                    class:list={['max-w-full max-h-full object-contain', sponsor.logo.endsWith('.svg') && !sponsor.keepColor ? 'logo-svg' : '']}
+                    style={sponsor.keepColor ? 'opacity: 1;' : sponsor.logo.endsWith('.svg') ? 'opacity: 0.7;' : 'opacity: 0.85;'}
                     loading="lazy"
                   />
                 </a>
