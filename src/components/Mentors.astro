@@ -25,8 +25,12 @@ const t = useTranslations(lang);
       {t('mentors.headline')}
     </h2>
 
-    <p class="text-center text-muted mb-12 max-w-xl mx-auto">
+    <p class="text-center text-muted mb-6 max-w-xl mx-auto">
       {t('mentors.sub')}
+    </p>
+
+    <p class="text-center text-sm text-muted mb-12 max-w-2xl mx-auto leading-relaxed">
+      {t('mentors.why')}
     </p>
 
     <MentorForm client:load lang={lang} />
