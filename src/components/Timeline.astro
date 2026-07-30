@@ -11,23 +11,25 @@ const t = useTranslations(lang);
 
 const friday = [
   { time: t('timeline.fri.1.time'), title: t('timeline.fri.1.title'), desc: t('timeline.fri.1.desc'), highlight: false, dur: 0.5 },
-  { time: t('timeline.fri.2.time'), title: t('timeline.fri.2.title'), desc: t('timeline.fri.2.desc'), highlight: true, dur: 0.75 },
-  { time: t('timeline.fri.3.time'), title: t('timeline.fri.3.title'), desc: t('timeline.fri.3.desc'), highlight: true, dur: 1.25 },
-  { time: t('timeline.fri.4.time'), title: t('timeline.fri.4.title'), desc: t('timeline.fri.4.desc'), highlight: false, dur: 0.5 },
+  { time: t('timeline.fri.2.time'), title: t('timeline.fri.2.title'), desc: t('timeline.fri.2.desc'), highlight: true, dur: 0.5 },
+  { time: t('timeline.fri.3.time'), title: t('timeline.fri.3.title'), desc: t('timeline.fri.3.desc'), highlight: true, dur: 1 },
+  { time: t('timeline.fri.4.time'), title: t('timeline.fri.4.title'), desc: t('timeline.fri.4.desc'), highlight: false, dur: 1 },
   { time: t('timeline.fri.5.time'), title: t('timeline.fri.5.title'), desc: t('timeline.fri.5.desc'), highlight: false, dur: 0 },
 ];
 
 const saturday = [
   { time: t('timeline.sat.1.time'), title: t('timeline.sat.1.title'), desc: t('timeline.sat.1.desc'), highlight: false, dur: 0.5 },
-  { time: t('timeline.sat.2.time'), title: t('timeline.sat.2.title'), desc: t('timeline.sat.2.desc'), highlight: true, dur: 1 },
+  { time: t('timeline.sat.2.time'), title: t('timeline.sat.2.title'), desc: t('timeline.sat.2.desc'), highlight: true, dur: 0.5 },
   { time: t('timeline.sat.2b.time'), title: t('timeline.sat.2b.title'), desc: t('timeline.sat.2b.desc'), highlight: false, dur: 2 },
+  { time: t('timeline.sat.2c.time'), title: t('timeline.sat.2c.title'), desc: t('timeline.sat.2c.desc'), highlight: false, dur: 0.5 },
   { time: t('timeline.sat.3.time'), title: t('timeline.sat.3.title'), desc: t('timeline.sat.3.desc'), highlight: false, dur: 1.5 },
   { time: t('timeline.sat.3b.time'), title: t('timeline.sat.3b.title'), desc: t('timeline.sat.3b.desc'), highlight: true, dur: 1 },
-  { time: t('timeline.sat.4.time'), title: t('timeline.sat.4.title'), desc: t('timeline.sat.4.desc'), highlight: false, dur: 2 },
-  { time: t('timeline.sat.4b.time'), title: t('timeline.sat.4b.title'), desc: t('timeline.sat.4b.desc'), highlight: true, dur: 1.5 },
-  { time: t('timeline.sat.5.time'), title: t('timeline.sat.5.title'), desc: t('timeline.sat.5.desc'), highlight: true, dur: 0.5 },
-  { time: t('timeline.sat.6.time'), title: t('timeline.sat.6.title'), desc: t('timeline.sat.6.desc'), highlight: true, dur: 1.5 },
-  { time: t('timeline.sat.7.time'), title: t('timeline.sat.7.title'), desc: t('timeline.sat.7.desc'), highlight: true, dur: 1 },
+  { time: t('timeline.sat.4.time'), title: t('timeline.sat.4.title'), desc: t('timeline.sat.4.desc'), highlight: false, dur: 3 },
+  { time: t('timeline.sat.5.time'), title: t('timeline.sat.5.title'), desc: t('timeline.sat.5.desc'), highlight: true, dur: 0.75 },
+  { time: t('timeline.sat.5b.time'), title: t('timeline.sat.5b.title'), desc: t('timeline.sat.5b.desc'), highlight: false, dur: 0.25 },
+  { time: t('timeline.sat.6.time'), title: t('timeline.sat.6.title'), desc: t('timeline.sat.6.desc'), highlight: true, dur: 1.25 },
+  { time: t('timeline.sat.7.time'), title: t('timeline.sat.7.title'), desc: t('timeline.sat.7.desc'), highlight: true, dur: 0.75 },
+  { time: t('timeline.sat.8.time'), title: t('timeline.sat.8.title'), desc: t('timeline.sat.8.desc'), highlight: false, dur: 0 },
 ];
 
 const friLabel = t('timeline.friday');
@@ -53,6 +55,12 @@ const satLabel = t('timeline.saturday');
 
       <!-- Friday sidebar -->
       <div class="border-2 p-6 lg:border-r-0" style="border-color: color-mix(in srgb, var(--fg) 15%, transparent);">
+        <!-- Pre-event note -->
+        <div class="mb-6 p-3" style="border: 1px dashed color-mix(in srgb, var(--accent) 60%, transparent);">
+          <span class="text-[10px] font-mono uppercase tracking-[0.25em] text-accent">{t('timeline.preevent.label')}</span>
+          <p class="text-sm font-bold uppercase tracking-wide mt-1">{t('timeline.preevent.title')}</p>
+          <p class="text-xs mt-0.5 text-muted">{t('timeline.preevent.desc')}</p>
+        </div>
         <h3 class="text-xs font-mono uppercase tracking-[0.3em] mb-6 text-muted">{friLabel}</h3>
         {friday.map((item) => (
           <div class="flex items-baseline gap-3 py-3" style="border-bottom: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);">
