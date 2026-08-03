@@ -11,10 +11,17 @@ const t = useTranslations(lang);
 
 const confirmedSponsors = [
   {
+    name: 'TCS',
+    logo: '/images/logos/tcs.png',
+    url: 'https://www.tcs.ch',
+    tier: 'catering',
+    keepColor: true,
+  },
+  {
     name: 'BFH',
     logo: '/images/logos/bfh.svg',
     url: 'https://www.bfh.ch',
-    tier: 'challenge',
+    tier: 'location',
     keepColor: true,
   },
   {
@@ -29,14 +36,47 @@ const confirmedSponsors = [
     url: 'https://jonasoesterle.de/tech',
     tier: 'community',
   },
+  {
+    name: 'Lovable',
+    logo: '/images/logos/lovable.svg',
+    url: 'https://lovable.dev',
+    tier: 'ai',
+    keepColor: true,
+  },
+  {
+    name: 'Upgrid',
+    logo: '/images/logos/upgrid.png',
+    url: 'https://upgrid.ch/de',
+    tier: 'micro',
+    keepColor: true,
+    bg: '#000',
+  },
 ];
 
+// Box size, label size and open-slot count scale down the further a tier sits from the top.
+const scales = {
+  large: {
+    box: 'w-40 h-20 sm:w-48 sm:h-24 p-3 border-2',
+    label: 'text-sm font-mono tracking-[0.2em] uppercase text-center mb-5',
+  },
+  medium: {
+    box: 'w-28 h-14 sm:w-36 sm:h-16 p-2 border-2',
+    label: 'text-xs font-mono tracking-[0.2em] uppercase text-muted text-center mb-5',
+  },
+  small: {
+    box: 'w-20 h-10 sm:w-24 sm:h-12 p-1.5 border',
+    label: 'text-[10px] font-mono tracking-[0.15em] uppercase text-muted/60 text-center mb-4',
+  },
+} as const;
+
 const tiers = [
-  { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2 },
-  { key: 'gold', name: t('sponsors.tier.gold'), openSlots: 3 },
-  { key: 'silver', name: t('sponsors.tier.silver'), openSlots: 4 },
-  { key: 'tool', name: t('sponsors.tier.tool'), openSlots: 3 },
-  { key: 'community', name: t('sponsors.tier.community'), openSlots: 2 },
+  { key: 'main', name: t('sponsors.tier.main'), openSlots: 1, scale: 'large' as const },
+  { key: 'catering', name: t('sponsors.tier.catering'), openSlots: 0, scale: 'large' as const },
+  { key: 'location', name: t('sponsors.tier.location'), openSlots: 0, scale: 'large' as const },
+  { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 2, scale: 'medium' as const },
+  { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2, scale: 'medium' as const },
+  { key: 'community', name: t('sponsors.tier.community'), openSlots: 1, scale: 'medium' as const },
+  { key: 'micro', name: t('sponsors.tier.micro'), openSlots: 3, scale: 'small' as const },
 ];
 ---
 
@@ -54,21 +94,22 @@ const tiers = [
       {t('sponsors.headline')}
     </h2>
 
-    <!-- Sponsor tiers -->
+    <!-- Sponsor tiers, ordered by prominence -->
     <div class="space-y-10">
       {tiers.map((tier) => {
         const tierSponsors = confirmedSponsors.filter(s => s.tier === tier.key);
+        const { box, label } = scales[tier.scale];
         return (
           <div>
-            <h3 class="text-xs font-mono tracking-[0.2em] uppercase text-muted text-center mb-5">{tier.name}</h3>
+            <h3 class={label}>{tier.name}</h3>
             <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
               {tierSponsors.map((sponsor) => (
                 <a
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center justify-center border-2 transition-all duration-150 hover:border-[var(--accent)] w-28 h-14 sm:w-36 sm:h-16 p-2"
-                  style="border-color: color-mix(in srgb, var(--fg) 15%, transparent); background: var(--bg-raised);"
+                  class:list={['flex items-center justify-center transition-all duration-150 hover:border-[var(--accent)]', box]}
+                  style={`border-color: color-mix(in srgb, var(--fg) 15%, transparent); background: ${sponsor.bg ?? 'var(--bg-raised)'};`}
                   title={sponsor.name}
                 >
                   <img
@@ -82,7 +123,7 @@ const tiers = [
               ))}
               {Array.from({ length: tier.openSlots }).map(() => (
                 <div
-                  class="flex items-center justify-center border-2 border-dashed w-28 h-14 sm:w-36 sm:h-16"
+                  class:list={['flex items-center justify-center border-dashed', box]}
                   style="border-color: color-mix(in srgb, var(--fg) 10%, transparent);"
                 >
                   <span class="text-[10px] font-mono text-muted/30 tracking-wider uppercase">

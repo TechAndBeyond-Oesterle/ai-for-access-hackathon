@@ -9,6 +9,7 @@ import Challenges from '../../components/Challenges.astro';
 import InlineCta from '../../components/InlineCta.astro';
 import Audience from '../../components/Audience.astro';
 import Prizes from '../../components/Prizes.astro';
+import Sponsors from '../../components/Sponsors.astro';
 import Location from '../../components/Location.astro';
 import SignupForm from '../../components/SignupForm';
 import Faq from '../../components/Faq.astro';
@@ -49,51 +50,29 @@ const t = useTranslations(lang);
 
     <Prizes lang={lang} />
 
-    <!-- Compact Hosts & Sponsors teaser -->
+    <!-- Hosts teaser -->
     <section class="relative py-16 sm:py-20">
       <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
       <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Hosts teaser -->
-          <a href={`/${lang}/about/`}
-            class="group card-bold p-8 -mt-[2px]"
-          >
-            <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent block mb-3">
-              {t('hosts.label')}
-            </span>
-            <h3 class="font-display text-xl sm:text-2xl font-bold mb-2">
-              {t('hosts.headline')}
-            </h3>
-            <p class="text-sm text-muted mb-4">
-              {t('hosts.teaser')}
-            </p>
-            <span class="inline-flex items-center gap-2 text-sm font-medium text-accent group-hover:underline underline-offset-4">
-              {t('hosts.cta')}
-              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </span>
-          </a>
-
-          <!-- Sponsors teaser -->
-          <a href={`/${lang}/sponsors/`}
-            class="group card-bold p-8 -mt-[2px] -ml-[2px]"
-          >
-            <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent-alt block mb-3">
-              {t('sponsors.label')}
-            </span>
-            <h3 class="font-display text-xl sm:text-2xl font-bold mb-2">
-              {t('sponsors.headline')}
-            </h3>
-            <p class="text-sm text-muted mb-4">
-              {t('sponsors.teaser')}
-            </p>
-            <span class="inline-flex items-center gap-2 text-sm font-medium text-accent-alt group-hover:underline underline-offset-4">
-              {t('sponsors.cta')}
-              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </span>
-          </a>
-        </div>
+        <a href={`/${lang}/about/`} class="group card-bold p-8 block">
+          <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent block mb-3">
+            {t('hosts.label')}
+          </span>
+          <h3 class="font-display text-xl sm:text-2xl font-bold mb-2">
+            {t('hosts.headline')}
+          </h3>
+          <p class="text-sm text-muted mb-4">
+            {t('hosts.teaser')}
+          </p>
+          <span class="inline-flex items-center gap-2 text-sm font-medium text-accent group-hover:underline underline-offset-4">
+            {t('hosts.cta')}
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </span>
+        </a>
       </div>
     </section>
+
+    <Sponsors lang={lang} />
 
     <Location lang={lang} />
 

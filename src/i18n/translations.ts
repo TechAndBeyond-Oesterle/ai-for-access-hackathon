@@ -167,11 +167,13 @@ export const translations = {
     'sponsors.label': 'Partner & Sponsoren',
     'sponsors.headline': 'Gemeinsam mehr erreichen.',
     'sponsors.cta': 'Sponsor werden',
-    'sponsors.tier.challenge': 'Challenge-Partner',
-    'sponsors.tier.gold': 'Gold',
-    'sponsors.tier.silver': 'Silber',
-    'sponsors.tier.tool': 'Tool-Partner',
+    'sponsors.tier.main': 'Hauptsponsor',
+    'sponsors.tier.catering': 'Catering-Sponsor',
+    'sponsors.tier.location': 'Location-Sponsor',
+    'sponsors.tier.ai': 'AI-Sponsoren',
+    'sponsors.tier.challenge': 'Challenge-Sponsoren',
     'sponsors.tier.community': 'Community',
+    'sponsors.tier.micro': 'Mikro-Sponsoren',
 
     // Location
     'location.label': 'Location',
@@ -291,8 +293,6 @@ export const translations = {
     'hosts.teaser': 'Zwei Organisationen, eine Mission: Zugänge schaffen.',
     'hosts.cta': 'Mehr erfahren',
 
-    // Sponsors teaser (index page)
-    'sponsors.teaser': 'Challenge-Partner, Tool-Partner und Community-Supporter gesucht.',
     'sponsors.slot.open': 'Frei',
 
     // Location venue note
@@ -480,11 +480,13 @@ export const translations = {
     'sponsors.label': 'Partners & Sponsors',
     'sponsors.headline': 'Achieve more together.',
     'sponsors.cta': 'Become a Sponsor',
-    'sponsors.tier.challenge': 'Challenge Partner',
-    'sponsors.tier.gold': 'Gold',
-    'sponsors.tier.silver': 'Silver',
-    'sponsors.tier.tool': 'Tool Partner',
+    'sponsors.tier.main': 'Main Sponsor',
+    'sponsors.tier.catering': 'Catering Sponsor',
+    'sponsors.tier.location': 'Location Sponsor',
+    'sponsors.tier.ai': 'AI Sponsors',
+    'sponsors.tier.challenge': 'Challenge Sponsors',
     'sponsors.tier.community': 'Community',
+    'sponsors.tier.micro': 'Micro Sponsors',
 
     // Location
     'location.label': 'Location',
@@ -604,8 +606,6 @@ export const translations = {
     'hosts.teaser': 'Two organizations, one mission: creating access.',
     'hosts.cta': 'Learn more',
 
-    // Sponsors teaser (index page)
-    'sponsors.teaser': 'Looking for challenge partners, tool partners, and community supporters.',
     'sponsors.slot.open': 'Open',
 
     // Location venue note
