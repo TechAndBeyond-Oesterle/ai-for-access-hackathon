@@ -108,7 +108,10 @@ export default function ChallengeForm({ lang }: Props) {
         >
           {t('challenges.form.success')}
         </p>
-        <p className="text-sm mb-4" style={{ color: 'var(--fg-muted)' }}>
+        <p className="text-sm mb-3 max-w-md mx-auto leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
+          {t('challenges.form.donate.pitch')}
+        </p>
+        <p className="text-sm mb-4 font-medium" style={{ color: 'var(--fg)' }}>
           {t('challenges.form.donate.hint')}
         </p>
         <a

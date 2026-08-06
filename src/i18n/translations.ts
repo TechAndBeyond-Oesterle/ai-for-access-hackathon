@@ -172,8 +172,10 @@ export const translations = {
     "challenges.form.category.other": "Sonstiges",
     "challenges.form.submit": "Einreichen",
     "challenges.form.success": "Danke! Wir melden uns nach der Prüfung eurer Challenge.",
+    "challenges.form.donate.pitch":
+      "Wir organisieren diesen Hackathon praktisch vollständig ehrenamtlich. Vergesst dabei nicht: Am Ende erhaltet ihr echten Code und kreative Lösungsansätze für eure Challenge — erarbeitet von engagierten Teams, die dafür ihre Zeit und ihr Können schenken. Das hat einen Wert, der weit über eine übliche Auftragsarbeit hinausgeht.",
     "challenges.form.donate.hint":
-      "Möchtet ihr den Hackathon zusätzlich unterstützen?",
+      "Wir würden uns wirklich sehr freuen, wenn ihr uns mit einer Spende unterstützt — jeder Beitrag hilft uns enorm weiter.",
     "challenges.form.donate.cta": "Jetzt spenden",
     "challenges.form.error.title": "Titel ist erforderlich",
     "challenges.form.error.context": "Kontext ist erforderlich",
@@ -576,7 +578,10 @@ export const translations = {
     "challenges.form.category.other": "Other",
     "challenges.form.submit": "Submit",
     "challenges.form.success": "Thanks! We'll be in touch after reviewing your challenge.",
-    "challenges.form.donate.hint": "Want to support the hackathon too?",
+    "challenges.form.donate.pitch":
+      "We organise this hackathon almost entirely on a volunteer basis. Don't forget: in the end you'll get real code and creative solution ideas for your challenge — built by dedicated teams who donate their time and skills. That's worth far more than a typical contract project.",
+    "challenges.form.donate.hint":
+      "We'd genuinely be thrilled if you could support us with a donation — every contribution helps us a lot.",
     "challenges.form.donate.cta": "Donate now",
     "challenges.form.error.title": "Title is required",
     "challenges.form.error.context": "Context is required",
