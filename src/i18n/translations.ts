@@ -170,7 +170,7 @@ export const translations = {
     "challenges.form.submit": "Einreichen",
     "challenges.form.success": "Danke! Wir melden uns nach der Prüfung eurer Challenge.",
     "challenges.form.donate.pitch":
-      "Wir organisieren diesen Hackathon praktisch vollständig ehrenamtlich. Am Ende erhaltet ihr echten Code und kreative Lösungsansätze für eure Challenge — erarbeitet von engagierten Teams, die dafür ihre Zeit und ihr Können schenken. Das hat einen Wert, der weit über eine übliche Auftragsarbeit hinausgeht.",
+      "Wir organisieren diesen Hackathon praktisch vollständig ehrenamtlich. Am Ende erhaltet ihr echten Code und kreative Lösungsansätze für eure Challenge — erarbeitet von engagierten Teams, die dafür ihre Zeit und ihr Können schenken. Eine Spende hilft uns, auch in Zukunft solche Events auf die Beine zu stellen.",
     "challenges.form.donate.hint":
       "Wir würden uns wirklich sehr freuen, wenn ihr uns mit einer Spende unterstützt — jeder Beitrag hilft uns enorm weiter.",
     "challenges.form.donate.cta": "Jetzt spenden",
@@ -573,7 +573,7 @@ export const translations = {
     "challenges.form.submit": "Submit",
     "challenges.form.success": "Thanks! We'll be in touch after reviewing your challenge.",
     "challenges.form.donate.pitch":
-      "We organise this hackathon almost entirely on a volunteer basis. In the end, you'll get real code and creative solution ideas for your challenge — built by dedicated teams who donate their time and skills. That's worth far more than a typical contract project.",
+      "We organise this hackathon almost entirely on a volunteer basis. In the end, you'll get real code and creative solution ideas for your challenge — built by dedicated teams who donate their time and skills. A donation helps us keep organising events like this in the future.",
     "challenges.form.donate.hint":
       "We'd genuinely be thrilled if you could support us with a donation — every contribution helps us a lot.",
     "challenges.form.donate.cta": "Donate now",
