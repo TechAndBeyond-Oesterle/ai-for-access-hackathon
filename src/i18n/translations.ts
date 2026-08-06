@@ -70,11 +70,8 @@ export const translations = {
     "timeline.sat.1.desc": "Setup, ankommen",
     "timeline.sat.2.time": "09:30",
     "timeline.sat.2.title": "Hack-Start",
-    "timeline.sat.2.desc": "10-Stunden-Countdown beginnt",
-    "timeline.sat.2b.time": "09:45",
-    "timeline.sat.2b.title": "Keynotes & Lightning Talks (optional)",
-    "timeline.sat.2b.desc":
-      "Bis 10:30 im Extra-Raum — AI & Vibe Coding, MVP-Denken. Teams können sofort losbauen.",
+    "timeline.sat.2.desc":
+      "10-Stunden-Countdown beginnt — Crashkurs-Videos (AI & Vibe Coding, MVP-Denken) jederzeit on demand",
     "timeline.sat.2c.time": "12:00",
     "timeline.sat.2c.title": "Mentor Check-in",
     "timeline.sat.2c.desc": "Kurze Standortbestimmung pro Team",
@@ -479,11 +476,8 @@ export const translations = {
     "timeline.sat.1.desc": "Setup, arrive",
     "timeline.sat.2.time": "09:30",
     "timeline.sat.2.title": "Hack Start",
-    "timeline.sat.2.desc": "10-hour countdown begins",
-    "timeline.sat.2b.time": "09:45",
-    "timeline.sat.2b.title": "Keynotes & Lightning Talks (optional)",
-    "timeline.sat.2b.desc":
-      "Until 10:30 in a separate room — AI & vibe coding, MVP thinking. Teams can start building right away.",
+    "timeline.sat.2.desc":
+      "10-hour countdown begins — crash-course videos (AI & vibe coding, MVP thinking) available on demand anytime",
     "timeline.sat.2c.time": "12:00",
     "timeline.sat.2c.title": "Mentor Check-in",
     "timeline.sat.2c.desc": "Brief status check per team",
