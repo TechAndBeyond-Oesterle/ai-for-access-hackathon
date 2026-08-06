@@ -56,6 +56,17 @@ const examples = [
       ))}
     </div>
 
+    <!-- Upload Challenge CTA -->
+    <div class="mb-16 text-center">
+      <a
+        href={`/${lang}/challenges/submit`}
+        class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-accent hover:underline underline-offset-4 transition-all"
+      >
+        {t('challenges.upload.cta')}
+        <span>&rarr;</span>
+      </a>
+    </div>
+
     <!-- Example challenges — stark grid -->
     <div class="mb-8 flex items-center gap-4">
       <span class="text-xs font-mono tracking-[0.3em] uppercase text-muted">{t('challenges.examples')}</span>

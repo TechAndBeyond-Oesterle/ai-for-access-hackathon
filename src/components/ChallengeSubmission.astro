@@ -1,0 +1,34 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+import ChallengeForm from './ChallengeForm';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="challenge-submission" class="relative py-24 sm:py-32">
+  <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
+
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-4">
+      <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+        {t('challenges.form.label')}
+      </span>
+    </div>
+
+    <h2 class="font-display text-[clamp(2rem,8vw,4rem)] font-bold text-center tracking-[-0.03em] uppercase mb-4">
+      {t('challenges.form.headline')}
+    </h2>
+
+    <p class="text-center text-muted mb-12 max-w-xl mx-auto">
+      {t('challenges.form.sub')}
+    </p>
+
+    <ChallengeForm client:load lang={lang} />
+  </div>
+</section>

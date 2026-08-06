@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import ChallengeSubmission from '../../../components/ChallengeSubmission.astro';
+import Footer from '../../../components/Footer.astro';
+import type { Lang } from '../../../i18n/translations';
+import { useTranslations } from '../../../i18n/utils';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'de' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const t = useTranslations(lang);
+const title = lang === 'de' ? 'Challenge einreichen — AI for Access' : 'Submit a Challenge — AI for Access';
+---
+
+<BaseLayout title={title}>
+  <Header lang={lang} />
+  <main class="pt-24">
+    <ChallengeSubmission lang={lang} />
+
+    <div class="text-center pb-16">
+      <a href={`/${lang}/`}
+        class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline underline-offset-4"
+      >
+        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        {t('nav.back')}
+      </a>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
