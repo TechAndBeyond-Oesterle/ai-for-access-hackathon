@@ -37,6 +37,36 @@ const confirmedSponsors = [
     tier: 'community',
   },
   {
+    name: 'antigravity',
+    logo: '/images/logos/antigravity.svg',
+    url: 'https://antigravity.ch',
+    tier: 'community',
+  },
+  {
+    name: 'dreipol',
+    logo: '/images/logos/dreipol.svg',
+    url: 'https://dreipol.ch',
+    tier: 'community',
+  },
+  {
+    name: 'CrowdStrike',
+    logo: '/images/logos/crowdstrike.svg',
+    url: 'https://www.crowdstrike.com',
+    tier: 'community',
+  },
+  {
+    name: 'elio tax',
+    logo: '/images/logos/elio-tax.png',
+    url: 'https://www.elio-tax.com/en/',
+    tier: 'community',
+  },
+  {
+    name: 'EBP',
+    logo: '/images/logos/ebp.png',
+    url: 'https://www.ebp.global/ch-de',
+    tier: 'community',
+  },
+  {
     name: 'Lovable',
     logo: '/images/logos/lovable.svg',
     url: 'https://lovable.dev',
@@ -67,6 +97,10 @@ const scales = {
     box: 'w-20 h-10 sm:w-24 sm:h-12 p-1.5 border',
     label: 'text-[10px] font-mono tracking-[0.15em] uppercase text-muted/60 text-center mb-4',
   },
+  tiny: {
+    box: 'w-16 h-8 sm:w-20 sm:h-10 p-1 border',
+    label: 'text-[10px] font-mono tracking-[0.15em] uppercase text-muted/50 text-center mb-4',
+  },
 } as const;
 
 const tiers = [
@@ -75,8 +109,8 @@ const tiers = [
   { key: 'location', name: t('sponsors.tier.location'), openSlots: 0, scale: 'large' as const },
   { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 2, scale: 'medium' as const },
   { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2, scale: 'medium' as const },
-  { key: 'community', name: t('sponsors.tier.community'), openSlots: 1, scale: 'medium' as const },
   { key: 'micro', name: t('sponsors.tier.micro'), openSlots: 3, scale: 'small' as const },
+  { key: 'community', name: t('sponsors.tier.community'), openSlots: 1, scale: 'tiny' as const },
 ];
 ---
 
