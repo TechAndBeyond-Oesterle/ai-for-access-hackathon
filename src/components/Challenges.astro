@@ -60,10 +60,11 @@ const examples = [
     <div class="mb-16 text-center">
       <a
         href={`/${lang}/challenges/submit`}
-        class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-accent hover:underline underline-offset-4 transition-all"
+        class="group inline-flex items-center gap-3 px-8 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-200 cta-glow"
+        style="background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, var(--accent-alt))); color: #fff;"
       >
         {t('challenges.upload.cta')}
-        <span>&rarr;</span>
+        <span class="transition-transform group-hover:translate-x-2">&rarr;</span>
       </a>
     </div>
 
