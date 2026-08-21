@@ -140,6 +140,10 @@ export const translations = {
     "challenges.form.headline": "Reicht eure Challenge ein.",
     "challenges.form.sub":
       "Kostenlos für Unternehmen. Wir melden uns nach der Prüfung bei euch.",
+    "challenges.form.examples.label": "Noch unsicher, wie eine Challenge aussieht? Beispiel laden:",
+    "challenges.form.examples.blocked":
+      "Das ist ein Beispiel — die Felder sind gesperrt und können nicht eingereicht werden.",
+    "challenges.form.examples.back": "← Eigenes Formular ausfüllen",
     "challenges.form.title": "Titel",
     "challenges.form.teaser": "Teaser (optional)",
     "challenges.form.teaser.hint":
@@ -543,6 +547,10 @@ export const translations = {
     "challenges.form.headline": "Submit your challenge.",
     "challenges.form.sub":
       "Free for companies. We'll get back to you after reviewing it.",
+    "challenges.form.examples.label": "Not sure what a challenge looks like? Load an example:",
+    "challenges.form.examples.blocked":
+      "This is an example — fields are locked and it can't be submitted.",
+    "challenges.form.examples.back": "← Fill out your own form",
     "challenges.form.title": "Title",
     "challenges.form.teaser": "Teaser (optional)",
     "challenges.form.teaser.hint":
