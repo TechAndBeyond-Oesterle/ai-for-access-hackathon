@@ -64,7 +64,7 @@ const confirmedSponsors = [
     name: 'EBP',
     logo: '/images/logos/ebp.png',
     url: 'https://www.ebp.global/ch-de',
-    tier: 'community',
+    tier: 'micro',
   },
   {
     name: 'Capacity',
@@ -83,7 +83,7 @@ const confirmedSponsors = [
     name: 'Upgrid',
     logo: '/images/logos/upgrid.png',
     url: 'https://upgrid.ch/de',
-    tier: 'micro',
+    tier: 'community',
     keepColor: true,
     bg: '#000',
   },
@@ -111,8 +111,6 @@ const scales = {
 
 const tiers = [
   { key: 'main', name: t('sponsors.tier.main'), openSlots: 1, scale: 'large' as const },
-  { key: 'catering', name: t('sponsors.tier.catering'), openSlots: 0, scale: 'large' as const },
-  { key: 'location', name: t('sponsors.tier.location'), openSlots: 0, scale: 'large' as const },
   { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 2, scale: 'medium' as const },
   { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2, scale: 'medium' as const },
   { key: 'micro', name: t('sponsors.tier.micro'), openSlots: 3, scale: 'small' as const },
