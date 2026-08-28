@@ -80,6 +80,13 @@ const confirmedSponsors = [
     keepColor: true,
   },
   {
+    name: 'Bloom',
+    logo: '/images/logos/bloom.webp',
+    url: 'https://bloom.diy',
+    tier: 'ai',
+    keepColor: true,
+  },
+  {
     name: 'Upgrid',
     logo: '/images/logos/upgrid.png',
     url: 'https://upgrid.ch/de',
@@ -111,7 +118,7 @@ const scales = {
 
 const tiers = [
   { key: 'main', name: t('sponsors.tier.main'), openSlots: 1, scale: 'large' as const },
-  { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 2, scale: 'medium' as const },
+  { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 1, scale: 'medium' as const },
   { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2, scale: 'medium' as const },
   { key: 'micro', name: t('sponsors.tier.micro'), openSlots: 3, scale: 'small' as const },
   { key: 'community', name: t('sponsors.tier.community'), openSlots: 1, scale: 'tiny' as const },
