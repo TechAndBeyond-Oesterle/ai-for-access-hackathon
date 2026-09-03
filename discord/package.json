@@ -1,0 +1,31 @@
+{
+  "name": "ai-for-access-discord-setup",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Idempotentes Setup-Skript für den AI for Access Hackathon Discord-Server",
+  "scripts": {
+    "dry": "node setup.mjs --dry-run",
+    "setup": "node setup.mjs",
+    "bot": "node bot.mjs",
+    "bot:sweep:dry": "node bot.mjs --sweep --dry-run",
+    "bot:sweep": "node bot.mjs --sweep",
+    "test": "node --test",
+    "events:dry": "node events.mjs --dry-run",
+    "events": "node events.mjs",
+    "events:demo": "node events.mjs --demo",
+    "upgrade": "node community-upgrade.mjs",
+    "seed:dry": "node seed.mjs --dry-run",
+    "seed": "node seed.mjs",
+    "seed:refresh": "node seed.mjs --refresh",
+    "seed:teams": "node seed-teams.mjs",
+    "avatar": "node bot-avatar.mjs"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
+  },
+  "optionalDependencies": {
+    "sharp": "^0.35.3"
+  }
+}

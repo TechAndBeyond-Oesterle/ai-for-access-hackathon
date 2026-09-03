@@ -1,0 +1,11 @@
+node_modules
+.env
+*.test.mjs
+setup.mjs
+seed.mjs
+seed-teams.mjs
+events.mjs
+community-upgrade.mjs
+bot-avatar.mjs
+README.md
+DEPLOY.md

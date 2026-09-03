@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Access — Discord-Spike &amp; Server-Blueprint</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --ink:#e6edf3; --muted:#9aa7b4;
+    --line:#2a323d; --accent:#7c5cff; --accent2:#22d3ee; --good:#2ea043; --warn:#d29922; --bad:#f85149;
+    --chip:#232b36;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0b0f14,#0d1117 240px);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:40px 24px 96px}
+  header.hero{border:1px solid var(--line);border-radius:18px;padding:30px 32px;
+    background:radial-gradient(120% 140% at 0% 0%,rgba(124,92,255,.18),transparent 55%),
+               radial-gradient(120% 140% at 100% 0%,rgba(34,211,238,.14),transparent 55%),var(--panel)}
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--accent2);font-weight:600}
+  h1{margin:.3em 0 .15em;font-size:30px;line-height:1.15}
+  .sub{color:var(--muted);font-size:15px;max-width:70ch}
+  .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+  .pill{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--muted)}
+  h2{margin:52px 0 4px;font-size:21px;display:flex;align-items:center;gap:10px}
+  h2 .n{font-size:13px;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:1px 8px;font-weight:700}
+  h3{margin:26px 0 8px;font-size:16px;color:#cdd7e2}
+  p{color:#d3dbe4}
+  .lead{color:var(--muted)}
+  section{scroll-margin-top:20px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:#c8d2dd;font-weight:600}
+  td .m{color:var(--muted);font-size:12.5px}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .b-good{background:rgba(46,160,67,.16);color:#4ac26b;border:1px solid rgba(46,160,67,.4)}
+  .b-warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.4)}
+  .b-bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.4)}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--panel)}
+  .card h4{margin:0 0 6px;font-size:14px}
+  .card.good{border-left:3px solid var(--good)}
+  .card.bad{border-left:3px solid var(--bad)}
+  ul{margin:8px 0;padding-left:20px}
+  li{margin:4px 0;color:#d3dbe4}
+  code{background:#0b0f14;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12.5px;color:#a5d6ff}
+  .tree{background:#0b0f14;border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+    font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8d2dd;overflow-x:auto}
+  .tree .cat{color:var(--accent2);font-weight:600}
+  .tree .lock{color:var(--warn)}
+  .tree .c{color:var(--muted)}
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel2);
+    border-radius:10px;padding:14px 18px;margin:16px 0}
+  .callout.risk{border-left-color:var(--bad)}
+  .callout.todo{border-left-color:var(--accent2)}
+  .callout strong{color:#fff}
+  .steps{counter-reset:s;list-style:none;padding:0}
+  .steps li{position:relative;padding:10px 0 10px 40px;border-bottom:1px dashed var(--line)}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;
+    width:26px;height:26px;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;
+    display:flex;align-items:center;justify-content:center;font-size:13px}
+  .kbd{font:12px ui-monospace,monospace;background:#0b0f14;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px}
+  footer{margin-top:60px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  a{color:var(--accent2)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Spike &amp; Server-Blueprint · intern</div>
+  <h1>AI for Access — kann Discord den ganzen Hackathon tragen?</h1>
+  <p class="sub">Prüfung, ob sich <strong>alle</strong> Abläufe des Events (Anmeldung → Teamfindung → Hack-Phase → Mentoring → Einreichung → Jury → Awards → Nachgang) sauber in einem Discord-Server abbilden lassen — inkl. Server-Struktur, Rollen/Rechte und Plan für ein automatisches Setup-Skript.</p>
+  <div class="meta">
+    <span class="pill">Projekt: HCK · P003</span>
+    <span class="pill">Event: 20.–21. Nov 2026 · Stadtkloster Frieden, Bern</span>
+    <span class="pill">~100 Teilnehmende</span>
+    <span class="pill">Powercoders × Tech &amp; Beyond</span>
+    <span class="pill">Fr-Abend Warm-up + Sa 10h Hack</span>
+    <span class="pill">Basis: Live-Website + Meeting 10.07.</span>
+    <span class="pill">Stand: 2026-07-28</span>
+  </div>
+</header>
+
+<!-- 0 -->
+<section>
+<h2><span class="n">TL;DR</span> Kurzurteil</h2>
+<p class="lead">Discord kann <strong>den operativen Kern</strong> des Events sehr gut abbilden — Kommunikation, Teamfindung, Team-Räume, Mentoring, Live-Programm, Ansagen. Drei Dinge braucht es <em>zusätzlich</em> und die sind wichtig:</p>
+<div class="cards">
+  <div class="card good">
+    <h4>✅ Discord trägt gut</h4>
+    <ul>
+      <li>Ansagen, Zeitplan, FAQ, Tool-Ressourcen (read-only Info-Hub)</li>
+      <li>Teamfindung als <strong>Forum</strong> (1 Post pro Idee/Challenge, Threads)</li>
+      <li>Private Team-Räume (Text + Voice) — automatisch per Skript/Bot</li>
+      <li>Mentoring-Queue + Mentor-Voice-Räume</li>
+      <li>Keynote/Pitches via <strong>Stage-Channel</strong> + Discord-Events als Timeline</li>
+      <li>Publikumspreis via native <strong>Polls</strong></li>
+    </ul>
+  </div>
+  <div class="card bad">
+    <h4>⚠️ Braucht ein externes Tool / Sonderlösung</h4>
+    <ul>
+      <li><strong>Anmeldung/PII</strong> bleibt in Airtable (revDSG, keine Mailadressen in Discord duplizieren)</li>
+      <li><strong>Jury-Scoring</strong> über 5 Kriterien → Google Sheet / Formular, Discord nur Koordination</li>
+      <li><strong>Pitch-Videos (≤2 min)</strong>: Discords Upload-Limit zu klein → extern hosten (YouTube/Drive) + Link posten</li>
+      <li><strong>Zielgruppe Newcomer &amp; Non-Coder</strong>: Discord-Hürde real → geführtes Onboarding + Vor-Ort-Hilfe nötig (siehe Risiken)</li>
+    </ul>
+  </div>
+</div>
+<p class="lead" style="margin-top:14px"><strong>Fazit:</strong> Discord als <em>Live-Nervensystem</em> des Events — ja. Aber nicht als Anmelde- oder Bewertungssystem. Die Empfehlung ist ein <strong>hybrides</strong> Setup: Discord (Kommunikation/Räume) + Airtable (Anmeldung) + Sheet (Scoring).</p>
+</section>
+
+<!-- 1 -->
+<section>
+<h2><span class="n">1</span> Ablauf → Discord-Mapping <span class="legend"><span class="badge b-good">geht nativ</span><span class="badge b-warn">geht mit Bot/Workaround</span><span class="badge b-bad">braucht externes Tool</span></span></h2>
+<p class="lead">Jeder Ablauf aus dem März-Konzept, gegen einen konkreten Discord-Mechanismus geprüft.</p>
+<table>
+<thead><tr><th style="width:20%">Ablauf</th><th style="width:34%">Discord-Mechanismus</th><th style="width:12%">Urteil</th><th>Anmerkung / Lücke</th></tr></thead>
+<tbody>
+  <tr><td><strong>Vor-Event: Anmeldung</strong></td><td>Landingpage → Airtable (bestehend). Discord-Invite erst <em>nach</em> Anmeldung.</td><td><span class="badge b-bad">extern</span></td><td>PII bleibt in Airtable. Discord bekommt keine Rohdaten. Optional: Verify-Bot, der Mail gegen Airtable prüft.</td></tr>
+  <tr><td><strong>Onboarding / Beitritt</strong></td><td>Discord <strong>Onboarding</strong> + Rules-Screening + Reaction-Roles (Rolle wählen: Dev/Design/Domain/Newcomer)</td><td><span class="badge b-warn">Bot</span></td><td>Nativ vorhanden. Sprach- &amp; Tech-Hürde für Newcomer beachten → geführt.</td></tr>
+  <tr><td><strong>Ankündigungen / Zeitplan / FAQ</strong></td><td>Read-only Info-Kategorie, <strong>Announcement-Channels</strong>, gepinnte Posts, Discord-<strong>Events</strong> für Fr/Sa-Timeline</td><td><span class="badge b-good">nativ</span></td><td>Events erzeugen automatische Reminder — ideal für den 10-h-Ablauf.</td></tr>
+  <tr><td><strong>Eröffnungs-Talk / Keynote (Fr, kurz)</strong></td><td><strong>Stage-Channel</strong> „Bühne" live + Aufzeichnung in <code>#crashkurs-videos</code></td><td><span class="badge b-good">nativ</span></td><td>Kurzer Opening-Talk (kein 30-Min-Vortrag) — vor Ort primär, Stage für Doku/Nachhören.</td></tr>
+  <tr><td><strong>Crash-Kurs / Tool-Intro (30 min)</strong></td><td><strong>Stage</strong> live (Fr o. Sa) + <code>#crashkurs-videos</code> als abrufbare Video-Reihe</td><td><span class="badge b-warn">Video-Host</span></td><td>Aufzeichnung/Video-Reihe extern hosten (YouTube unlisted / Drive), Discord verlinkt. Siehe §5 Video-Gotcha.</td></tr>
+  <tr><td><strong>Ideen-Pitches &amp; Teamfindung (Marktplatz)</strong></td><td><strong>Forum-Channel</strong> <code>#ideen-marktplatz</code>: 1 Post pro Idee, Thread = Team-Chat-in-spe. Tags: Weg&nbsp;1 Challenge / Weg&nbsp;2 eigene Idee.</td><td><span class="badge b-good">nativ</span></td><td>Bestes Format überhaupt für „Marktplatz". Weg&nbsp;3 (spontan): <code>#team-suche</code> „suche/biete Skill".</td></tr>
+  <tr><td><strong>Firmen-Challenges (2–3)</strong></td><td>Read-only <strong>Forum</strong> <code>#challenges</code>: 1 Post je Challenge (Problem, Zielgruppe, Ressourcen, Owner). Challenge-Owner-Rolle beantwortet im Thread.</td><td><span class="badge b-good">nativ</span></td><td>Deckt genau die 6 Challenge-Kriterien aus dem Konzept ab.</td></tr>
+  <tr><td><strong>Team-Räume (Konzept + Hack)</strong></td><td>Pro Team private Kategorie/Channel (Text+Voice) + Team-Rolle. Anlage per <strong>Setup-Bot-Command</strong> <code>/team create</code>.</td><td><span class="badge b-warn">Bot</span></td><td>Kernstück des Custom-Bots. Sonst Handarbeit bei 15–20 Teams.</td></tr>
+  <tr><td><strong>Mentor-Check-ins (Sa 15:00)</strong></td><td><code>#mentor-anfragen</code> (Queue via Forum/Ticket) + Mentor-Voice-Räume „Mentoring 1/2/3"</td><td><span class="badge b-warn">Bot</span></td><td>Ticket-/Queue-Bot optional; für 100 Personen empfehlenswert.</td></tr>
+  <tr><td><strong>Code Freeze &amp; Einreichung (18:30)</strong></td><td><strong>Forum</strong> <code>#projekte</code>: 1 Post je Team = das Projekt (Team, Repo/Demo, <strong>Pitch-Video ≤2 min</strong>, 2-Satz-Beschreibung). Countdown-Bot pingt Freeze.</td><td><span class="badge b-warn">Bot+Host</span></td><td>Struktur nativ; Video ≤2 min sprengt Discords Upload-Limit → externer Link (§5). Deadline-Sperre via Bot.</td></tr>
+  <tr><td><strong>Pitch-Speedrun (digital) → Top 10 live</strong> <span class="badge b-good">ENTSCHIEDEN</span></td><td>Stufe&nbsp;1: alle Teams als Video-Post in <code>#projekte</code>; Jury/Voting kürt <strong>Top 10</strong>. Stufe&nbsp;2: Top 10 <strong>Live-Pitch auf der Bühne</strong> (Stage / vor Ort).</td><td><span class="badge b-good">nativ</span></td><td>Fixes Format. Vorteil: nur die besten Projekte pitchen live vor allen → flexibler &amp; kürzer. <strong>TODO: Website-Ablauf anpassen</strong> (zeigt noch „alle Teams 3+2 min").</td></tr>
+  <tr><td><strong>Jury sichtet Projekte</strong></td><td><code>#projekte</code>-Forum: Jury filtert nach Tags, schaut Pitch-Videos, kommentiert im Jury-Kanal</td><td><span class="badge b-good">nativ</span></td><td>Deckt die Meeting-Anforderung „Projekte → für Jury Pitches anschauen" direkt ab.</td></tr>
+  <tr><td><strong>Jury-Bewertung (5 Kriterien)</strong></td><td>Private Jury-Kategorie zur Koordination; <strong>Scoring im Google Sheet</strong> (Impact/AI/Prototyp/Teamwork/Pitch)</td><td><span class="badge b-bad">extern</span></td><td>Discord kann keine gewichtete Bewertung/Auswertung. Sheet oder kleines Formular.</td></tr>
+  <tr><td><strong>Event-Doku (Fotos/Video, Samir)</strong></td><td><code>#doku-und-presse</code> (Media-Rolle) für Foto-/Video-Sammlung + Social-Media-Freigaben</td><td><span class="badge b-good">nativ</span></td><td>Samir lädt hoch/verlinkt; Orga zieht Social-Media-Material. Einwilligung Bild/Ton beachten.</td></tr>
+  <tr><td><strong>Publikumspreis (Live-Voting)</strong></td><td>Native <strong>Discord-Poll</strong> in <code>#voting</code> (ein Klick, zeitlich begrenzt)</td><td><span class="badge b-good">nativ</span></td><td>Seit 2024 nativ; reicht für Publikumspreis völlig.</td></tr>
+  <tr><td><strong>Awards &amp; Apéro</strong></td><td>Announcement + Stage; Ergebnis-Post mit allen Projekten</td><td><span class="badge b-good">nativ</span></td><td>—</td></tr>
+  <tr><td><strong>Nachgang: Survey + Community</strong></td><td>Post-Event-Survey-Link (bestehende Umfragen), Server bleibt als Alumni-Community offen</td><td><span class="badge b-warn">extern</span></td><td>Server-Persistenz = echter Mehrwert für „≥70% neuer Kontakt".</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- 2 -->
+<section>
+<h2><span class="n">2</span> Vorgeschlagene Server-Struktur</h2>
+<p class="lead">Kategorien &amp; Channels, ausgerichtet am Ablauf. <span class="lock">🔒</span> = eingeschränkt sichtbar.</p>
+<div class="tree">
+<span class="cat">📢 START-HIER</span> <span class="c"># für alle sichtbar, read-only</span>
+   #willkommen · #verhaltenskodex · #rollen-waehlen <span class="c"># reaction roles</span>
+   #ankuendigungen <span class="c"># announcement</span> · #zeitplan · #faq · #tools-und-credits
+   #crashkurs-videos <span class="c"># Video-Reihe / Crash-Kurs, extern gehostet + verlinkt</span>
+
+<span class="cat">🤝 TEAMFINDUNG</span>
+   #challenges <span class="c"># FORUM, read-only posts der Firmen-Challenges</span>
+   #ideen-marktplatz <span class="c"># FORUM, 1 Post/Idee → Team bildet sich im Thread</span>
+   #team-suche <span class="c"># „suche Designer / biete Legal-Domain"</span>
+
+<span class="cat">💬 ALLGEMEIN</span>
+   #vorstellung · #smalltalk · #hilfe-und-support · #verpflegung-logistik
+   🔊 Lounge · 🔊 Networking-1 · 🔊 Networking-2
+
+<span class="cat">🛠️ TEAMS</span> <span class="c"># pro Team via Bot angelegt</span>
+   <span class="lock">🔒 team-01-name</span> (Text) + 🔊 team-01-voice   … team-NN
+       <span class="c"># nur Teammitglieder + Orga/Mentoren</span>
+
+<span class="cat">🧑‍🏫 MENTORING</span>
+   #mentor-anfragen <span class="c"># Queue (Forum/Ticket)</span>
+   🔊 Mentoring-1 · 🔊 Mentoring-2 · 🔊 Mentoring-3
+
+<span class="cat">🎤 BÜHNE &amp; PITCHES</span>
+   🎙️ Bühne <span class="c"># STAGE: Crash-Kurs + Top-10-Live-Pitch</span>
+   #projekte <span class="c"># FORUM, 1 Post/Team = Team+Repo+Pitch-Video(≤2min)+Beschreibung; ab Freeze read-only</span>
+   #pitch-fragen · #voting <span class="c"># native Poll = Speedrun-Top-10 &amp; Publikumspreis</span>
+
+<span class="cat">📸 DOKU &amp; PRESSE</span> <span class="c"># Media-Rolle (Samir) + Orga</span>
+   #doku-und-presse <span class="c"># Fotos/Video-Sammlung, Social-Media-Freigaben</span>
+
+<span class="cat">🏆 JURY</span> <span class="lock">🔒 nur Jury + Orga</span>
+   #jury-intern · #bewertung <span class="c"># Link zum Scoring-Sheet</span>
+
+<span class="cat">🏢 SPONSOREN</span> <span class="lock">🔒 Challenge-Owner + Orga</span>
+   #sponsoren-koordination
+
+<span class="cat">🔧 ORGA</span> <span class="lock">🔒 nur Orga</span>
+   #orga-intern · #logistik · #notfall · #bot-logs
+</div>
+</section>
+
+<!-- 3 -->
+<section>
+<h2><span class="n">3</span> Rollen &amp; Rechte</h2>
+<table>
+<thead><tr><th>Rolle</th><th>Wer</th><th>Sieht / darf</th></tr></thead>
+<tbody>
+  <tr><td><span class="badge b-bad">Orga</span></td><td>Kernteam</td><td>Alles (Admin). Vergibt Rollen, moderiert.</td></tr>
+  <tr><td><span class="badge b-warn">Jury</span></td><td>Jury-Mitglieder</td><td>Jury-Kategorie + alle öffentlichen + Einreichungen.</td></tr>
+  <tr><td><span class="badge b-warn">Mentor:in</span></td><td>Mentor:innen</td><td>Alle Team-Räume (lesen/helfen) + Mentoring + öffentlich.</td></tr>
+  <tr><td><span class="badge b-warn">Challenge-Owner</span></td><td>Sponsor-Firmen</td><td>Challenges-Forum (schreiben), Sponsoren-Kanal, öffentlich.</td></tr>
+  <tr><td><span class="badge b-good">Teilnehmer:in</span></td><td>Alle Angemeldeten</td><td>Alle öffentlichen Kanäle, Teamfindung, eigener Team-Raum.</td></tr>
+  <tr><td><span class="badge b-good">Team-NN</span></td><td>Auto pro Team</td><td>Nur der eigene private Team-Raum (Text+Voice).</td></tr>
+  <tr><td><span class="badge b-warn">Media / Doku</span></td><td>Samir + Foto-Team</td><td>Doku-&amp;-Presse-Kanal (hochladen), öffentliche Kanäle. Für Event-Doku &amp; Social Media.</td></tr>
+  <tr><td><span class="badge b-good">Skill-Tags</span></td><td>Selbstvergabe</td><td>Dev / Design / Domain-Expert / Newcomer / PM — nur Sichtbarkeit/Matching.</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- 4 -->
+<section>
+<h2><span class="n">4</span> Automatisierung: was baut sich selbst, was braucht Custom-Bot</h2>
+<div class="cards">
+  <div class="card good">
+    <h4>Discord-nativ (kein Code)</h4>
+    <ul>
+      <li><strong>Onboarding</strong> + Regel-Screening + Reaction-Roles</li>
+      <li><strong>Events</strong> = Fr/Sa-Timeline mit Auto-Reminder</li>
+      <li><strong>Forum-Channels</strong> = Ideen/Challenges/Einreichungen</li>
+      <li><strong>Stage-Channel</strong> = Keynote &amp; Pitches</li>
+      <li><strong>Polls</strong> = Publikumspreis</li>
+      <li><strong>AutoMod</strong> = Spam/Sicherheit</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Custom-Bot / Skript (Bot-Token)</h4>
+    <ul>
+      <li><strong>Server-Setup</strong>: legt Kategorien, Channels, Rollen, Rechte + gepinnte Posts idempotent an (das eigentliche Spike-Skript)</li>
+      <li><code>/team create &lt;name&gt;</code>: privater Team-Raum + Rolle + Mitglieder</li>
+      <li><strong>Code-Freeze</strong>-Timer: schaltet <code>#einreichungen</code> um 18:30 read-only + pingt</li>
+      <li>Optional: <strong>Verify</strong> gegen Airtable-Warteliste</li>
+    </ul>
+  </div>
+</div>
+<div class="callout">
+  <strong>Tech-Wahl fürs Skript:</strong> <code>discord.js</code> (Node) — passt in das Monorepo (pnpm/bun, TS). Ein einziges, idempotentes <code>setup.mjs</code>, das gegen eine <code>guildId</code> läuft und alles obige anlegt. Trockenlauf (<code>--dry-run</code>) zeigt nur, was es täte.
+</div>
+</section>
+
+<!-- 5 -->
+<section>
+<h2><span class="n">5</span> Kritische Risiken (ehrlich)</h2>
+<div class="callout risk">
+  <strong>1. Zielgruppe vs. Tool-Hürde.</strong> Das Konzept zielt bewusst auf ≥30 % Non-Coder und 30–40 % Newcomer/Geflüchtete. Discord ist für diese Gruppen <em>nicht</em> selbstverständlich (Account, Sprache, UI-Kultur „Gamer-Tool"). → Geführtes Onboarding, DE/EN, Vor-Ort-„Discord-Lotse" in der ersten Stunde, QR-Direkt-Invite. Sonst verliert man genau die Menschen, um die es geht.
+</div>
+<div class="callout risk">
+  <strong>2. Datenschutz (revDSG).</strong> Discord = US-Dienst. Anmeldedaten/Mailadressen bleiben in Airtable, werden <em>nicht</em> nach Discord gespiegelt. In Anmeldung transparent machen, dass Discord genutzt wird (Freiwilligkeit/Alternative Vor-Ort).
+</div>
+<div class="callout risk">
+  <strong>3. Mehrsprachigkeit.</strong> Discord übersetzt nicht. Entweder gemischte DE/EN-Kanäle mit klarer Norm („EN as common language") — üblicher &amp; schlanker — statt paralleler Kanal-Duplikate.
+</div>
+<div class="callout risk">
+  <strong>4. Video-Upload-Limit (Speedrun-Kernrisiko).</strong> Die ≤2-Min-Pitch-Videos sind das Herz des digitalen Speedruns — aber Discords Upload-Limit ist knapp: <strong>10 MB</strong> Standard, 50 MB ab Server-Boost-Level 2, 100 MB ab Level 3. Ein 2-Min-Video (1080p) liegt schnell bei 50–200 MB. → <strong>Nicht direkt hochladen</strong>: Teams laden auf YouTube (unlisted) / Google Drive / Loom und posten den <em>Link</em> in <code>#projekte</code>. Vorteil: Jury schaut überall, kein Discord-Boost nötig, Videos überleben den Server. Im Einreichungs-Post-Template klar vorgeben.
+</div>
+<div class="callout risk">
+  <strong>5. Vor-Ort-Event, nicht remote.</strong> Bei 100 Leuten in einem Raum konkurriert Discord mit „einfach rüberdrehen". Discord glänzt für Asynchrones (Einreichungen, Team-Docs, Ansagen, Nachgang), nicht als Ersatz fürs Gespräch. Rollen klar definieren, sonst tote Kanäle.
+</div>
+</section>
+
+<!-- 6 -->
+<section>
+<h2><span class="n">6</span> Setup-Skript — was wir zusammen vorbereiten</h2>
+<p class="lead">Meeting-Auftrag (10.07.2026, @Jonas): „Beispiel-Server aufsetzen und Team einladen" — genau dafür ist das Skript. Es baut den Server auf Knopfdruck auf, damit wir ihn real durchklicken, dem Team zeigen und den Spike verifizieren. Ablauf zum Scharfschalten:</p>
+<ol class="steps">
+  <li><strong>Leeren Discord-Server erstellen</strong> (du, 1 Klick) — „AI for Access 2026".</li>
+  <li><strong>Bot-Anwendung</strong> im <a href="https://discord.com/developers/applications">Discord Developer Portal</a> anlegen → Bot-Token kopieren.</li>
+  <li><strong>Bot einladen</strong> mit Scopes <code>bot</code> + <code>applications.commands</code> und Permission <em>Administrator</em> (nur fürs Setup).</li>
+  <li><strong>Token + guildId</strong> in <code>discord/setup/.env</code> (gitignored — kein Secret ins Repo).</li>
+  <li><code>node setup.mjs --dry-run</code> → zeigt geplante Struktur, ändert nichts.</li>
+  <li><code>node setup.mjs</code> → legt Kategorien, Channels, Rollen, Rechte, gepinnte Posts, Events an.</li>
+  <li><strong>Gemeinsam durchklicken</strong> → Spike verifizieren, Struktur nachjustieren, iterieren.</li>
+</ol>
+<div class="callout todo">
+  <strong>Was ich von dir brauche, sobald wir loslegen:</strong> den Bot-Token + die Server-ID (guildId). Bis dahin schreibe ich das Skript so, dass es ohne Token nichts tut (Dry-Run-fähig). <em>Nichts wird ohne dein OK ausgeführt.</em>
+</div>
+</section>
+
+<!-- 7 -->
+<section>
+<h2><span class="n">7</span> Entscheidungen (Stand 2026-07-28)</h2>
+<table>
+<thead><tr><th style="width:20%">Frage</th><th style="width:14%">Status</th><th>Entscheidung</th></tr></thead>
+<tbody>
+  <tr><td><strong>A) Rolle von Discord</strong></td><td><span class="badge b-good">entschieden</span></td><td>Server <strong>~2 Wochen vor dem Event</strong> öffnen (Pre-Event-Community), danach als <strong>Alumni-Space</strong> behalten.</td></tr>
+  <tr><td><strong>B) Team-Räume</strong></td><td><span class="badge b-good">entschieden</span></td><td>Bot-Command <code>/team create</code> (self-service), Orga-Fallback.</td></tr>
+  <tr><td><strong>C) Scoring</strong></td><td><span class="badge b-good">entschieden</span></td><td>Google Sheet (5 Kriterien), Discord nur Koordination.</td></tr>
+  <tr><td><strong>D) Verify gegen Airtable</strong></td><td><span class="badge b-bad">verworfen</span></td><td>Weglassen. Privater Invite-Link + Onboarding genügt.</td></tr>
+  <tr><td><strong>E) Sprache</strong></td><td><span class="badge b-good">entschieden</span></td><td>Gemischte Kanäle, <strong>EN als Default</strong>/gemeinsame Sprache (keine Duplikate).</td></tr>
+  <tr><td><strong>Pitch-Format</strong></td><td><span class="badge b-good">entschieden</span></td><td>Speedrun digital → Top 10 live. <strong>Offen: Website-Ablauf anpassen.</strong></td></tr>
+  <tr><td><strong>F) Notion</strong></td><td><span class="badge b-warn">wartet</span></td><td>Als zweite Wissensquelle — Connector in Claude noch autorisieren, dann dazuziehen.</td></tr>
+</tbody>
+</table>
+</section>
+
+<footer>
+  AI for Access (HCK / P003) · Discord-Spike &amp; Blueprint · erstellt 2026-07-28 · Basis: Live-Website (Stadtkloster Frieden, 20.–21.11.2026) + Meeting 10.07.<br>
+  Ablage: <code>01-Projects/2026-10_hackathon_powercoders/discord/</code> · lebendes Dokument, wird beim gemeinsamen Planen fortgeschrieben.
+</footer>
+
+</div>
+</body>
+</html>
