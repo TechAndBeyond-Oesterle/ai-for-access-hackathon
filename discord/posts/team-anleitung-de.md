@@ -26,8 +26,10 @@ Das kann jede Person aus dem Team machen — ihr müsst nicht warten, bis die Gr
 
 ## Wenn etwas klemmt
 
-• **„Diese Anwendung reagiert nicht"** → der Bot ist gerade offline. Meldet euch in {#hilfe-und-support}.
-• **„Du bist schon im Team …"** → ihr seid noch in einem anderen Team. `/team leave`, dann nochmal.
-• **„Ein Team-Channel … existiert schon"** → der Name ist vergeben, nehmt einen anderen.
+Der Bot antwortet auf Englisch — das ist unsere gemeinsame Sprache hier.
+
+• **„This application did not respond"** → der Bot ist gerade offline. Meldet euch in {#hilfe-und-support}.
+• **„You're already in …"** → ihr seid noch in einem anderen Team. `/team leave`, dann nochmal.
+• **„A team channel … already exists"** → der Name ist vergeben, nehmt einen anderen.
 
 Ihr sucht noch Mitstreiter:innen? Schaut in {#ideen-marktplatz} und {#team-suche} — ein Post pro Idee, und der Thread wird ganz von selbst euer Team-Chat.

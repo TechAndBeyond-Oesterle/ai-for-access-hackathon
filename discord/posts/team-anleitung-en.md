@@ -27,7 +27,7 @@ Anyone on the team can do this — no need to wait for whoever created it.
 ## If something doesn't work
 
 • **"This application did not respond"** → the bot is offline right now. Post in {#hilfe-und-support}.
-• **"Du bist schon im Team …"** → you're still in another team. Run `/team leave`, then try again.
-• **"Ein Team-Channel … existiert schon"** → that name is taken, pick another one.
+• **"You're already in …"** → you're still in another team. Run `/team leave`, then try again.
+• **"A team channel … already exists"** → that name is taken, pick another one.
 
 Still looking for teammates? Check {#ideen-marktplatz} — one post per idea, and the thread naturally becomes your team chat.

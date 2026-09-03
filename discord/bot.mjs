@@ -48,23 +48,27 @@ const TEAM_COLORS = [0x58A6FF, 0x3FB950, 0xBC8CFF, 0xF778BA, 0xE3B341, 0x22D3EE,
 
 const SWEEP_INTERVAL_MS = 5 * 60_000;     // Nachlauf, falls ein Gateway-Event verloren geht
 const EMPTY_GRACE_MS = 15 * 60_000;       // so lange darf ein Team leer stehen, bevor es fällt
+const LOG_CHANNEL = 'bot-logs';           // Orga-interner Kanal für Team-Ereignisse
 
+// Sprache: Alles, was Teilnehmende sehen, ist ENGLISCH — bei Powercoders ist Englisch die
+// gemeinsame Sprache, Deutsch nicht bei allen vorausgesetzt. Konsolen-Ausgaben und
+// Code-Kommentare bleiben deutsch, die sieht nur die Orga.
 const commands = [
   new SlashCommandBuilder()
     .setName('team')
-    .setDescription('Team-Räume verwalten')
+    .setDescription('Manage your team space')
     .setDMPermission(false)
     .addSubcommand((s) => s
       .setName('create')
-      .setDescription('Neues Team + privaten Raum (Text & Voice) anlegen')
-      .addStringOption((o) => o.setName('name').setDescription('Team-Name').setRequired(true)))
+      .setDescription('Create a new team with a private text & voice channel')
+      .addStringOption((o) => o.setName('name').setDescription('Team name').setRequired(true)))
     .addSubcommand((s) => s
       .setName('add')
-      .setDescription('Mitglied zu deinem Team hinzufügen (im Team-Text-Channel ausführen)')
+      .setDescription('Add someone to your team (run this inside your team channel)')
       .addUserOption((o) => o.setName('user').setDescription('Person').setRequired(true)))
     .addSubcommand((s) => s
       .setName('leave')
-      .setDescription('Dein Team verlassen — danach kannst du einem anderen beitreten'))
+      .setDescription('Leave your team — afterwards you can join another one'))
     .toJSON(),
 ];
 
@@ -92,6 +96,23 @@ function roleByName(guild, name) {
   return guild.roles.cache.find((r) => r.name === name);
 }
 
+/**
+ * Schreibt ein Ereignis nach #bot-logs (Orga-intern): wer welches Team angelegt, wen
+ * aufgenommen, wer es verlassen hat, was aufgeräumt wurde. Damit ist am Event-Tag
+ * nachvollziehbar, was passiert ist, ohne in die Container-Logs zu schauen.
+ * Schlägt das Loggen fehl, darf das nie den eigentlichen Befehl scheitern lassen.
+ */
+async function logEvent(guild, text) {
+  try {
+    const channel = guild.channels.cache.find(
+      (c) => c.type === ChannelType.GuildText && c.name === LOG_CHANNEL,
+    );
+    if (channel) await channel.send(`-# ${new Date().toLocaleString('de-CH')}\n${text}`);
+  } catch (err) {
+    console.error(`  (Log nach #${LOG_CHANNEL} fehlgeschlagen: ${err?.message || err})`);
+  }
+}
+
 async function ensureTeamsCategory(guild) {
   let cat = guild.channels.cache.find(
     (c) => c.type === ChannelType.GuildCategory && c.name === TEAMS_CATEGORY,
@@ -110,14 +131,14 @@ async function handleCreate(interaction) {
   await guild.channels.fetch();
 
   if (guild.channels.cache.find((c) => c.name === `team-${s}`)) {
-    return interaction.editReply(`⚠️ Ein Team-Channel **team-${s}** existiert schon. Wähle einen anderen Namen.`);
+    return interaction.editReply(`⚠️ A team channel **team-${s}** already exists. Please pick another name.`);
   }
 
   const own = teamRolesOf(interaction.member).first();
   if (own && !isExempt(interaction.member)) {
     return interaction.editReply(
-      `⚠️ Du bist schon im Team **${teamName(own)}**. Pro Person ist ein Team möglich — `
-      + 'mit `/team leave` steigst du dort aus und kannst danach ein neues anlegen.',
+      `⚠️ You're already in **${teamName(own)}**. One team per person — `
+      + 'run `/team leave` there first, then you can create a new one.',
     );
   }
 
@@ -148,57 +169,63 @@ async function handleCreate(interaction) {
   // Voice-ID mit in den Topic, damit das Aufräumen beide Räume sicher findet.
   await text.setTopic(`Privater Raum für Team „${name}". [teamRole:${teamRole.id}] [teamVoice:${voice.id}]`);
 
-  await text.send(`👋 Willkommen im Team **${name}**! Nutzt \`/team add @person\` hier, um weitere Mitglieder aufzunehmen. Mit \`/team leave\` steigt ihr wieder aus — verlässt die letzte Person das Team, räumt der Bot Rolle und Räume auf. Denkt an euer Projekt in **#projekte** (Pitch-Video ≤2 min als externer Link).`);
-  return interaction.editReply(`✅ Team **${name}** angelegt: <#${text.id}> + Voice. Rolle <@&${teamRole.id}> ist dir zugewiesen.`);
+  await text.send(`👋 Welcome to **${name}**! Use \`/team add @person\` here to bring in more members. `
+    + '`/team leave` gets you out again — once the last person leaves, the bot removes the role and these rooms. '
+    + 'Remember to post your project in **#projekte** (pitch video ≤2 min as an external link).');
+  await logEvent(guild, `✚ **${name}** created by <@${interaction.user.id}> — <#${text.id}>`);
+  return interaction.editReply(`✅ Team **${name}** created: <#${text.id}> + voice channel. You've got the <@&${teamRole.id}> role.`);
 }
 
 async function handleAdd(interaction) {
   const channel = interaction.channel;
   const match = channel?.topic?.match(/\[teamRole:(\d+)\]/);
   if (!match) {
-    return interaction.editReply('⚠️ Bitte im **Text-Channel deines Teams** ausführen (dort ist die Team-Rolle hinterlegt).');
+    return interaction.editReply('⚠️ Please run this **inside your own team channel** (that\'s where the team role is stored).');
   }
   const roleId = match[1];
   const role = await interaction.guild.roles.fetch(roleId).catch(() => null);
-  if (!role) return interaction.editReply('⚠️ Team-Rolle nicht gefunden.');
+  if (!role) return interaction.editReply('⚠️ Team role not found.');
 
   // Nur Teammitglieder (oder Orga) dürfen einladen
   const isMember = interaction.member.roles.cache.has(roleId);
   const isOrga = interaction.member.roles.cache.some((r) => r.name === 'Orga');
   if (!isMember && !isOrga) {
-    return interaction.editReply('⚠️ Nur Mitglieder dieses Teams (oder Orga) können jemanden hinzufügen.');
+    return interaction.editReply('⚠️ Only members of this team (or the organizers) can add someone.');
   }
 
   const user = interaction.options.getUser('user');
   const member = await interaction.guild.members.fetch(user.id).catch(() => null);
-  if (!member) return interaction.editReply('⚠️ Person nicht auf dem Server gefunden.');
+  if (!member) return interaction.editReply('⚠️ That person is not on this server.');
 
   if (member.roles.cache.has(roleId)) {
-    return interaction.editReply(`ℹ️ <@${user.id}> ist bereits in **${teamName(role)}**.`);
+    return interaction.editReply(`ℹ️ <@${user.id}> is already in **${teamName(role)}**.`);
   }
   // Das Ein-Team-Limit gilt auch hier, sonst wäre /team add das Schlupfloch.
   const other = teamRolesOf(member).first();
   if (other && !isExempt(member)) {
     return interaction.editReply(
-      `⚠️ <@${user.id}> ist schon im Team **${teamName(other)}**. `
-      + 'Pro Person ist ein Team möglich — die Person muss dort erst `/team leave` machen.',
+      `⚠️ <@${user.id}> is already in **${teamName(other)}**. `
+      + 'One team per person — they need to run `/team leave` there first.',
     );
   }
 
   await member.roles.add(role);
-  return interaction.editReply(`✅ <@${user.id}> ist jetzt Teil von **${teamName(role)}**.`);
+  await logEvent(interaction.guild,
+    `➕ <@${user.id}> added to **${teamName(role)}** by <@${interaction.user.id}>`);
+  return interaction.editReply(`✅ <@${user.id}> is now part of **${teamName(role)}**.`);
 }
 
 async function handleLeave(interaction) {
   const own = teamRolesOf(interaction.member);
-  if (own.size === 0) return interaction.editReply('ℹ️ Du bist in keinem Team.');
+  if (own.size === 0) return interaction.editReply('ℹ️ You are not in any team.');
 
   const names = own.map((r) => teamName(r)).join('**, **');
   await interaction.member.roles.remove([...own.keys()]);
   scheduleSweep(interaction.guild);
+  await logEvent(interaction.guild, `➖ <@${interaction.user.id}> left **${names}**`);
   return interaction.editReply(
-    `✅ Du hast **${names}** verlassen. Bleibt ein Team ohne Mitglieder, räumt der Bot es `
-    + `in ${EMPTY_GRACE_MS / 60_000} Minuten auf. Mit \`/team create\` kannst du jetzt ein neues anlegen.`,
+    `✅ You left **${names}**. If a team ends up with no members, the bot clears it after `
+    + `${EMPTY_GRACE_MS / 60_000} minutes. You can create a new one with \`/team create\`.`,
   );
 }
 
@@ -253,6 +280,7 @@ async function sweepEmptyTeams(guild, { dryRun = DRY_RUN, graceMs = EMPTY_GRACE_
     emptySince.delete(role.id);
     removed.push(role.name);
     console.log(`🧹 gelöscht: ${role.name}`);
+    await logEvent(guild, `🧹 **${teamName(role)}** had no members left — role and rooms removed.`);
   }
   return removed;
 }
