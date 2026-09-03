@@ -160,6 +160,41 @@ Die Löschlogik findet die Räume eines Teams über Marker im Channel-Topic
 (`[teamRole:…]`, `[teamVoice:…]`). Teams, die vor dieser Änderung angelegt wurden, haben nur den
 `teamRole`-Marker — für sie greift das Namensschema `team-<slug>-voice` als Fallback.
 
+## Channel-Posts aus Markdown (`posts.mjs`)
+
+Feste Texte im Server (Anleitungen, Regeln, Hinweise) liegen als Markdown in `posts/` —
+**eine Datei = eine Discord-Nachricht**. Wer den Text ändern will, ändert die Datei; niemand
+muss dafür Code anfassen oder alte Posts von Hand löschen.
+
+```bash
+npm run posts:dry        # zeigt nur, was passieren würde
+npm run posts:preview    # alles nach #orga-intern (nur Orga sieht es) — zur Abnahme
+npm run posts            # in die Channels aus dem Frontmatter
+node posts.mjs --only team-anleitung-de --channel orga-intern
+```
+
+**Beim zweiten Lauf wird die bestehende Nachricht editiert, nicht neu gepostet.** Der Bot
+erkennt sie an einem unauffälligen Marker im Discord-Subtext (`-# ⟨post:<name>⟩`), den das
+Skript ans Ende hängt. Es braucht also kein State-File — die Wahrheit steht in Discord.
+Unveränderte Texte werden übersprungen (`✓ … unverändert`).
+
+Aufbau einer Datei:
+
+```markdown
+---
+channel: team-suche
+---
+# Überschrift
+Text … {#hilfe-und-support} wird zu einem echten Kanal-Link.
+```
+
+- `{#kanal-name}` wird zu `<#id>` aufgelöst — ein einfaches `#kanal` bliebe im per API
+  gesendeten Text toter Text (anders als beim Tippen im Client). Unbekannte Namen bleiben
+  als `#name` stehen und erzeugen nur eine Warnung.
+- **Discord-Limit: 2000 Zeichen pro Nachricht.** Wird eine Datei größer, bricht das Skript
+  mit Angabe der Zeichenzahl ab — dann in `…-1.md` / `…-2.md` aufteilen.
+- Die Reihenfolge der Posts folgt dem Dateinamen (deshalb ggf. `10-`, `20-` voranstellen).
+
 ## Scheduled Events (Fr/Sa-Timeline)
 
 Legt die komplette Programm-Timeline als Discord-Events an (Ort = Stadtkloster Frieden, Reminder für Teilnehmende).
