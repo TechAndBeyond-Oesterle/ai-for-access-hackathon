@@ -204,6 +204,36 @@ npm run events:dry   # zeigt nur, was es täte
 npm run events       # legt an (idempotent: gleicher Name wird übersprungen)
 ```
 
+## Reaction-Roles für Skill-Tags
+
+`bot.mjs` verknüpft beim Start den eigenen Post in `#choose-your-role`
+(alter Kanalname `#rollen-waehlen` wird ebenfalls erkannt) mit den fünf Skill-Rollen:
+💻 Dev · 🎨 Design · 🧠 Domain-Expert · 📊 PM / Business · ✨ Newcomer.
+Mehrfachauswahl ist möglich; Reaktion entfernen entfernt genau diese Rolle.
+Team-, Teilnehmer- und Orga-Rollen bleiben unberührt.
+
+- Textquelle: `posts/choose-your-role.md`. Der Bot editiert seinen markierten Post
+  oder übernimmt den alten deutschen Seed **in-place**, ohne Reaktionen zu löschen.
+  Fehlt ein eigener Rollenpost, legt er einen an. Fremde Posts/Preview-Kanäle zählen nicht.
+- Alle fünf Emojis werden beim Start vorbereitet. Schon vorhandene Reaktionen werden
+  nachgetragen, auch nach einem Neustart. **Während einer Offline-Phase entfernte
+  Reaktionen entfernen beim Neustart keine Rollen**: Rollen ohne Reaktion könnten
+  manuell vergeben sein. In diesem Fall einmal erneut reagieren und zurücknehmen.
+- Benötigt `Manage Roles`; die Bot-Rolle muss über allen Skill-Rollen stehen. Diese
+  müssen eindeutig benannt, nicht integrationsverwaltet und ohne Serverrechte sein.
+  Im Kanal: View Channel, Read Message History, Send Messages, Add Reactions.
+- Nutzt den nicht-privilegierten `GuildMessageReactions`-Intent und Partials für
+  alte/ungecachte Nachrichten. Kein Message Content Intent nötig; funktioniert auch
+  ohne den Server Members Intent, der nur für Team-Cleanup nötig ist.
+- Dockerfile enthält Modul und Rollenpost. Nach dem Deploy muss im Log
+  `✓ Reaction-Roles aktiv: <Nachrichtenlink>` erscheinen. Setup-Fehler werden klar
+  geloggt und lassen die Team-Commands weiterlaufen. `--sweep`/`--dry-run` aktivieren
+  die Reaction-Roles nicht. Kein zweiter lokaler Bot parallel zum produktiven Prozess!
+
+Prüfen: `npm test`; anschließend mit einem normalen Mitglied auf dem verlinkten Post
+zwei Emojis wählen → beide Rollen erscheinen; eine Reaktion zurücknehmen → nur diese
+Rolle verschwindet. Nach Bot-Neustart denselben Post erneut testen.
+
 ## Noch nicht enthalten (spätere Ausbaustufe)
 
 - Code-Freeze-Timer (schaltet `#projekte` um 18:30 automatisch read-only)

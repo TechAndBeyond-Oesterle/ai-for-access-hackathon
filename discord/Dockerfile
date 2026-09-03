@@ -10,7 +10,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --omit=optional && npm cache clean --force
 
-COPY bot.mjs team-rules.mjs ./
+COPY bot.mjs team-rules.mjs reaction-roles.mjs ./
+COPY posts/choose-your-role.md ./posts/choose-your-role.md
 
 ENV NODE_ENV=production
 USER node
