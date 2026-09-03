@@ -1,20 +1,26 @@
 import { readFile } from 'node:fs/promises';
-import { ChannelType, PermissionsBitField } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, MessageFlags, PermissionsBitField } from 'discord.js';
 
 export const SKILL_ROLES = [
-  { emoji: '💻', names: ['Dev'] },
-  { emoji: '🎨', names: ['Design'] },
-  { emoji: '🧠', names: ['Domain-Expert', 'Domain Expert'] },
-  { emoji: '📊', names: ['PM / Business'] },
-  { emoji: '✨', names: ['Newcomer'] },
+  { key: 'dev', emoji: '💻', names: ['Dev'] },
+  { key: 'design', emoji: '🎨', names: ['Design'] },
+  { key: 'domain', emoji: '🧠', names: ['Domain-Expert', 'Domain Expert'] },
+  { key: 'pm', emoji: '📊', names: ['PM / Business'] },
+  { key: 'newcomer', emoji: '✨', names: ['Newcomer'] },
 ];
 export const ROLE_POST_MARKER = '-# ⟨post:choose-your-role⟩';
 const CHANNEL_NAMES = ['choose-your-role', 'rollen-waehlen'];
 const F = PermissionsBitField.Flags;
 
-export function skillForEmoji(emoji) {
-  // Custom Emojis mit gleichem Namen sind keine erlaubten Skill-Reaktionen.
-  return !emoji.id && SKILL_ROLES.find((s) => s.emoji === emoji.name);
+export function isSkillButton(interaction) {
+  return interaction.isButton() && interaction.customId.startsWith('skill-role:');
+}
+
+export function roleButtons() {
+  // Öffentlich identische Buttons: die Auswahl einer Person nie für alle einfärben.
+  return [new ActionRowBuilder().addComponents(SKILL_ROLES.map((skill) => new ButtonBuilder()
+    .setCustomId(`skill-role:${skill.key}`).setLabel(skill.names[0])
+    .setEmoji(skill.emoji).setStyle(ButtonStyle.Secondary))).toJSON()];
 }
 
 export function isRolePost(message, botId) {
@@ -57,9 +63,9 @@ export async function loadRolePost() {
 
 /**
  * Genau ein Post im Zielserver. Single-Role-REST-Operationen lassen andere Rollen in Ruhe.
- * Die Queue erhält die Reihenfolge auch bei schnellem Add → Remove und kaltem Cache.
+ * Die Queue erhält die Reihenfolge bei schnellen Klicks; vor jedem Toggle frisch lesen.
  */
-export function createReactionRoles(guild, botId, { report = console.error } = {}) {
+export function createRoleButtons(guild, botId, { report = console.error } = {}) {
   let message;
   let queue = Promise.resolve();
   const enqueue = (job) => {
@@ -80,6 +86,7 @@ export function createReactionRoles(guild, botId, { report = console.error } = {
 
   return {
     initialize: (content) => enqueue(async () => {
+      message = null;
       await guild.channels.fetch();
       const channels = guild.channels.cache.filter(
         (c) => c.type === ChannelType.GuildText && CHANNEL_NAMES.includes(c.name),
@@ -88,57 +95,54 @@ export function createReactionRoles(guild, botId, { report = console.error } = {
       const channel = channels.first();
       const me = await guild.members.fetchMe();
       if (!me.permissions.has(F.ManageRoles)
-        || !channel.permissionsFor(me)?.has([F.ViewChannel, F.ReadMessageHistory, F.SendMessages, F.AddReactions])) {
-        throw new Error('Reaction-Roles: Bot braucht Rollenverwaltung und Lese-/Schreib-/Reaktionsrechte im Rollenkanal.');
+        || !channel.permissionsFor(me)?.has([F.ViewChannel, F.ReadMessageHistory, F.SendMessages])) {
+        throw new Error('Rollen-Buttons: Bot braucht Rollenverwaltung und Lese-/Schreibrechte im Rollenkanal.');
       }
       // Vor jeglichem Post-Edit müssen alle fünf Rollen geprüft sein.
-      const roles = await Promise.all(SKILL_ROLES.map(resolveRole));
+      await Promise.all(SKILL_ROLES.map(resolveRole));
       const existing = await findRolePost(channel, botId);
+      const components = roleButtons();
+      const payload = { content, components, allowedMentions: { parse: [] } };
       const target = existing
-        ? (existing.content === content ? existing : await existing.edit(content))
-        : await channel.send({ content, allowedMentions: { parse: [] } });
-      for (const skill of SKILL_ROLES) await target.react(skill.emoji);
-      message = target;
-
-      // Bereits abgegebene Stimmen nach Erstaktivierung/Neustart nachtragen (paginieren).
-      // Keine Rollen ohne Reaktion entfernen: diese könnten manuell vergeben worden sein.
-      for (const [index, skill] of SKILL_ROLES.entries()) {
-        const reaction = target.reactions.cache.find((r) => skillForEmoji(r.emoji) === skill);
-        if (!reaction) continue;
-        let after;
-        do {
-          const users = await reaction.users.fetch({ limit: 100, ...(after ? { after } : {}) });
-          for (const user of users.values()) {
-            if (user.bot) continue;
-            try {
-              const member = await guild.members.fetch(user.id);
-              await member.roles.add(roles[index].id, 'Skill-Reaktion beim Bot-Start');
-            } catch (err) {
-              report(`Reaction-Roles: Stimme nicht nachgetragen (${user.id}): ${err.message}`);
-            }
-          }
-          if (users.size < 100) break;
-          after = users.last().id;
-        } while (after);
+        ? await existing.edit(payload)
+        : await channel.send(payload);
+      // Migration nur der Oberfläche: bestehende Rollen bleiben unverändert.
+      // Alte Reaktionen werden nie mehr eingelesen, auch nicht nach einem Neustart.
+      if (target.reactions.cache.size && channel.permissionsFor(me)?.has(F.ManageMessages)) {
+        await target.reactions.removeAll().catch((err) => report(`Alte Skill-Reaktionen: ${err.message}`));
       }
+      message = target;
       return message;
     }),
 
-    handle: (reaction, user, added) => enqueue(async () => {
-      const skill = skillForEmoji(reaction.emoji);
-      if (!message || user.bot || user.id === botId || !skill
-        || reaction.message.guildId !== guild.id
-        || reaction.message.channelId !== message.channelId
-        || reaction.message.id !== message.id) return false;
-
-      // Beim Entfernen der letzten Reaktion ist reaction.fetch() nicht zuverlässig.
-      // IDs aus Partial-Reaktionen reichen; nur Mitglied und Rolle frisch abrufen.
-      const role = await resolveRole(skill);
-      const member = await guild.members.fetch(user.id);
-      if (member.user.bot) return false;
-      if (added) await member.roles.add(role.id, 'Skill-Reaktion hinzugefügt');
-      else await member.roles.remove(role.id, 'Skill-Reaktion entfernt');
+    handle: async (interaction) => {
+      if (!isSkillButton(interaction)) return false;
+      // Vor jeder REST-Abfrage und vor dem Warten auf die Queue bestätigen (<3 s).
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+      const result = await enqueue(async () => {
+        const skill = SKILL_ROLES.find((s) => interaction.customId === `skill-role:${s.key}`);
+        if (!message || !skill || interaction.user.bot
+          || interaction.guildId !== guild.id || interaction.channelId !== message.channelId
+          || interaction.message.id !== message.id) {
+          return '⚠️ This role button is unavailable. Please use the current post in #choose-your-role.';
+        }
+        try {
+          const role = await resolveRole(skill);
+          const member = await guild.members.fetch({ user: interaction.user.id, force: true });
+          const remove = member.roles.cache.has(role.id);
+          const updated = remove
+            ? await member.roles.remove(role.id, 'Skill-Button: entfernen')
+            : await member.roles.add(role.id, 'Skill-Button: hinzufügen');
+          const selected = SKILL_ROLES.filter((s) => updated.roles.cache.some((r) => s.names.includes(r.name)))
+            .map((s) => s.names[0]).join(' · ') || 'none yet';
+          return `✅ **${skill.names[0]}** ${remove ? 'removed' : 'added'}.\nYour skill tags: **${selected}**.`;
+        } catch (err) {
+          report(`Skill-Button fehlgeschlagen: ${err.message}`);
+          return '⚠️ I could not update your role. Please try again or contact the organizers.';
+        }
+      });
+      await interaction.editReply({ content: result, allowedMentions: { parse: [] } });
       return true;
-    }),
+    },
   };
 }

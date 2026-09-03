@@ -27,12 +27,12 @@
 import 'dotenv/config';
 import {
   Client, GatewayIntentBits, ChannelType, PermissionsBitField,
-  SlashCommandBuilder, REST, Routes, MessageFlags, Events, Partials,
+  SlashCommandBuilder, REST, Routes, MessageFlags, Events,
 } from 'discord.js';
 import {
   TEAM_ROLE_PREFIX, slug, teamName, teamRolesOf, isExempt, channelsOfTeam, emptyTeamVerdict,
 } from './team-rules.mjs';
-import { createReactionRoles, loadRolePost } from './reaction-roles.mjs';
+import { createRoleButtons, isSkillButton, loadRolePost } from './reaction-roles.mjs';
 
 const { DISCORD_TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 if (!DISCORD_TOKEN || !GUILD_ID) {
@@ -80,9 +80,9 @@ const commands = [
 let cleanupEnabled = true;
 
 function buildClient({ withMembers }) {
-  const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessageReactions];
+  const intents = [GatewayIntentBits.Guilds];
   if (withMembers) intents.push(GatewayIntentBits.GuildMembers);
-  return new Client({ intents, partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User] });
+  return new Client({ intents });
 }
 
 let client = buildClient({ withMembers: true });
@@ -296,13 +296,7 @@ function scheduleSweep(guild) {
 }
 
 function registerHandlers(c) {
-  let reactionRoles;
-  for (const [event, added] of [[Events.MessageReactionAdd, true], [Events.MessageReactionRemove, false]]) {
-    c.on(event, (reaction, user) => {
-      reactionRoles?.handle(reaction, user, added)
-        .catch((err) => console.error('Reaction-Roles:', err?.message || err));
-    });
-  }
+  let skillRoles;
   if (cleanupEnabled) {
     c.on(Events.GuildMemberUpdate, (before, after) => {
       const lost = before.roles.cache.some((r) => r.name.startsWith(TEAM_ROLE_PREFIX) && !after.roles.cache.has(r.id));
@@ -312,6 +306,18 @@ function registerHandlers(c) {
   }
 
   c.on(Events.InteractionCreate, async (interaction) => {
+    if (isSkillButton(interaction)) {
+      try {
+        if (skillRoles) return await skillRoles.handle(interaction);
+        return await interaction.reply({
+          content: '⚠️ Role selection is temporarily unavailable. Please try again shortly.',
+          flags: MessageFlags.Ephemeral,
+        });
+      } catch (err) {
+        console.error('Skill-Button-Antwort:', err?.message || err);
+        return;
+      }
+    }
     if (!interaction.isChatInputCommand() || interaction.commandName !== 'team') return;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     try {
@@ -348,12 +354,12 @@ function registerHandlers(c) {
     if (!DRY_RUN) {
       try {
         const content = await loadRolePost();
-        reactionRoles = createReactionRoles(guild, c.user.id);
-        const post = await reactionRoles.initialize(content);
-        console.log(`✓ Reaction-Roles aktiv: ${post.url}`);
+        skillRoles = createRoleButtons(guild, c.user.id);
+        const post = await skillRoles.initialize(content);
+        console.log(`✓ Rollen-Buttons aktiv: ${post.url}`);
       } catch (err) {
-        reactionRoles = null;
-        console.error('❌ Reaction-Roles nicht aktiv:', err?.message || err);
+        skillRoles = null;
+        console.error('❌ Rollen-Buttons nicht aktiv:', err?.message || err);
       }
     }
     if (cleanupEnabled) {

@@ -3,7 +3,9 @@ channel: choose-your-role
 ---
 🎭 **Pick your skill tags** — so teams can find each other more easily.
 
-React to this message with the matching emoji to get a role. Remove your reaction to remove that role.
+Click a button below to add a role; click it again to remove it. Only you see the confirmation and your current skill tags. You can choose several!
+
+Already picked roles? They are kept. Emoji reactions no longer change roles — please use the buttons.
 
 💻 **Dev** — development / engineering
 🎨 **Design** — UX / UI / product
