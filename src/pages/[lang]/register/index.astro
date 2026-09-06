@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import RegisterForm from '../../../components/RegisterForm';
+import Footer from '../../../components/Footer.astro';
+import type { Lang } from '../../../i18n/translations';
+import { useTranslations } from '../../../i18n/utils';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'de' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const t = useTranslations(lang);
+const title = lang === 'de' ? 'Anmeldung — AI for Access' : 'Registration — AI for Access';
+---
+
+<BaseLayout title={title}>
+  <Header lang={lang} />
+  <main class="pt-24">
+    <section class="relative py-16 sm:py-24">
+      <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
+
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.03] rounded-full"
+          style="background: radial-gradient(circle, var(--accent), transparent 70%);"
+        ></div>
+      </div>
+
+      <div class="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-4">
+          <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent">
+            {t('signup.label')}
+          </span>
+        </div>
+
+        <h1 class="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-center tracking-tight mb-4">
+          {t('signup.headline')}
+        </h1>
+
+        <p class="text-lg text-muted text-center mb-12">
+          {t('signup.sub')}
+        </p>
+
+        <RegisterForm lang={lang} client:visible />
+
+        <p class="mt-6 text-center text-xs text-muted" style="opacity: 0.6;">
+          {lang === 'de'
+            ? 'Mit der Anmeldung akzeptierst du unseren '
+            : 'By signing up you accept our '}
+          <a href={`/${lang}/coc/`} class="text-accent hover:underline">Code of Conduct</a>
+          {lang === 'de' ? ' und die ' : ' and '}
+          <a href={`/${lang}/privacy/`} class="text-accent hover:underline">{lang === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy'}</a>.
+        </p>
+      </div>
+    </section>
+
+    <div class="text-center pb-16">
+      <a href={`/${lang}/`}
+        class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline underline-offset-4"
+      >
+        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        {t('nav.back')}
+      </a>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
