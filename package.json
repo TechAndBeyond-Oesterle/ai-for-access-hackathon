@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/react": "^5.0.3",
     "@astrojs/vercel": "^10.0.4",
     "@resvg/resvg-js": "^2.6.2",
@@ -22,6 +23,7 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "satori": "^0.26.0",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "typescript": "^7.0.2"
   }
 }

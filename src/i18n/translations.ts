@@ -260,10 +260,10 @@ export const translations = {
       "Erbaut 1918–1920. Reformierte Friedenskirche. 800 Sitzplätze. 20 Meter Kirchenschiff. Seit 2022 als Stadtkloster wiederbelebt.",
 
     // Signup (Waitlist mode)
-    "signup.label": "Warteliste",
-    "signup.headline": "Dein Platz wartet.",
+    "signup.label": "Anmeldung",
+    "signup.headline": "Melde dich jetzt an.",
     "signup.sub":
-      "100 Plätze. Sichere dir jetzt deinen Platz auf der Warteliste.",
+      "Sichere dir deinen Platz am AI for Access Hackathon.",
     "signup.name": "Vorname",
     "signup.email": "E-Mail",
     "signup.role": "Rolle (optional)",
@@ -665,9 +665,9 @@ export const translations = {
       "Built 1918–1920. Reformed Friedenskirche. 800 seats. 20-meter nave. Revived as a city monastery since 2022.",
 
     // Signup (Waitlist mode)
-    "signup.label": "Waitlist",
-    "signup.headline": "Your spot awaits.",
-    "signup.sub": "100 spots. Secure your place on the waitlist now.",
+    "signup.label": "Registration",
+    "signup.headline": "Register now.",
+    "signup.sub": "Secure your spot at the AI for Access Hackathon.",
     "signup.name": "First name",
     "signup.email": "Email",
     "signup.role": "Role (optional)",
