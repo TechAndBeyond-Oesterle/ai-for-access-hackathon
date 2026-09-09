@@ -209,6 +209,21 @@ export default function ChallengeForm({ lang }: Props) {
     }));
   }
 
+  function formatText(field: 'context' | 'problemStatement', textareaId: string, before: string, after = before) {
+    const textarea = document.getElementById(textareaId) as HTMLTextAreaElement | null;
+    if (!textarea) return;
+
+    const { selectionStart, selectionEnd } = textarea;
+    const value = form[field];
+    const selected = value.slice(selectionStart, selectionEnd) || (lang === 'de' ? 'Text' : 'text');
+    updateForm({ [field]: `${value.slice(0, selectionStart)}${before}${selected}${after}${value.slice(selectionEnd)}` });
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(selectionStart + before.length, selectionStart + before.length + selected.length);
+    });
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (isExample) return;
@@ -281,7 +296,7 @@ export default function ChallengeForm({ lang }: Props) {
   const errorStyle = { ...inputStyle, borderColor: 'var(--accent-alt)' };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-4xl mx-auto">
       <div>
         <p className="text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
           {isExample ? t('challenges.form.examples.blocked') : t('challenges.form.examples.label')}
@@ -357,13 +372,18 @@ export default function ChallengeForm({ lang }: Props) {
         <p className="text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
           {t('challenges.form.context.hint')}
         </p>
+        <div className="flex gap-1 mb-2" role="toolbar" aria-label={lang === 'de' ? 'Text formatieren' : 'Format text'}>
+          <button type="button" onClick={() => formatText('context', 'challenge-context', '**')} disabled={isExample} className="min-w-9 px-2 py-1 rounded-md border text-sm font-bold disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Fett' : 'Bold'} title={lang === 'de' ? 'Fett' : 'Bold'}>B</button>
+          <button type="button" onClick={() => formatText('context', 'challenge-context', '_')} disabled={isExample} className="min-w-9 px-2 py-1 rounded-md border text-sm italic disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Kursiv' : 'Italic'} title={lang === 'de' ? 'Kursiv' : 'Italic'}>I</button>
+          <button type="button" onClick={() => formatText('context', 'challenge-context', '- ', '')} disabled={isExample} className="px-2.5 py-1 rounded-md border text-sm disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Aufzählung' : 'Bulleted list'} title={lang === 'de' ? 'Aufzählung' : 'Bulleted list'}>• {lang === 'de' ? 'Liste' : 'List'}</button>
+        </div>
         <textarea
           id="challenge-context"
-          rows={7}
+          rows={10}
           value={form.context}
           onChange={(e) => updateForm({ context: e.target.value })}
           disabled={isExample}
-          className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
+          className="w-full min-h-64 resize-y px-4 py-3 rounded-xl border text-base leading-relaxed transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
           style={errors.context ? errorStyle : inputStyle}
         />
         {errors.context && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.context}</p>}
@@ -376,13 +396,18 @@ export default function ChallengeForm({ lang }: Props) {
         <p className="text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
           {t('challenges.form.problemStatement.hint')}
         </p>
+        <div className="flex gap-1 mb-2" role="toolbar" aria-label={lang === 'de' ? 'Text formatieren' : 'Format text'}>
+          <button type="button" onClick={() => formatText('problemStatement', 'challenge-problem', '**')} disabled={isExample} className="min-w-9 px-2 py-1 rounded-md border text-sm font-bold disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Fett' : 'Bold'} title={lang === 'de' ? 'Fett' : 'Bold'}>B</button>
+          <button type="button" onClick={() => formatText('problemStatement', 'challenge-problem', '_')} disabled={isExample} className="min-w-9 px-2 py-1 rounded-md border text-sm italic disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Kursiv' : 'Italic'} title={lang === 'de' ? 'Kursiv' : 'Italic'}>I</button>
+          <button type="button" onClick={() => formatText('problemStatement', 'challenge-problem', '- ', '')} disabled={isExample} className="px-2.5 py-1 rounded-md border text-sm disabled:opacity-50" style={inputStyle} aria-label={lang === 'de' ? 'Aufzählung' : 'Bulleted list'} title={lang === 'de' ? 'Aufzählung' : 'Bulleted list'}>• {lang === 'de' ? 'Liste' : 'List'}</button>
+        </div>
         <textarea
           id="challenge-problem"
-          rows={7}
+          rows={10}
           value={form.problemStatement}
           onChange={(e) => updateForm({ problemStatement: e.target.value })}
           disabled={isExample}
-          className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
+          className="w-full min-h-64 resize-y px-4 py-3 rounded-xl border text-base leading-relaxed transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
           style={errors.problemStatement ? errorStyle : inputStyle}
         />
         {errors.problemStatement && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.problemStatement}</p>}
