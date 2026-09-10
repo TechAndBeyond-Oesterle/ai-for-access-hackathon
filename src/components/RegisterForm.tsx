@@ -10,7 +10,7 @@ const DISCORD_INVITE = 'https://discord.gg/yaZTAY2yx';
 
 const ROLES = ['Participant', 'Mentor/Coach', 'Volunteer', 'Jury', 'Organizer', 'Sponsor/Partner', 'Other'] as const;
 const DIETARY = ['No preference', 'Vegetarian', 'Vegan', 'Pescatarian', 'Halal', 'Kosher'] as const;
-const INFO_SESSIONS = ['Sep 18 18:30-19:30', 'Sep 25 18:30-19:30', '23.10 18:00 bis 19:05', 'Not attending'] as const;
+const INFO_SESSIONS = ['18.09. 18:30–19:30', '25.09. 18:30–19:30', '23.10. 18:00–19:05', 'Not attending'] as const;
 const CHILDCARE_DAYS = ['Friday', 'Saturday'] as const;
 const PHOTO_CONSENT = ['Yes', 'No', 'Ask me first'] as const;
 
@@ -197,6 +197,19 @@ export default function RegisterForm({ lang }: Props) {
       </Field>
 
       <Field label={de ? 'Info-Session' : 'Info session'}>
+        <p
+          className="mb-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-sm"
+          style={{
+            color: 'var(--fg-muted)',
+            borderColor: 'color-mix(in srgb, #3b82f6 35%, transparent)',
+            background: 'color-mix(in srgb, #3b82f6 8%, var(--bg-raised))',
+          }}
+        >
+          <span aria-hidden="true" style={{ color: '#3b82f6' }}>ⓘ</span>
+          {de
+            ? 'Die Info-Sessions finden online statt. Die Einladung zum Online-Meeting folgt per E-Mail.'
+            : 'The info sessions will be held online. You will receive the meeting invitation by email.'}
+        </p>
         <div className="flex flex-col gap-2">
           {INFO_SESSIONS.map((s) => (
             <label key={s} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
