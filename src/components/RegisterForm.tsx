@@ -10,7 +10,7 @@ const DISCORD_INVITE = 'https://discord.gg/yaZTAY2yx';
 
 const ROLES = ['Participant', 'Mentor/Coach', 'Volunteer', 'Jury', 'Organizer', 'Sponsor/Partner', 'Other'] as const;
 const DIETARY = ['No preference', 'Vegetarian', 'Vegan', 'Pescatarian', 'Halal', 'Kosher'] as const;
-const INFO_SESSIONS = ['Sep 18 18:30-19:30', 'Sep 25 18:30-19:30', 'Not attending'] as const;
+const INFO_SESSIONS = ['Sep 18 18:30-19:30', 'Sep 25 18:30-19:30', '23.10 18:00 bis 19:05', 'Not attending'] as const;
 const CHILDCARE_DAYS = ['Friday', 'Saturday'] as const;
 const PHOTO_CONSENT = ['Yes', 'No', 'Ask me first'] as const;
 
