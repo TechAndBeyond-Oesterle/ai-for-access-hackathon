@@ -110,7 +110,9 @@ export const translations = {
       "Sponsor-Unternehmen reichen vorab konkrete Problemstellungen ein. Du wählst am Freitagabend frei.",
     "challenges.path2.title": "Eigene Idee",
     "challenges.path2.desc":
-      "Bring deine Idee mit oder pitche sie am Freitagabend.",
+      "Bring deine Idee mit und finde am Freitagabend ein Team.",
+    "challenges.path2.note":
+      "Wenn du deine eigene Idee umsetzen möchtest, musst du sie vorher als Challenge einreichen.",
     "challenges.path3.title": "Spontan",
     "challenges.path3.desc":
       "Komm ohne Idee und schliess dich einem Team an — bei einer Challenge oder gepitchten Idee.",
@@ -139,7 +141,7 @@ export const translations = {
     "challenges.form.label": "Challenge einreichen",
     "challenges.form.headline": "Reicht eure Challenge ein.",
     "challenges.form.sub":
-      "Kostenlos für Unternehmen. Wir melden uns nach der Prüfung bei euch.",
+      "Kostenlos einreichen. Wir melden uns nach der Prüfung bei euch.",
     "challenges.form.examples.label": "Noch unsicher, wie eine Challenge aussieht? Beispiel laden:",
     "challenges.form.examples.blocked":
       "Das ist ein Beispiel — die Felder sind gesperrt und können nicht eingereicht werden.",
@@ -150,13 +152,16 @@ export const translations = {
       "Ein knackiger Satz, der Teilnehmenden Lust auf eure Challenge macht — wird ggf. öffentlich angezeigt.",
     "challenges.form.context": "Warum diese Challenge?",
     "challenges.form.context.hint":
-      "Erläutere den Kontext: In welcher Situation befindet sich euer Unternehmen, und weshalb ist diese Fragestellung relevant?",
+      "Erläutere den Kontext: Welche Situation oder welches Bedürfnis steckt dahinter, und weshalb ist die Fragestellung relevant?",
     "challenges.form.problemStatement": "Was ist die Challenge?",
     "challenges.form.problemStatement.hint":
       "Beschreibe möglichst konkret das Problem, das gelöst werden soll — noch ohne an Lösungen zu denken.",
     "challenges.form.resources": "Daten & Ressourcen (optional)",
     "challenges.form.resources.hint":
       "Könnt ihr Daten, APIs oder anderes Material zur Verfügung stellen, mit dem Teams arbeiten können?",
+    "challenges.form.type": "Wer reicht die Challenge ein?",
+    "challenges.form.type.company": "Unternehmen / Organisation",
+    "challenges.form.type.personal": "Ich reiche meine eigene Idee ein",
     "challenges.form.company": "Unternehmen / Organisation",
     "challenges.form.contactName": "Ansprechperson",
     "challenges.form.contact": "Kontakt-E-Mail",
@@ -518,7 +523,9 @@ export const translations = {
     "challenges.path1.desc":
       "Sponsor companies submit concrete problem statements. You choose freely on Friday evening.",
     "challenges.path2.title": "Your Own Idea",
-    "challenges.path2.desc": "Bring your idea or pitch it on Friday.",
+    "challenges.path2.desc": "Bring your idea and find a team on Friday evening.",
+    "challenges.path2.note":
+      "If you want to work on your own idea, you must submit it as a challenge beforehand.",
     "challenges.path3.title": "Spontaneous",
     "challenges.path3.desc":
       "Come without an idea and join a team — at a challenge or a pitched idea.",
@@ -546,7 +553,7 @@ export const translations = {
     "challenges.form.label": "Submit a Challenge",
     "challenges.form.headline": "Submit your challenge.",
     "challenges.form.sub":
-      "Free for companies. We'll get back to you after reviewing it.",
+      "Free to submit. We'll get back to you after reviewing it.",
     "challenges.form.examples.label": "Not sure what a challenge looks like? Load an example:",
     "challenges.form.examples.blocked":
       "This is an example — fields are locked and it can't be submitted.",
@@ -557,13 +564,16 @@ export const translations = {
       "A short, punchy sentence to get participants excited about your challenge — may be shown publicly.",
     "challenges.form.context": "Why this challenge?",
     "challenges.form.context.hint":
-      "Explain the context: what situation is your company in, and why does this question matter?",
+      "Explain the context: what situation or need is behind the idea, and why does this question matter?",
     "challenges.form.problemStatement": "What is the challenge?",
     "challenges.form.problemStatement.hint":
       "Describe the problem to be solved as concretely as possible — without thinking about solutions yet.",
     "challenges.form.resources": "Data & Resources (optional)",
     "challenges.form.resources.hint":
       "Can you provide data, APIs, or other material for teams to work with?",
+    "challenges.form.type": "Who is submitting the challenge?",
+    "challenges.form.type.company": "Company / organisation",
+    "challenges.form.type.personal": "I'm submitting my own idea",
     "challenges.form.company": "Company / Organisation",
     "challenges.form.contactName": "Contact Person",
     "challenges.form.contact": "Contact Email",

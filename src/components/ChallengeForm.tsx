@@ -24,6 +24,7 @@ const AVAILABILITY_OPTIONS = [
 // ponytail: mock challenges from non-technical partners (city, non-profit, association) so
 // first-time submitters see what a filled-in challenge looks like. Plain data, no i18n keys.
 type ExampleForm = {
+  isCompanyChallenge: boolean;
   title: string;
   teaser: string;
   context: string;
@@ -41,6 +42,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '🏛️ Stadtverwaltung',
       data: {
+        isCompanyChallenge: true,
         title: 'Verständliche Baugesuche für alle',
         teaser: 'Baugesuche in Leichter Sprache — damit jede:r versteht, was gebaut wird.',
         context:
@@ -59,6 +61,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '❤️ Sozialorganisation',
       data: {
+        isCompanyChallenge: true,
         title: 'Termine bei der Spitex einfacher buchen',
         teaser: 'Ältere Menschen sollen Pflegetermine ohne Telefon-Marathon buchen können.',
         context:
@@ -77,6 +80,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '🎓 Branchenverband',
       data: {
+        isCompanyChallenge: true,
         title: 'Automatisches Matching: Lehrstelle ↔ Unterstützungsbedarf',
         teaser: 'Lehrstellen und Zugänglichkeits-Anforderungen algorithmisch zusammenbringen — nicht nur eine Liste.',
         context:
@@ -97,6 +101,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '🏛️ City Administration',
       data: {
+        isCompanyChallenge: true,
         title: 'Plain-language building permits for everyone',
         teaser: "Turn building permit notices into Easy Language so everyone understands what's being built.",
         context:
@@ -114,6 +119,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '❤️ Social Services Org',
       data: {
+        isCompanyChallenge: true,
         title: 'Making it easier to book home-care appointments',
         teaser: 'Older adults should be able to book care appointments without a phone marathon.',
         context:
@@ -131,6 +137,7 @@ const EXAMPLES: Record<Lang, { badge: string; data: ExampleForm }[]> = {
     {
       badge: '🎓 Trade Association',
       data: {
+        isCompanyChallenge: true,
         title: 'Automated matching: apprenticeship ↔ support needs',
         teaser: 'Match apprenticeships and accessibility requirements algorithmically — not just list them.',
         context:
@@ -155,6 +162,7 @@ function donateUrl(lang: Lang) {
 }
 
 const BLANK_FORM: ExampleForm = {
+  isCompanyChallenge: true,
   title: '',
   teaser: '',
   context: '',
@@ -193,7 +201,7 @@ export default function ChallengeForm({ lang }: Props) {
     if (!form.title.trim()) errs.title = t('challenges.form.error.title');
     if (!form.context.trim()) errs.context = t('challenges.form.error.context');
     if (!form.problemStatement.trim()) errs.problemStatement = t('challenges.form.error.problemStatement');
-    if (!form.company.trim()) errs.company = t('challenges.form.error.company');
+    if (form.isCompanyChallenge && !form.company.trim()) errs.company = t('challenges.form.error.company');
     if (!form.contactName.trim()) errs.contactName = t('challenges.form.error.contactName');
     if (!form.contactAddress.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactAddress))
       errs.contactAddress = t('challenges.form.error.contact');
@@ -431,21 +439,51 @@ export default function ChallengeForm({ lang }: Props) {
         />
       </div>
 
-      <div>
-        <label htmlFor="challenge-company" className="block mb-1.5" style={labelStyle}>
-          {t('challenges.form.company')} *
-        </label>
-        <input
-          id="challenge-company"
-          type="text"
-          value={form.company}
-          onChange={(e) => updateForm({ company: e.target.value })}
-          disabled={isExample}
-          className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
-          style={errors.company ? errorStyle : inputStyle}
-        />
-        {errors.company && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.company}</p>}
-      </div>
+      <fieldset>
+        <legend className="block mb-1.5" style={labelStyle}>
+          {t('challenges.form.type')}
+        </legend>
+        <div className="flex flex-wrap gap-4">
+          <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+            <input
+              type="radio"
+              name="challenge-type"
+              checked={form.isCompanyChallenge}
+              onChange={() => updateForm({ isCompanyChallenge: true })}
+              disabled={isExample}
+            />
+            {t('challenges.form.type.company')}
+          </label>
+          <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+            <input
+              type="radio"
+              name="challenge-type"
+              checked={!form.isCompanyChallenge}
+              onChange={() => updateForm({ isCompanyChallenge: false, company: '' })}
+              disabled={isExample}
+            />
+            {t('challenges.form.type.personal')}
+          </label>
+        </div>
+      </fieldset>
+
+      {form.isCompanyChallenge && (
+        <div>
+          <label htmlFor="challenge-company" className="block mb-1.5" style={labelStyle}>
+            {t('challenges.form.company')} *
+          </label>
+          <input
+            id="challenge-company"
+            type="text"
+            value={form.company}
+            onChange={(e) => updateForm({ company: e.target.value })}
+            disabled={isExample}
+            className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
+            style={errors.company ? errorStyle : inputStyle}
+          />
+          {errors.company && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.company}</p>}
+        </div>
+      )}
 
       <div>
         <label htmlFor="challenge-contact-name" className="block mb-1.5" style={labelStyle}>

@@ -5,6 +5,9 @@ export const prerender = false;
 
 const AIRTABLE_TABLE_ID = 'tbluAK4cJ5wfSdnnz';
 
+export const companyOrOrganisation = (isCompanyChallenge: boolean, company?: string) =>
+  isCompanyChallenge ? company : 'Personal idea';
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
@@ -14,6 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
       context,
       problemStatement,
       resources,
+      isCompanyChallenge,
       company,
       contactName,
       contactAddress,
@@ -25,7 +29,8 @@ export const POST: APIRoute = async ({ request }) => {
       !title ||
       !context ||
       !problemStatement ||
-      !company ||
+      typeof isCompanyChallenge !== 'boolean' ||
+      (isCompanyChallenge && !company) ||
       !contactName ||
       !contactAddress ||
       !Array.isArray(availability) ||
@@ -46,7 +51,8 @@ export const POST: APIRoute = async ({ request }) => {
         Context: context,
         'Problem Statement': problemStatement,
         Resources: resources || undefined,
-        'Company or Organisation': company,
+        'Company Challenge': isCompanyChallenge,
+        'Company or Organisation': companyOrOrganisation(isCompanyChallenge, company),
         'Contact Name': contactName,
         'Contact Address': contactAddress,
         Availability: availability,
