@@ -18,6 +18,8 @@ const hosts = [
       : 'Powercoders is a non-profit program enabling refugees and migrants to enter the tech industry. Since 2016, over 500 graduates have launched careers in IT. For their 10th anniversary, Powercoders organizes this hackathon — a statement that AI further democratizes access.',
     url: 'https://powercoders.org',
     urlLabel: 'powercoders.org',
+    logo: '/images/logos/powercoders.svg',
+    logoAlt: 'Powercoders',
   },
   {
     name: 'Jonas Österle',
@@ -27,6 +29,8 @@ const hosts = [
       : 'Jonas builds MVPs with an AI-first workflow — a one-person product team using Claude, Cursor & Co. as his architect toolkit. 7+ years in enterprise development (Full-Stack, .NET, Azure), then the leap to building his own products. He is the initiator and technical host of this hackathon: mentoring, AI tool setup, and proving that interdisciplinary teams can build real prototypes in 10 hours.',
     url: 'https://jonasoesterle.de/tech',
     urlLabel: 'jonasoesterle.de/tech',
+    logo: '/images/logos/tech-and-beyond.svg',
+    logoAlt: 'Tech & Beyond',
     skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Go', 'Claude', 'Cursor', 'AI-First'],
   },
 ];
@@ -50,24 +54,18 @@ const hosts = [
       {hosts.map((host) => (
         <div class="card-bold group p-8 sm:p-10 -mt-[2px]">
           <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
-            <!-- Avatar placeholder -->
+            <!-- Host wordmark, landscape tile so both logos read the same -->
             <div class="flex-shrink-0">
-              <div class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center overflow-hidden"
+              <div class="w-40 h-16 sm:w-48 sm:h-20 flex items-center justify-center overflow-hidden p-3 sm:p-4"
                 style="background: color-mix(in srgb, var(--accent) 10%, var(--bg-raised));"
               >
-                {host.name === 'Powercoders' ? (
-                  <span class="text-3xl font-display font-bold text-accent">P</span>
-                ) : (
-                  <img
-                    src="/images/logos/tech-and-beyond.webp"
-                    alt="Tech & Beyond"
-                    width="96"
-                    height="96"
-                    class="w-full h-full rounded-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                )}
+                <img
+                  src={host.logo}
+                  alt={host.logoAlt}
+                  class="max-w-full max-h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
 
