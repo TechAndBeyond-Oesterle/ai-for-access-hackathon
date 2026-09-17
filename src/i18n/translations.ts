@@ -240,10 +240,9 @@ export const translations = {
     "prizes.c1": "Impact",
     "prizes.c2": "AI-Einsatz",
     "prizes.c3": "Prototyp",
-    "prizes.c4": "Teamwork",
-    "prizes.c5": "Pitch",
+    "prizes.c4": "Pitch",
     "prizes.criteria.note":
-      "Jedes Projekt erhält einen Basis-Score zu vier Fragen: Desirable, Viable, Feasible, Ethical. Die fünf Kriterien oben fassen diesen Score zusammen. Die Gewichtung wird vor dem Event hier veröffentlicht. Das Endergebnis besteht zu 50 % aus der Jury-Wertung und zu 50 % aus dem Live-Voting aller Teilnehmenden.",
+      "Jedes Projekt erhält einen Basis-Score zu vier Fragen: Desirable, Viable, Feasible, Ethical. Die vier Kriterien oben fassen diesen Score zusammen. Die Gewichtung wird vor dem Event hier veröffentlicht. Das Endergebnis besteht zu 50 % aus der Jury-Wertung und zu 50 % aus dem Live-Voting aller Teilnehmenden.",
 
     // Sponsors
     "sponsors.label": "Partner & Sponsoren",
@@ -652,10 +651,9 @@ export const translations = {
     "prizes.c1": "Impact",
     "prizes.c2": "AI Usage",
     "prizes.c3": "Prototype",
-    "prizes.c4": "Teamwork",
-    "prizes.c5": "Pitch",
+    "prizes.c4": "Pitch",
     "prizes.criteria.note":
-      "Every project gets a base score on four questions: Desirable, Viable, Feasible, Ethical. The five criteria above summarize that score. Weights will be published here before the event. The final score is 50% jury and 50% live vote by all participants.",
+      "Every project gets a base score on four questions: Desirable, Viable, Feasible, Ethical. The four criteria above summarize that score. Weights will be published here before the event. The final score is 50% jury and 50% live vote by all participants.",
 
     // Sponsors
     "sponsors.label": "Partners & Sponsors",
