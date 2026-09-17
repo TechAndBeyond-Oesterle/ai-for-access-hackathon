@@ -76,7 +76,9 @@ const CATEGORIES = [
   ]},
 
   { name: '🤝 TEAMFINDUNG', channels: [
-    { name: 'challenges',       type: 'forum', readonly: true, post: ['challenge'], topic: '1 Post je Firmen-Challenge: Problem, Zielgruppe, Ressourcen, Owner.' },
+    // tags = die Category-Optionen der Airtable-Tabelle Challenges; challenges.mjs setzt sie je Post.
+    { name: 'challenges',       type: 'forum', readonly: true, post: ['challenge'], topic: '1 Post je Firmen-Challenge: Problem, Zielgruppe, Ressourcen, Owner.',
+      tags: ['Digital Inclusion', 'Legal Tech', 'Health', 'Employment', 'Education', 'Accessibility', 'Other'] },
     { name: 'ideen-marktplatz', type: 'forum', topic: '1 Post = 1 Idee. Der Thread wird euer Team-Chat-in-spe. Tags: Challenge / eigene Idee.' },
     { name: 'team-suche',       type: 'text',  topic: 'Suche/biete Skill: "Suche Designer" / "Biete Legal-Domain".' },
   ]},
@@ -132,6 +134,22 @@ const CATEGORIES = [
 // ---------------------------------------------------------------------------
 const log  = (...a) => console.log(...a);
 const step = (...a) => console.log(`${DRY ? '│ [dry]' : '│'}`, ...a);
+
+/**
+ * Forum-Tags angleichen: fehlende anlegen, vorhandene nie anfassen.
+ * Additiv, weil an einem Tag bereits Posts hängen können. Discord erlaubt 20 Tags
+ * pro Forum und 20 Zeichen je Name.
+ */
+async function ensureForumTags(channel, names) {
+  const have = new Set(channel.availableTags.map((t) => t.name.toLowerCase()));
+  const missing = names.filter((n) => !have.has(n.toLowerCase()));
+  if (!missing.length) return;
+  step(`    + Tags: ${missing.join(', ')}`);
+  if (DRY) return;
+  await channel
+    .setAvailableTags([...channel.availableTags, ...missing.map((name) => ({ name, moderated: false }))])
+    .catch((err) => console.warn(`│ ⚠️  Tags für #${channel.name}: ${err?.message || err}`));
+}
 
 function overwrites(guild, roleMap, spec) {
   const everyone = guild.roles.everyone.id;
@@ -205,11 +223,14 @@ async function ensureStructure(guild, roleMap) {
       if (existing) {
         step(`  ✓ ${ch.type.padEnd(12)} #${ch.name}`);
         if (!DRY && chOw.length) await existing.permissionOverwrites.set(chOw);
+        if (ch.tags) await ensureForumTags(existing, ch.tags);
       } else {
         step(`  + ${ch.type.padEnd(12)} #${ch.name}`);
+        if (ch.tags) step(`    + Tags: ${ch.tags.join(', ')}`);
         if (!DRY) await guild.channels.create({
           name: ch.name, type, parent: parentId, topic: ch.topic,
           permissionOverwrites: chOw.length ? chOw : undefined,
+          availableTags: ch.tags?.map((name) => ({ name, moderated: false })),
           reason: 'AI for Access setup',
         });
       }

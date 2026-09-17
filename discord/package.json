@@ -22,6 +22,13 @@
     "seed": "node seed.mjs",
     "seed:refresh": "node seed.mjs --refresh",
     "seed:teams": "node seed-teams.mjs",
+    "challenges:preview": "node challenges.mjs --preview",
+    "challenges:dry": "node challenges.mjs --post --dry-run",
+    "challenges": "node challenges.mjs --post",
+    "challenges:full": "node challenges.mjs --post --full",
+    "challenges:hide": "node challenges.mjs --hide",
+    "challenges:reveal": "node challenges.mjs --reveal",
+    "challenges:report": "node challenges.mjs --report",
     "avatar": "node bot-avatar.mjs"
   },
   "dependencies": {

@@ -195,6 +195,70 @@ Text … {#hilfe-und-support} wird zu einem echten Kanal-Link.
   mit Angabe der Zeichenzahl ab — dann in `…-1.md` / `…-2.md` aufteilen.
 - Die Reihenfolge der Posts folgt dem Dateinamen (deshalb ggf. `10-`, `20-` voranstellen).
 
+## Challenges (`challenges.mjs`)
+
+Bringt die freigegebenen Challenges aus Airtable als Forum-Posts nach `#challenges`.
+Einmal-Skript, kein Dauer-Feature im Bot: am Event-Tag muss dafür nichts laufen.
+Alles geht über REST, also **ohne privilegierte Intents und ohne Partials** (die braucht
+nur ein Live-Listener, den wir bewusst nicht haben).
+
+**Zwei getrennte Gates, beide manuell:**
+
+1. **Inhaltliche Freigabe** passiert in Airtable: `Status = Accepted`. Alles andere wird nie
+   gepostet. Damit gibt es keine zweite Wahrheit neben der Tabelle.
+2. **Sichtbarkeit** passiert hier. Das Forum bleibt für `@everyone` unsichtbar, die Threads
+   liegen fertig drin, am Samstagmorgen ein Rechte-Flip.
+
+```bash
+npm run challenges:preview  # Textabnahme in der Konsole, ganz ohne Discord (nur Airtable-PAT nötig)
+npm run challenges:hide     # #challenges für @everyone unsichtbar (einmal, vor dem Vorbereiten)
+npm run challenges:dry      # zeigt nur, was passieren würde
+npm run challenges          # Teaser-Fassung anlegen/aktualisieren (Freitag, Kick-off)
+npm run challenges:full     # dieselben Threads auf die Vollfassung heben (Samstag früh)
+npm run challenges:reveal   # Forum freischalten
+npm run challenges:report   # ✋-Reaktionen → "Challenge → Teams"
+node challenges.mjs --report --post-summary    # Übersicht zusätzlich nach #orga-intern
+node challenges.mjs --preview --full          # Vollfassung gegenlesen
+node challenges.mjs --preview --any-status    # auch Entwürfe, die noch nicht freigegeben sind
+```
+
+`--preview` braucht weder Token noch Server: es rendert die Posts genau so, wie sie in Discord
+landen würden, und zeigt die Zeichenzahl gegen das 2000er-Limit. Damit lassen sich die Texte
+abnehmen, bevor irgendwas im Server steht.
+
+**Zwei Stufen statt einer.** Freitagabend ist Teamfindung, Samstag wird gehackt. Stünden die
+Challenges erst Samstagmorgen im Server, würden sich die Teams Freitag ausschließlich um die
+eigenen Ideen aus `#ideen-marktplatz` bilden, und die Sponsor-Challenges fänden niemanden mehr.
+Deshalb Freitag die **Teaser-Fassung** (Titel, Sponsor, Fokus, ein Satz) und Samstagmorgen die
+**Vollfassung** (Kontext, Problem, Ressourcen, Ansprechperson). Gleiche Threads, gleiche
+Reaktionen, nur mehr Text: `--full` editiert, es entsteht nichts doppelt.
+
+Wer beides am selben Tag will, lässt Freitag einfach weg und ruft Samstag `--post --full`
+plus `--reveal` auf. Der Zeitpunkt steckt im Aufruf, nicht im Code.
+
+**Wiedererkennung** wie bei `posts.mjs`: ein Marker im Subtext des Startposts
+(`-# ⟨challenge:<recordId>⟩`). Der zweite Lauf editiert Titel und Text, statt neu zu posten.
+Archivierte Threads werden mitgesucht, damit nichts doppelt entsteht. `Category` wird als
+Forum-Tag gesetzt. Die sieben Tags legt `setup.mjs` am Forum an (additiv, bestehende bleiben
+unangetastet), sodass Teilnehmende Freitagabend nach Themenfeld filtern können.
+
+**Ein Record ohne Titel wird nicht gepostet**, sondern gemeldet. Unvollständige Airtable-Zeilen
+kommen vor, und `undefined` als Thread-Name lässt sich hinterher schlecht erklären.
+
+**Jury-Anreiz im Post.** Jede Challenge trägt den Hinweis, dass sie von Betroffenen kommt und
+deshalb mit **5/10 auf Desire** in die Jury-Matrix (Desire · Viable · Feasible · Ethical)
+startet, während eine eigene Idee diesen Punkt im Pitch erst erarbeiten muss. Das ist der
+Grund, warum jemand Freitagabend eine Challenge statt der eigenen Idee wählt. Text als
+Konstante `JURY_TEASER` oben im Skript.
+
+**Zuordnung Team → Challenge** über eine ✋-Reaktion auf dem Startpost, die das Skript beim
+Anlegen selbst setzt. Reaktionen sind persistenter Discord-Zustand und funktionieren auch,
+wenn der Bot gerade nicht läuft; ein Slash-Command täte das nicht. Mehrere Teams pro Challenge
+sind ausdrücklich erlaubt, ein Team darf auch mehrere markieren. `--report` rechnet über die
+`Team: `-Rollen zurück und markiert **Sponsor-Challenges ohne Team** mit ⚠️ — das ist die Liste,
+die am Challenge-Markt Samstagmorgen abgearbeitet wird. Wer noch kein Team hat, taucht als
+"ohne Team-Rolle" auf, statt verworfen zu werden.
+
 ## Scheduled Events (Fr/Sa-Timeline)
 
 Legt die komplette Programm-Timeline als Discord-Events an (Ort = Stadtkloster Frieden, Reminder für Teilnehmende).
