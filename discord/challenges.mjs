@@ -98,15 +98,19 @@ async function fetchAccepted() {
 const markerOf = (id) => `-# ⟨challenge:${id}⟩`;
 
 /**
- * Der Anreiz, der Freitagabend bei der Team-Bildung den Unterschied macht.
- * Eine eingereichte Challenge kommt von Betroffenen, der Bedarf ist damit belegt.
- * Die Jury startet sie deshalb bei 5/10 auf der Problem-Achse (Desire) der Matrix
- * Desire · Viable · Feasible · Ethical. Eine eigene Idee muss diesen Punkt im Pitch
- * erst erarbeiten. Skala und Achsen-Zuordnung: offener Punkt in HCK-10.
+ * Der Anreiz, der Freitagabend bei der Team-Bildung den Unterschied macht:
+ * Eine Sponsor-Challenge kommt von einer Organisation mit akutem Bedarf, der Bedarf ist
+ * damit belegt. Die Jury setzt dafür 5/10 auf der Problem-Achse (Desire) als **Mindestwert**
+ * an, Matrix Desire · Viable · Feasible · Ethical. Eine eigene Idee muss diesen Wert im
+ * Pitch erst erarbeiten.
+ *
+ * Gilt nur für Challenges mit „Company Challenge" = true. Persönliche Einreichungen
+ * bekommen den Absatz nicht, sonst wäre der Vorteil keiner.
+ * Skala (1-10) und Achsen-Zuordnung: offener Punkt in HCK-27.
  */
-const JURY_TEASER = '**Head start with the jury:** this challenge comes from people who live the '
-  + 'problem, so the need is already proven. It enters the jury matrix '
-  + '(Desire · Viable · Feasible · Ethical) at **5/10 on Desire**. Bring your own idea and you '
+const JURY_TEASER = '**Head start with the jury:** this challenge comes from an organisation '
+  + 'facing the problem right now, so the need is proven. The jury scores it **at least 5/10 '
+  + 'on Desire** (matrix: Desire · Viable · Feasible · Ethical). Bring your own idea and you '
   + 'argue that score from scratch.';
 
 /**
@@ -141,7 +145,7 @@ function body(rec, full) {
     || clip(plain(f['Summary (Problem Statement)']), 300);
   if (teaser) lines.push('', teaser);
 
-  lines.push('', JURY_TEASER);
+  if (f['Company Challenge']) lines.push('', JURY_TEASER);
 
   if (!full) {
     lines.push('', '_Full brief goes live on Saturday morning._');
@@ -202,6 +206,7 @@ async function indexThreads(forum) {
 
 /** Forum-Tags aus dem Category-Feld — nur was es im Forum schon gibt. */
 function tagIdsFor(forum, categories = []) {
+  if (!forum.availableTags.length) return { ids: [], missing: [] }; // Forum führt bewusst keine Tags
   const wanted = categories.map((c) => c.toLowerCase());
   const hits = forum.availableTags.filter((t) => wanted.includes(t.name.toLowerCase()));
   const missing = categories.filter(

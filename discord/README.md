@@ -198,7 +198,9 @@ Text … {#hilfe-und-support} wird zu einem echten Kanal-Link.
 ## Challenges (`challenges.mjs`)
 
 Bringt die freigegebenen Challenges aus Airtable als Forum-Posts nach `#challenges`.
-Einmal-Skript, kein Dauer-Feature im Bot: am Event-Tag muss dafür nichts laufen.
+Einmal-Skript, kein Dauer-Feature im Bot: am Event-Tag muss dafür nichts laufen. Es läuft
+**lokal, nicht im Container**: Das Dockerfile nimmt nur `bot.mjs` samt Rollen-Buttons mit,
+alle Einmal-Werkzeuge (`setup.mjs`, `posts.mjs`, `events.mjs`, `challenges.mjs`) bleiben außen vor.
 Alles geht über REST, also **ohne privilegierte Intents und ohne Partials** (die braucht
 nur ein Live-Listener, den wir bewusst nicht haben).
 
@@ -238,18 +240,19 @@ plus `--reveal` auf. Der Zeitpunkt steckt im Aufruf, nicht im Code.
 
 **Wiedererkennung** wie bei `posts.mjs`: ein Marker im Subtext des Startposts
 (`-# ⟨challenge:<recordId>⟩`). Der zweite Lauf editiert Titel und Text, statt neu zu posten.
-Archivierte Threads werden mitgesucht, damit nichts doppelt entsteht. `Category` wird als
-Forum-Tag gesetzt. Die sieben Tags legt `setup.mjs` am Forum an (additiv, bestehende bleiben
-unangetastet), sodass Teilnehmende Freitagabend nach Themenfeld filtern können.
+Archivierte Threads werden mitgesucht, damit nichts doppelt entsteht. **Ohne Forum-Tags** (Entscheidung 17.09.): Bei einer einstelligen Zahl an Challenges ist eine
+Filterleiste mehr Bedienoberfläche als Nutzen. Legt jemand später doch Tags im Forum an, setzt
+das Skript passende `Category`-Werte automatisch; führt das Forum keine Tags, bleibt es still.
 
 **Ein Record ohne Titel wird nicht gepostet**, sondern gemeldet. Unvollständige Airtable-Zeilen
 kommen vor, und `undefined` als Thread-Name lässt sich hinterher schlecht erklären.
 
-**Jury-Anreiz im Post.** Jede Challenge trägt den Hinweis, dass sie von Betroffenen kommt und
-deshalb mit **5/10 auf Desire** in die Jury-Matrix (Desire · Viable · Feasible · Ethical)
-startet, während eine eigene Idee diesen Punkt im Pitch erst erarbeiten muss. Das ist der
-Grund, warum jemand Freitagabend eine Challenge statt der eigenen Idee wählt. Text als
-Konstante `JURY_TEASER` oben im Skript.
+**Jury-Anreiz im Post.** Sponsor-Challenges tragen den Hinweis, dass der Bedarf belegt ist und
+die Jury sie deshalb mit **mindestens 5/10 auf Desire** bewertet (Matrix: Desire · Viable ·
+Feasible · Ethical), während eine eigene Idee diesen Wert im Pitch erst erarbeiten muss. Das ist
+der Grund, warum jemand Freitagabend eine Challenge statt der eigenen Idee wählt. Persönliche
+Einreichungen bekommen den Absatz nicht, sonst wäre der Vorteil keiner. Text als Konstante
+`JURY_TEASER` oben im Skript, Skala und Achsen siehe HCK-27.
 
 **Zuordnung Team → Challenge** über eine ✋-Reaktion auf dem Startpost, die das Skript beim
 Anlegen selbst setzt. Reaktionen sind persistenter Discord-Zustand und funktionieren auch,
