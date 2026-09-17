@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { POLLS, getPoll, type Poll } from '../../../lib/polls';
+import type { Lang } from '../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  const langs: Lang[] = ['de', 'en'];
+  return langs.flatMap((lang) =>
+    Object.keys(POLLS).map((event) => ({ params: { lang, event } })),
+  );
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const event = String(Astro.params.event);
+const poll = getPoll(event) as Poll;
+
+const title = `${poll.title} — AI for Access`;
+const resultsHref = `/${lang}/poll/${event}/results`;
+---
+
+<BaseLayout title={title}>
+  <main class="mx-auto max-w-2xl px-5 py-10">
+    <header class="mb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-accent">AI for Access</p>
+      <h1 class="font-display text-4xl sm:text-5xl leading-none mt-2">{poll.title}</h1>
+      <p class="text-muted mt-3">{poll.subtitle}</p>
+    </header>
+
+    <form id="poll-form" class="space-y-10" data-event={event}>
+      {poll.questions.map((q, i) => (
+        <fieldset class="card-bold p-5" data-question={q.id} data-type={q.type}>
+          <legend class="font-display text-2xl leading-tight px-2">
+            <span class="text-accent">{i + 1}.</span> {q.text}
+          </legend>
+
+          {q.type === 'single' && (
+            <div class="mt-4 space-y-2">
+              {q.options.map((option) => (
+                <label class="flex items-start gap-3 border-2 border-transparent bg-theme p-4 cursor-pointer hover:border-accent transition-colors">
+                  <input
+                    type="radio"
+                    name={q.id}
+                    value={option}
+                    class="mt-1 h-5 w-5 shrink-0 accent-[var(--accent)]"
+                  />
+                  <span class="text-base leading-snug">{option}</span>
+                </label>
+              ))}
+              {q.comment && (
+                <div class="pt-3">
+                  <label class="block text-sm font-medium mb-2" for={q.comment.id}>
+                    {q.comment.label}
+                  </label>
+                  <textarea
+                    id={q.comment.id}
+                    name={q.comment.id}
+                    rows="3"
+                    maxlength={q.comment.maxLength}
+                    class="w-full border-2 border-[color-mix(in_srgb,var(--fg)_15%,transparent)] bg-theme p-3 text-base focus:border-accent focus:outline-none"
+                  ></textarea>
+                  <p class="text-xs text-muted mt-1">
+                    <span data-count-for={q.comment.id}>0</span>/{q.comment.maxLength}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {q.type === 'slider' && (
+            <div class="mt-6 px-2">
+              <div class="flex items-baseline justify-between">
+                <span class="font-mono text-xs uppercase tracking-wider text-muted">{q.minLabel}</span>
+                <span class="brutal-number text-accent" data-slider-value={q.id}>0</span>
+                <span class="font-mono text-xs uppercase tracking-wider text-muted text-right">{q.maxLabel}</span>
+              </div>
+              <input
+                type="range"
+                name={q.id}
+                min={q.min}
+                max={q.max}
+                step="1"
+                value="0"
+                class="w-full mt-3 h-10 accent-[var(--accent)]"
+              />
+            </div>
+          )}
+
+          {q.type === 'multi' && (
+            <div class="mt-4 space-y-5">
+              {q.groups.map((group) => (
+                <div>
+                  {group.label && (
+                    <p class="font-mono text-xs uppercase tracking-widest text-muted mb-2">{group.label}</p>
+                  )}
+                  <div class="space-y-2">
+                    {group.options.map((option) => (
+                      <label class="flex items-start gap-3 border-2 border-transparent bg-theme p-4 cursor-pointer hover:border-accent transition-colors">
+                        <input
+                          type="checkbox"
+                          name={q.id}
+                          value={option}
+                          class="mt-1 h-5 w-5 shrink-0 accent-[var(--accent)]"
+                        />
+                        <span class="text-base leading-snug">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </fieldset>
+      ))}
+
+      <p id="poll-error" class="hidden text-accent font-medium" role="alert"></p>
+
+      <button
+        type="submit"
+        class="w-full bg-accent text-white font-display text-3xl tracking-wide py-5 hover:opacity-90 transition-opacity disabled:opacity-50"
+      >
+        Send
+      </button>
+    </form>
+
+    <div id="poll-thanks" class="hidden text-center py-16">
+      <p class="brutal-number text-accent">Thanks</p>
+      <p class="text-lg mt-4">Your answers are in.</p>
+      <a
+        href={resultsHref}
+        class="inline-block mt-8 border-2 border-accent text-accent font-display text-2xl px-8 py-3 hover:bg-accent hover:text-white transition-colors"
+      >
+        See live results
+      </a>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('poll-form') as HTMLFormElement | null;
+    if (form) {
+      const event = form.dataset.event as string;
+      const errorBox = document.getElementById('poll-error') as HTMLElement;
+      const thanks = document.getElementById('poll-thanks') as HTMLElement;
+      const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+      const storageKey = `poll:${event}:sessionKey`;
+      let sessionKey = '';
+      try {
+        sessionKey = localStorage.getItem(storageKey) || '';
+        if (!sessionKey) {
+          sessionKey = crypto.randomUUID();
+          localStorage.setItem(storageKey, sessionKey);
+        }
+      } catch {
+        sessionKey = crypto.randomUUID();
+      }
+
+      // Slider readout
+      form.querySelectorAll<HTMLInputElement>('input[type=range]').forEach((input) => {
+        const out = form.querySelector(`[data-slider-value="${input.name}"]`);
+        const sync = () => { if (out) out.textContent = input.value; };
+        input.addEventListener('input', sync);
+        sync();
+      });
+
+      // Comment counter
+      form.querySelectorAll<HTMLTextAreaElement>('textarea').forEach((area) => {
+        const out = form.querySelector(`[data-count-for="${area.name}"]`);
+        const sync = () => { if (out) out.textContent = String(area.value.length); };
+        area.addEventListener('input', sync);
+        sync();
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBox.classList.add('hidden');
+        button.disabled = true;
+
+        const answers: Record<string, unknown> = {};
+        form.querySelectorAll<HTMLElement>('[data-question]').forEach((set) => {
+          const id = set.dataset.question as string;
+          const type = set.dataset.type;
+          if (type === 'single') {
+            const checked = set.querySelector<HTMLInputElement>('input[type=radio]:checked');
+            if (checked) answers[id] = checked.value;
+            const area = set.querySelector<HTMLTextAreaElement>('textarea');
+            if (area && area.value.trim()) answers[area.name] = area.value.trim();
+          } else if (type === 'slider') {
+            const range = set.querySelector<HTMLInputElement>('input[type=range]');
+            if (range) answers[id] = Number(range.value);
+          } else if (type === 'multi') {
+            const checked = Array.from(
+              set.querySelectorAll<HTMLInputElement>('input[type=checkbox]:checked'),
+            ).map((i) => i.value);
+            if (checked.length) answers[id] = checked;
+          }
+        });
+
+        try {
+          const res = await fetch(`/api/poll/${event}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionKey, answers }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Something went wrong');
+          form.classList.add('hidden');
+          thanks.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          errorBox.textContent = String((err as Error).message);
+          errorBox.classList.remove('hidden');
+          button.disabled = false;
+        }
+      });
+    }
+  </script>
+</BaseLayout>

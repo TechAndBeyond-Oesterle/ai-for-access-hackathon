@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { POLLS, getPoll, type Poll } from '../../../../lib/polls';
+import type { Lang } from '../../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  const langs: Lang[] = ['de', 'en'];
+  return langs.flatMap((lang) =>
+    Object.keys(POLLS).map((event) => ({ params: { lang, event } })),
+  );
+}
+
+const lang = (Astro.params.lang as Lang) || 'de';
+const event = String(Astro.params.event);
+const poll = getPoll(event) as Poll;
+const title = `${poll.title} — live results`;
+---
+
+<BaseLayout title={title}>
+  <main class="mx-auto max-w-5xl px-6 py-8" data-event={event}>
+    <header class="flex flex-wrap items-end justify-between gap-4 border-b-2 border-accent pb-4">
+      <div>
+        <p class="font-mono text-sm uppercase tracking-widest text-accent">Live results</p>
+        <h1 class="font-display text-5xl sm:text-6xl leading-none mt-1">{poll.title}</h1>
+      </div>
+      <div class="text-right">
+        <p class="brutal-number text-accent" id="poll-total">0</p>
+        <p class="font-mono text-sm uppercase tracking-widest text-muted">answers</p>
+      </div>
+    </header>
+
+    <div id="poll-results" class="mt-10 space-y-12"></div>
+
+    <p class="mt-12 font-mono text-xs uppercase tracking-widest text-muted" id="poll-status">
+      Updating every 5 seconds
+    </p>
+  </main>
+
+  <style>
+    .bar-track {
+      background: color-mix(in srgb, var(--fg) 8%, transparent);
+      height: 2.5rem;
+    }
+    .bar-fill {
+      background: var(--accent);
+      height: 100%;
+      transition: width 0.4s ease;
+      min-width: 2px;
+    }
+    .slider-col {
+      background: var(--accent);
+      transition: height 0.4s ease;
+      min-height: 2px;
+    }
+  </style>
+
+  <script>
+    const root = document.querySelector('main[data-event]') as HTMLElement | null;
+    if (root) {
+      const event = root.dataset.event as string;
+      const container = document.getElementById('poll-results') as HTMLElement;
+      const totalEl = document.getElementById('poll-total') as HTMLElement;
+      const statusEl = document.getElementById('poll-status') as HTMLElement;
+
+      const esc = (s: string) =>
+        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+      const pct = (count: number, total: number) =>
+        total > 0 ? Math.round((count / total) * 100) : 0;
+
+      function bars(options: { label: string; count: number }[], total: number) {
+        return options
+          .map((o) => `
+            <div>
+              <div class="flex items-baseline justify-between gap-4 mb-1">
+                <span class="text-xl sm:text-2xl leading-snug">${esc(o.label)}</span>
+                <span class="font-mono text-xl sm:text-2xl whitespace-nowrap">${pct(o.count, total)}% <span class="text-muted">(${o.count})</span></span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:${pct(o.count, total)}%"></div></div>
+            </div>`)
+          .join('');
+      }
+
+      function renderQuestion(q: any, index: number) {
+        let body = '';
+
+        if (q.type === 'slider') {
+          const max = Math.max(1, ...q.distribution.map((d: any) => d.count));
+          body = `
+            <div class="flex items-end gap-2 h-56 mt-6">
+              ${q.distribution
+                .map((d: any) => `
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <span class="font-mono text-lg">${d.count || ''}</span>
+                    <div class="slider-col w-full" style="height:${(d.count / max) * 100}%"></div>
+                    <span class="font-mono text-lg mt-2">${d.label}</span>
+                  </div>`)
+                .join('')}
+            </div>
+            <div class="flex justify-between font-mono text-sm uppercase tracking-widest text-muted mt-2">
+              <span>${esc(q.minLabel)}</span>
+              <span>average ${q.average === null ? '-' : q.average}</span>
+              <span>${esc(q.maxLabel)}</span>
+            </div>`;
+        } else if (q.type === 'multi') {
+          body = q.groups
+            .map((g: any) => `
+              <div class="mt-6">
+                ${g.label ? `<p class="font-mono text-sm uppercase tracking-widest text-accent mb-3">${esc(g.label)}</p>` : ''}
+                <div class="space-y-3">${bars(g.options, q.responses)}</div>
+              </div>`)
+            .join('');
+        } else {
+          body = `<div class="space-y-4 mt-6">${bars(q.options, q.responses)}</div>`;
+          if (q.comments && q.comments.length) {
+            body += `
+              <div class="mt-8 border-l-4 border-accent pl-5 space-y-3">
+                <p class="font-mono text-sm uppercase tracking-widest text-muted">Comments (${q.comments.length})</p>
+                ${q.comments.map((c: string) => `<p class="text-xl leading-snug">${esc(c)}</p>`).join('')}
+              </div>`;
+          }
+        }
+
+        return `
+          <section>
+            <h2 class="font-display text-3xl sm:text-4xl leading-tight">
+              <span class="text-accent">${index + 1}.</span> ${esc(q.text)}
+              <span class="font-mono text-base text-muted ml-2">${q.responses}</span>
+            </h2>
+            ${body}
+          </section>`;
+      }
+
+      async function load() {
+        try {
+          const res = await fetch(`/api/poll/${event}`, { cache: 'no-store' });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          totalEl.textContent = String(data.total);
+          container.innerHTML = data.questions
+            .map((q: any, i: number) => renderQuestion(q, i))
+            .join('');
+          statusEl.textContent = 'Updating every 5 seconds';
+        } catch (err) {
+          statusEl.textContent = `Could not load results: ${String((err as Error).message)}`;
+        }
+      }
+
+      load();
+      setInterval(load, 5000);
+    }
+  </script>
+</BaseLayout>
