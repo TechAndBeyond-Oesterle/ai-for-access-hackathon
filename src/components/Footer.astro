@@ -36,7 +36,20 @@ const idx = `/${lang}/`;
       </a>
       <span class="text-xl font-light" style="color: var(--fg-muted);">×</span>
       <a href="https://jonasoesterle.de/tech" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
-        <span class="w-10 h-10 rounded-xl flex items-center justify-center font-display text-sm font-bold" style="background: color-mix(in srgb, var(--accent-alt) 10%, transparent); color: var(--accent-alt);">T&B</span>
+        <span
+          class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 overflow-hidden border border-solid"
+          style="border-color: color-mix(in srgb, var(--fg) 14%, transparent);"
+        >
+          <img
+            src="/images/logos/tech-and-beyond.webp"
+            alt="Tech & Beyond"
+            width="40"
+            height="40"
+            class="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </span>
         <span class="text-sm font-semibold group-hover:text-accent transition-colors">Tech & Beyond</span>
       </a>
     </div>
