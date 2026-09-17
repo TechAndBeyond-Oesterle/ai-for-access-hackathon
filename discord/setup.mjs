@@ -116,7 +116,7 @@ const CATEGORIES = [
 
   { name: '🏆 JURY', private: ['jury'], channels: [
     { name: 'jury-intern', type: 'text' },
-    { name: 'bewertung',   type: 'text', topic: 'Scoring-Sheet (5 Kriterien: Impact/AI/Prototyp/Teamwork/Pitch) — Link hier.' },
+    { name: 'bewertung',   type: 'text', topic: 'Scoring-Sheet (4 Kriterien: Impact/AI/Prototyp/Pitch) — Link hier.' },
   ]},
 
   { name: '🏢 SPONSOREN', private: ['challenge'], channels: [

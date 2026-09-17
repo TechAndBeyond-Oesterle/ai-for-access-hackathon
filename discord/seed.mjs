@@ -138,11 +138,10 @@ Der komplette Fr/Sa-Ablauf ist als **Discord-Events** hinterlegt (oben unter „
   bewertung: [
 `⚖️ **Jury — Bewertung** (intern)
 
-Scoring-Sheet (5 Kriterien, je 1–5): **[Beispiel]** https://docs.google.com/spreadsheets/AI4A-jury
+Scoring-Sheet (4 Kriterien, je 1–5): **[Beispiel]** https://docs.google.com/spreadsheets/AI4A-jury
 • **Impact** — löst es ein echtes Zugangsproblem?
 • **AI-Einsatz** — wie smart genutzt?
 • **Prototyp** — funktioniert es?
-• **Teamwork** — Interdisziplinarität?
 • **Pitch** — Klarheit & Story?
 
 Ablauf: Speedrun-Videos in {#projekte} sichten → Top 10 → Live-Pitches bewerten → Konsens hier im Kanal.`,
