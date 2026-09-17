@@ -29,6 +29,10 @@
     "challenges:hide": "node challenges.mjs --hide",
     "challenges:reveal": "node challenges.mjs --reveal",
     "challenges:report": "node challenges.mjs --report",
+    "voting:dry": "node voting.mjs --poll --dry-run",
+    "voting": "node voting.mjs --poll",
+    "voting:result": "node voting.mjs --result",
+    "voting:end": "node voting.mjs --end",
     "avatar": "node bot-avatar.mjs"
   },
   "dependencies": {

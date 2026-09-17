@@ -262,6 +262,50 @@ sind ausdrücklich erlaubt, ein Team darf auch mehrere markieren. `--report` rec
 die am Challenge-Markt Samstagmorgen abgearbeitet wird. Wer noch kein Team hat, taucht als
 "ohne Team-Rolle" auf, statt verworfen zu werden.
 
+## Publikumspreis (`voting.mjs`)
+
+Die **native Discord-Umfrage** ist das Abstimmungswerkzeug für den Publikumspreis: kein
+zweites Tool, kein Login, alle sind ohnehin im Server. Die Optionen tippt am Samstagabend
+niemand ab, sie kommen aus den Projekt-Threads in `#projekte`.
+
+```bash
+npm run voting:dry      # zeigt die Optionen aus #projekte, postet nichts
+npm run voting          # Umfrage in #voting, Laufzeit 2 h
+node voting.mjs --poll --nominated --duration 2                # nur die Top 10 der Jury
+node voting.mjs --poll --duration 1 --channel orga-intern      # Probelauf, nur für die Orga sichtbar
+npm run voting:result   # Zwischenstand oder Endergebnis als Balken in der Konsole
+npm run voting:end      # Umfrage vorzeitig schließen
+```
+
+**Samstagabend, entlang des Programms:**
+
+| Zeit | Was passiert | Befehl |
+|------|--------------|--------|
+| 18:00 | Code Freeze, Teams posten ihr Projekt als Thread in `#projekte` | |
+| 18:45 | Jury Speedrun: die Jury markiert die Top 10 mit 🏅 auf dem Startpost | |
+| 19:45 | Pitches starten, die Umfrage läuft live mit | `node voting.mjs --poll --nominated --duration 2` |
+| ~21:10 | Umfrage schließen, Ergebnis holen | `npm run voting:end` + `npm run voting:result` |
+| 21:15 | Awards | |
+
+Die 🏅-Nominierung ist dieselbe Mechanik wie das ✋ bei den Challenges: ein Klick, kein Befehl,
+und der Zustand überlebt einen Bot-Neustart. Ohne `--nominated` landen alle Projekte in der
+Umfrage, was bis zu zehn Teams völlig in Ordnung ist.
+
+Das Programm sieht **Live-Voting während der Pitches** vor, die Umfrage startet also vor dem
+ersten Pitch und nicht danach. Wer zu früh abgestimmt hat, kann seine Stimme in Discord
+zurückziehen und neu setzen, solange die Umfrage läuft.
+
+**Grenzen, die von Discord kommen und nicht von uns:**
+
+- **Höchstens 10 Optionen**, also 10 Teams. Bei mehr bricht das Skript ab, statt still zu
+  kürzen: Dann braucht es vorher die Speedrun-Auswahl (Top 10), die im Konzept ohnehin steht.
+- **Eine Stimme pro Discord-Account**, nicht pro Person im Raum. Wer nicht im Server ist,
+  stimmt nicht mit ab. Für Gäste ohne Discord wäre Mentimeter die Alternative (HCK-29).
+- Laufzeit in ganzen Stunden, Minimum 1.
+
+Die **Jury-Bewertung läuft bewusst nicht** über eine Umfrage: vier Achsen je Team, Summen und
+Nachvollziehbarkeit gehören in ein Sheet, siehe HCK-27.
+
 ## Scheduled Events (Fr/Sa-Timeline)
 
 Legt die komplette Programm-Timeline als Discord-Events an (Ort = Stadtkloster Frieden, Reminder für Teilnehmende).
