@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getPoll } from '../../../lib/polls';
 import { countAnswers, validateSubmission, type PollResults } from '../../../lib/poll-answers';
 import { createRows, hasSubmitted, listRows, safeSessionKey } from '../../../lib/poll-store';
+import { resultsKeyOk } from '../../../lib/poll-auth';
 
 export const prerender = false;
 
@@ -51,10 +52,15 @@ export const POST: APIRoute = async ({ params, request }) => {
   return json({ ok: true, rows: validated.rows.length }, 200);
 };
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({ params, url }) => {
   const event = String(params.event ?? '');
   const poll = getPoll(event);
   if (!poll) return json({ error: 'Unknown poll' }, 404);
+
+  // Results are not public. Without the key the route stays inconspicuous: 404, not 401.
+  if (!resultsKeyOk(url.searchParams.get('key'), import.meta.env.POLL_RESULTS_KEY)) {
+    return json({ error: 'Unknown poll' }, 404);
+  }
 
   const headers = {
     'Cache-Control': 'public, s-maxage=5, stale-while-revalidate=30',

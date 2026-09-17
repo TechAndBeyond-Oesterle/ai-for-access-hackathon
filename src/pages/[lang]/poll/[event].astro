@@ -17,7 +17,6 @@ const event = String(Astro.params.event);
 const poll = getPoll(event) as Poll;
 
 const title = `${poll.title} — AI for Access`;
-const resultsHref = `/${lang}/poll/${event}/results`;
 ---
 
 <BaseLayout title={title}>
@@ -127,12 +126,7 @@ const resultsHref = `/${lang}/poll/${event}/results`;
     <div id="poll-thanks" class="hidden text-center py-16">
       <p class="brutal-number text-accent">Thanks</p>
       <p class="text-lg mt-4">Your answers are in.</p>
-      <a
-        href={resultsHref}
-        class="inline-block mt-8 border-2 border-accent text-accent font-display text-2xl px-8 py-3 hover:bg-accent hover:text-white transition-colors"
-      >
-        See live results
-      </a>
+      <p class="text-muted mt-2">We go through the results together in a moment.</p>
     </div>
   </main>
 

@@ -1,25 +1,26 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import { POLLS, getPoll, type Poll } from '../../../../lib/polls';
-import type { Lang } from '../../../../i18n/translations';
+import { getPoll, type Poll } from '../../../../lib/polls';
+import { resultsKeyOk } from '../../../../lib/poll-auth';
 
-export const prerender = true;
+// Server-rendered: the page has to read the query string before it renders.
+export const prerender = false;
 
-export function getStaticPaths() {
-  const langs: Lang[] = ['de', 'en'];
-  return langs.flatMap((lang) =>
-    Object.keys(POLLS).map((event) => ({ params: { lang, event } })),
-  );
+const event = String(Astro.params.event);
+const found = getPoll(event);
+const key = Astro.url.searchParams.get('key');
+
+// Unknown poll, missing key or wrong key: the same 404 either way.
+if (!found || !resultsKeyOk(key, import.meta.env.POLL_RESULTS_KEY)) {
+  return new Response('Not found', { status: 404 });
 }
 
-const lang = (Astro.params.lang as Lang) || 'de';
-const event = String(Astro.params.event);
-const poll = getPoll(event) as Poll;
+const poll = found as Poll;
 const title = `${poll.title} — live results`;
 ---
 
 <BaseLayout title={title}>
-  <main class="mx-auto max-w-5xl px-6 py-8" data-event={event}>
+  <main class="mx-auto max-w-5xl px-6 py-8" data-event={event} data-key={key}>
     <header class="flex flex-wrap items-end justify-between gap-4 border-b-2 border-accent pb-4">
       <div>
         <p class="font-mono text-sm uppercase tracking-widest text-accent">Live results</p>
@@ -60,6 +61,7 @@ const title = `${poll.title} — live results`;
     const root = document.querySelector('main[data-event]') as HTMLElement | null;
     if (root) {
       const event = root.dataset.event as string;
+      const key = root.dataset.key || '';
       const container = document.getElementById('poll-results') as HTMLElement;
       const totalEl = document.getElementById('poll-total') as HTMLElement;
       const statusEl = document.getElementById('poll-status') as HTMLElement;
@@ -135,7 +137,10 @@ const title = `${poll.title} — live results`;
 
       async function load() {
         try {
-          const res = await fetch(`/api/poll/${event}`, { cache: 'no-store' });
+          const res = await fetch(
+            `/api/poll/${event}?key=${encodeURIComponent(key)}`,
+            { cache: 'no-store' },
+          );
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           totalEl.textContent = String(data.total);
