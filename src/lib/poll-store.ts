@@ -124,6 +124,7 @@ export async function listRows(event: string): Promise<PollRow[]> {
     params.append('fields[]', 'sessionKey');
     params.append('fields[]', 'questionId');
     params.append('fields[]', 'answer');
+    params.append('fields[]', 'createdAt');
     if (offset) params.set('offset', offset);
 
     const data = await airtable(`${endpoint()}?${params.toString()}`);
@@ -134,6 +135,7 @@ export async function listRows(event: string): Promise<PollRow[]> {
         sessionKey: String(f.sessionKey ?? ''),
         questionId: String(f.questionId ?? ''),
         answer: String(f.answer ?? ''),
+        createdAt: f.createdAt ? String(f.createdAt) : undefined,
       });
     }
     offset = data.offset;

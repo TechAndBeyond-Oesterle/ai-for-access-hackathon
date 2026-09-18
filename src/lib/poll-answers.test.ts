@@ -181,3 +181,93 @@ test('the email hash is deterministic, case-insensitive and hides the address', 
   expect(other).not.toBe(lower);
   expect(lower).not.toContain('anna');
 });
+
+const stamped = (
+  sessionKey: string,
+  questionId: string,
+  answer: string,
+  createdAt: string,
+): PollRow => ({ event: 'infosession', sessionKey, questionId, answer, createdAt });
+
+test('a session that answered twice counts once, with its newest submission', () => {
+  const rows: PollRow[] = [
+    stamped('a', 'q1', 'Other', '2026-09-18T10:00:00.000Z'),
+    stamped('a', 'q1', 'Designer or product', '2026-09-18T11:00:00.000Z'),
+    stamped('b', 'q1', 'Other', '2026-09-18T10:30:00.000Z'),
+  ];
+
+  const results = countAnswers('infosession', poll, rows);
+  expect(results.total).toBe(2);
+
+  const q1 = results.questions.find((q) => q.id === 'q1')!;
+  if (q1.type !== 'single') return;
+  expect(q1.responses).toBe(2);
+  expect(q1.options.find((o) => o.label === 'Designer or product')!.count).toBe(1);
+  expect(q1.options.find((o) => o.label === 'Other')!.count).toBe(1);
+  // The denominator holds: single choice never adds up to more than the answers.
+  const sum = q1.options.reduce((n, o) => n + o.count, 0);
+  expect(sum).toBe(q1.responses);
+});
+
+test('single choice options never add up to more than the answers', () => {
+  const rows: PollRow[] = [
+    row('a', 'q1', 'Other'),
+    row('a', 'q1', 'Other'),
+    row('a', 'q1', 'Designer or product'),
+  ];
+
+  const q1 = countAnswers('infosession', poll, rows).questions.find((q) => q.id === 'q1')!;
+  if (q1.type !== 'single') return;
+  expect(q1.responses).toBe(1);
+  expect(q1.options.reduce((n, o) => n + o.count, 0)).toBe(1);
+});
+
+test('multi choice keeps every tool of the newest submission, no option above 100 percent', () => {
+  const rows: PollRow[] = [
+    stamped('a', 'q4', 'ChatGPT', '2026-09-18T10:00:00.000Z'),
+    stamped('a', 'q4', 'Claude', '2026-09-18T10:00:00.000Z'),
+    // Same person, second submission: the older batch must not be counted again.
+    stamped('a', 'q4', 'ChatGPT', '2026-09-18T11:00:00.000Z'),
+    stamped('a', 'q4', 'Cursor', '2026-09-18T11:00:00.000Z'),
+    stamped('b', 'q4', 'ChatGPT', '2026-09-18T10:30:00.000Z'),
+  ];
+
+  const q4 = countAnswers('infosession', poll, rows).questions.find((q) => q.id === 'q4')!;
+  if (q4.type !== 'multi') return;
+  expect(q4.responses).toBe(2);
+  expect(q4.options.find((o) => o.label === 'ChatGPT')!.count).toBe(2);
+  expect(q4.options.find((o) => o.label === 'Cursor')!.count).toBe(1);
+  expect(q4.options.find((o) => o.label === 'Claude')!.count).toBe(0);
+  for (const option of q4.options) {
+    expect(option.count).toBeLessThanOrEqual(q4.responses);
+  }
+});
+
+test('the slider distribution never outgrows the number of answers', () => {
+  const rows: PollRow[] = [
+    stamped('a', 'q2', '3', '2026-09-18T10:00:00.000Z'),
+    stamped('a', 'q2', '8', '2026-09-18T11:00:00.000Z'),
+    stamped('b', 'q2', '8', '2026-09-18T10:30:00.000Z'),
+  ];
+
+  const q2 = countAnswers('infosession', poll, rows).questions.find((q) => q.id === 'q2')!;
+  if (q2.type !== 'slider') return;
+  expect(q2.responses).toBe(2);
+  expect(q2.distribution.reduce((n, d) => n + d.count, 0)).toBe(2);
+  expect(q2.distribution[8]).toEqual({ label: '8', count: 2 });
+  expect(q2.average).toBe(8);
+});
+
+test('a repeated comment keeps only the newest text', () => {
+  const rows: PollRow[] = [
+    stamped('a', 'q5', 'Pitching', '2026-09-18T10:00:00.000Z'),
+    stamped('a', 'q5_comment', 'first try', '2026-09-18T10:00:00.000Z'),
+    stamped('a', 'q5', 'Pitching', '2026-09-18T11:00:00.000Z'),
+    stamped('a', 'q5_comment', 'second try', '2026-09-18T11:00:00.000Z'),
+  ];
+
+  const q5 = countAnswers('infosession', poll, rows).questions.find((q) => q.id === 'q5')!;
+  if (q5.type !== 'single') return;
+  expect(q5.responses).toBe(1);
+  expect(q5.comments).toEqual(['second try']);
+});

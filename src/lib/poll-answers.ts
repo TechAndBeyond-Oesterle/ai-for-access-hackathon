@@ -19,6 +19,8 @@ export type PollRow = {
   sessionKey: string;
   questionId: string;
   answer: string;
+  /** All rows of one submission carry the same timestamp. Early rows may lack it. */
+  createdAt?: string;
 };
 
 export type NewRow = { questionId: string; answer: string };
@@ -166,9 +168,59 @@ export type PollResults = {
   updatedAt: string;
 };
 
+/**
+ * Keeps one submission per session and question.
+ *
+ * A session can carry two submissions: the duplicate guard used to run on the
+ * session key and now runs on the email hash, so older rows can repeat. Without
+ * this the option counts outgrow the number of submissions and the result page
+ * shows more than 100 percent. Multi-choice keeps every option of the newest
+ * submission, every other question keeps exactly one row.
+ */
+export function latestPerSession(poll: Poll, rows: PollRow[]): PollRow[] {
+  const multiIds = new Set(
+    poll.questions.filter((q) => q.type === 'multi').map((q) => q.id),
+  );
+
+  const groups = new Map<string, PollRow[]>();
+  for (const row of rows) {
+    const key = `${row.sessionKey}|${row.questionId}`;
+    const list = groups.get(key);
+    if (list) list.push(row);
+    else groups.set(key, [row]);
+  }
+
+  const keep = new Set<PollRow>();
+  for (const list of groups.values()) {
+    const newest = list.reduce((max, row) => {
+      const at = String(row.createdAt ?? '');
+      return at > max ? at : max;
+    }, '');
+    const batch = list.filter((row) => String(row.createdAt ?? '') === newest);
+    const questionId = list[0].questionId;
+
+    if (multiIds.has(questionId)) {
+      const seen = new Set<string>();
+      for (const row of batch) {
+        if (seen.has(row.answer)) continue;
+        seen.add(row.answer);
+        keep.add(row);
+      }
+      continue;
+    }
+    // Untimestamped leftovers can still tie: the last row wins.
+    keep.add(batch[batch.length - 1]);
+  }
+
+  return rows.filter((row) => keep.has(row));
+}
+
 /** Counts rows per question and option. Test sessions are left out. */
 export function countAnswers(event: string, poll: Poll, rows: PollRow[]): PollResults {
-  const live = rows.filter((r) => !isTestSession(r.sessionKey));
+  const live = latestPerSession(
+    poll,
+    rows.filter((r) => !isTestSession(r.sessionKey)),
+  );
 
   const sessions = new Set<string>();
   const byQuestion = new Map<string, PollRow[]>();
