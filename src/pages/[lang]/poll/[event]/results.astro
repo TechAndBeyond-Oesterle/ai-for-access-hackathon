@@ -40,7 +40,7 @@ const commentQuestion = poll.questions.find(
       <p class="stamp">updated <span id="poll-stamp">just now</span></p>
     </header>
 
-    <section class="tiles">
+    <section class="tiles" data-tiles hidden>
       <div class="tile">
         <p class="tile-value" data-tile="experience">-</p>
         <p class="tile-label">coding experience</p>
@@ -213,6 +213,7 @@ const commentQuestion = poll.questions.find(
       gap: 1.5rem;
       margin-top: 3.5rem;
     }
+    .tiles[hidden] { display: none; }
     @media (min-width: 900px) {
       .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
@@ -423,9 +424,13 @@ const commentQuestion = poll.questions.find(
         return `${pct(hit, total)}%`;
       };
 
+      /** A poll without q2, q3, q6 and q7 simply shows no summary row. */
+      let tilesFilled = 0;
       const setTile = (key: string, value: string) => {
         const el = stage.querySelector(`[data-tile="${key}"]`);
-        if (el) el.textContent = value;
+        if (!el) return;
+        el.textContent = value;
+        tilesFilled += 1;
       };
 
       function fillRow(row: HTMLElement, count: number, total: number, label?: string) {
@@ -508,6 +513,7 @@ const commentQuestion = poll.questions.find(
       }
 
       function render(data: any) {
+        tilesFilled = 0;
         totalEl.textContent = String(data.total);
         stampEl.textContent = new Date(data.updatedAt).toLocaleTimeString('en-GB');
 
@@ -546,6 +552,9 @@ const commentQuestion = poll.questions.find(
             setTile('noteam', share(q.options, q.responses, ['No, I am looking for one']));
           }
         }
+
+        const tiles = stage.querySelector('[data-tiles]') as HTMLElement | null;
+        if (tiles) tiles.hidden = tilesFilled === 0;
       }
 
       async function load() {
