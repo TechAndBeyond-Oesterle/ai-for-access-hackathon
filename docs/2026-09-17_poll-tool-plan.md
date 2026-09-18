@@ -54,3 +54,11 @@ Tabelle `PollAnswers` in der bestehenden Base (Felder: `event` single line, `ses
 - [ ] Unbekannte Option per curl gibt 400
 - [ ] `AIRTABLE_PAT` nicht im Client-Bundle (Network-Tab)
 - [ ] Ergebnisseite auf 1920 px lesbar aus 3 m Entfernung
+
+## Nachtrag 18.09. (umgesetzt, live)
+
+- Einmal-Schutz über die Registrierungs-E-Mail: Pflichtfeld, SHA-256-Hash als Duplikat-Schlüssel (`emailHash`), dazu auf Wunsch von Jonas die Adresse im Klartext (`email`) und ein Linked Record `registration` auf die Registrations-Zeile, wenn die Adresse dort existiert (`registered` yes/no/unknown, nie blockierend).
+- Ergebnisseite im Präsentationsstil: Kopf „Who is in the room?", vier Kacheln (Coding-Schnitt, Anteil mit AI-Erfahrung, eigene Idee, ohne Team), sortierte Balken mit Top 5 plus „Other", Slider mit Durchschnittsmarke, Kommentare unten, flackerfreier 5-Sekunden-Refresh, Taste `f` für Vollbild. Öffentlich, kein Key (Key-Variante gebaut und wieder entfernt).
+- Zähl-Regel: je Session und Frage zählt nur die neueste Abgabe, Nenner je Frage = verschiedene Abgaben, Single Choice summiert auf 100 %, Multi Choice je Option unter 100 %. `test-`-Sessions werden gespeichert, nie gezählt.
+- `scripts/poll-reset.mjs --event <key>`: Dry-Run zeigt Zeilen, Sessions und E-Mails, `--yes` löscht (10 pro Request), `--only-test` nur Test-Sessions. Vor jeder echten Session ausführen.
+- Weitere Umfragen (z. B. Forschungsfragen): neuer Key in `src/lib/polls.ts`, Deploy. Routen und Speicherung laufen ohne weitere Änderung.
