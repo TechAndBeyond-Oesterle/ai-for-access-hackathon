@@ -1,6 +1,7 @@
-# Archiv: alte CLAUDE.md („context-mode"-Regelwerk)
+# Archiv: alte CLAUDE.md und AGENTS.md („context-mode"-Regelwerk)
 
 Herkunft: `CLAUDE.md` dieses Repos, Stand 2026-09-11, archiviert am 2026-09-18.
+`AGENTS.md` war byte-identisch (gleiche Grösse, gleicher Stand), dieser Text deckt beide ab.
 
 Warum ersetzt: Das Regelwerk verlangte MCP-Tools (`ctx_fetch_and_index`, `ctx_execute`,
 `ctx_batch_execute`, `ctx_search`, `ctx_index`, `ctx_stats`, `ctx_doctor`, `ctx_upgrade`),
@@ -9,7 +10,7 @@ WebFetch und den grössten Teil von Bash. Ausserdem importierte sie die Hub-Rege
 (`@~/code/tb-workspace/CLAUDE.md`) nicht und enthielt keine einzige Repo-Tatsache
 (Stack, Deploy, Airtable, flow-Projekt). Die neue `CLAUDE.md` ersetzt sie.
 
-Die identische Kopie in `AGENTS.md` wurde bei diesem Schritt nicht angefasst.
+`AGENTS.md` enthält seither nur noch einen Verweis auf `CLAUDE.md`.
 
 ---
 
