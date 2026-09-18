@@ -5,7 +5,9 @@
 
 import {
   getPoll,
+  hasComment,
   multiOptions,
+  type CommentableQuestion,
   type MultiQuestion,
   type Poll,
   type Question,
@@ -70,10 +72,10 @@ export function validateSubmission(poll: Poll, answers: unknown): ValidationResu
   }
 
   const byId = new Map<string, Question>();
-  const commentOwners = new Map<string, SingleQuestion>();
+  const commentOwners = new Map<string, CommentableQuestion>();
   for (const q of poll.questions) {
     byId.set(q.id, q);
-    if (q.type === 'single' && q.comment) commentOwners.set(q.comment.id, q);
+    if (hasComment(q)) commentOwners.set(q.comment.id, q);
   }
 
   const rows: NewRow[] = [];
@@ -148,7 +150,7 @@ export type OptionResult = { label: string; count: number };
 
 export type QuestionResult =
   | { id: string; text: string; type: 'single'; options: OptionResult[]; responses: number; comments?: string[] }
-  | { id: string; text: string; type: 'multi'; options: OptionResult[]; responses: number; groups: { label: string; options: OptionResult[] }[] }
+  | { id: string; text: string; type: 'multi'; options: OptionResult[]; responses: number; groups: { label: string; options: OptionResult[] }[]; comments?: string[] }
   | {
       id: string;
       text: string;
@@ -278,7 +280,7 @@ export function countAnswers(event: string, poll: Poll, rows: PollRow[]): PollRe
     }
 
     const multi = q as MultiQuestion;
-    return {
+    const result: QuestionResult = {
       id: q.id,
       text: q.text,
       type: 'multi',
@@ -289,6 +291,10 @@ export function countAnswers(event: string, poll: Poll, rows: PollRow[]): PollRe
         options: g.options.map((label) => ({ label, count: counts.get(label) ?? 0 })),
       })),
     };
+    if (multi.comment) {
+      result.comments = (byQuestion.get(multi.comment.id) ?? []).map((r) => r.answer);
+    }
+    return result;
   });
 
   return {

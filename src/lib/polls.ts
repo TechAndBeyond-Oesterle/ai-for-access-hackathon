@@ -6,13 +6,15 @@
  * the answers need to be comparable.
  */
 
+/** Free-text follow-up under a question, stored as its own row `<id>_comment`. */
+export type CommentField = { id: string; label: string; maxLength: number };
+
 export type SingleQuestion = {
   id: string;
   type: 'single';
   text: string;
   options: string[];
-  /** Optional free-text follow-up, stored as its own row `<id>_comment`. */
-  comment?: { id: string; label: string; maxLength: number };
+  comment?: CommentField;
 };
 
 export type SliderQuestion = {
@@ -30,6 +32,7 @@ export type MultiQuestion = {
   type: 'multi';
   text: string;
   groups: { label: string; options: string[] }[];
+  comment?: CommentField;
 };
 
 export type Question = SingleQuestion | SliderQuestion | MultiQuestion;
@@ -93,14 +96,19 @@ export const POLLS = {
       },
       {
         id: 'q5',
-        type: 'single',
-        text: 'What would help you most before the event?',
-        options: [
-          'Choosing and setting up tools',
-          'Turning an idea into a small demo',
-          'Finding a team',
-          'Pitching',
-          'Nothing, I am ready',
+        type: 'multi',
+        text: 'What would help you before the event?',
+        groups: [
+          {
+            label: '',
+            options: [
+              'Choosing and setting up tools',
+              'Turning an idea into a small demo',
+              'Finding a team',
+              'Pitching',
+              'Nothing, I am ready',
+            ],
+          },
         ],
         comment: { id: 'q5_comment', label: 'Anything else?', maxLength: COMMENT_MAX_LENGTH },
       },
@@ -132,11 +140,17 @@ export const getPoll = (event: string): Poll | undefined =>
 export const multiOptions = (q: MultiQuestion): string[] =>
   q.groups.flatMap((g) => g.options);
 
+/** Questions that can carry a free-text comment: everything but the sliders. */
+export type CommentableQuestion = SingleQuestion | MultiQuestion;
+
+export const hasComment = (q: Question): q is CommentableQuestion & { comment: CommentField } =>
+  q.type !== 'slider' && q.comment !== undefined;
+
 /** Question ids that carry a free-text comment, mapped to their parent question. */
-export const commentQuestions = (poll: Poll): Map<string, SingleQuestion> => {
-  const map = new Map<string, SingleQuestion>();
+export const commentQuestions = (poll: Poll): Map<string, CommentableQuestion> => {
+  const map = new Map<string, CommentableQuestion>();
   for (const q of poll.questions) {
-    if (q.type === 'single' && q.comment) map.set(q.comment.id, q);
+    if (hasComment(q)) map.set(q.comment.id, q);
   }
   return map;
 };

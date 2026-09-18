@@ -129,6 +129,23 @@ const resultsHref = `/${lang}/poll/${event}/results`;
                   </div>
                 </div>
               ))}
+              {q.comment && (
+                <div class="pt-3">
+                  <label class="block text-sm font-medium mb-2" for={q.comment.id}>
+                    {q.comment.label}
+                  </label>
+                  <textarea
+                    id={q.comment.id}
+                    name={q.comment.id}
+                    rows="3"
+                    maxlength={q.comment.maxLength}
+                    class="w-full border-2 border-[color-mix(in_srgb,var(--fg)_15%,transparent)] bg-theme p-3 text-base focus:border-accent focus:outline-none"
+                  ></textarea>
+                  <p class="text-xs text-muted mt-1">
+                    <span data-count-for={q.comment.id}>0</span>/{q.comment.maxLength}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </fieldset>
@@ -166,16 +183,23 @@ const resultsHref = `/${lang}/poll/${event}/results`;
       const emailInput = document.getElementById('poll-email') as HTMLInputElement;
       const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
 
+      // Ein Testlauf auf localhost schreibt in dieselbe Airtable-Tabelle wie die Live-Seite.
+      // Der `test-`-Prefix speichert die Zeilen, haelt sie aber aus der Zaehlung heraus
+      // (TEST_SESSION_PREFIX in poll-answers.ts), damit lokale Klicks die Zahlen im Saal
+      // nicht verfaelschen.
+      const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+      const newKey = () => `${isLocal ? 'test-' : ''}${crypto.randomUUID()}`;
+
       const storageKey = `poll:${event}:sessionKey`;
       let sessionKey = '';
       try {
         sessionKey = localStorage.getItem(storageKey) || '';
         if (!sessionKey) {
-          sessionKey = crypto.randomUUID();
+          sessionKey = newKey();
           localStorage.setItem(storageKey, sessionKey);
         }
       } catch {
-        sessionKey = crypto.randomUUID();
+        sessionKey = newKey();
       }
 
       // Slider readout
@@ -212,11 +236,12 @@ const resultsHref = `/${lang}/poll/${event}/results`;
         form.querySelectorAll<HTMLElement>('[data-question]').forEach((set) => {
           const id = set.dataset.question as string;
           const type = set.dataset.type;
+          const area = set.querySelector<HTMLTextAreaElement>('textarea');
+          if (area && area.value.trim()) answers[area.name] = area.value.trim();
+
           if (type === 'single') {
             const checked = set.querySelector<HTMLInputElement>('input[type=radio]:checked');
             if (checked) answers[id] = checked.value;
-            const area = set.querySelector<HTMLTextAreaElement>('textarea');
-            if (area && area.value.trim()) answers[area.name] = area.value.trim();
           } else if (type === 'slider') {
             const range = set.querySelector<HTMLInputElement>('input[type=range]');
             if (range) answers[id] = Number(range.value);

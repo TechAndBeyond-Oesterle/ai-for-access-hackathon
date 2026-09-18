@@ -3,6 +3,8 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import {
   POLLS,
   getPoll,
+  hasComment,
+  type CommentableQuestion,
   type MultiQuestion,
   type Poll,
   type SingleQuestion,
@@ -26,9 +28,7 @@ const title = `${poll.title}: live results`;
 // Every block is rendered here, once. The script only moves numbers, widths and
 // the sort order, so the beamer picture never flickers.
 const COMMENT_SLOTS = 8;
-const commentQuestion = poll.questions.find(
-  (q) => q.type === 'single' && q.comment,
-) as SingleQuestion | undefined;
+const commentQuestion = poll.questions.find(hasComment) as CommentableQuestion | undefined;
 ---
 
 <BaseLayout title={title}>
@@ -534,6 +534,7 @@ const commentQuestion = poll.questions.find(
               const group = q.groups[i];
               if (group) updateBars(bars, group.options, q.responses);
             });
+            if (q.comments) updateComments(q.comments);
             continue;
           }
 

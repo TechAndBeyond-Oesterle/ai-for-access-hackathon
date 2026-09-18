@@ -25,7 +25,7 @@ test('accepts a complete submission and builds one row per answer', () => {
     q2: 7,
     q3: 'Tried once',
     q4: ['ChatGPT', 'Cursor'],
-    q5: 'Finding a team',
+    q5: ['Finding a team', 'Pitching'],
     q5_comment: 'Looking forward to it',
     q6: 'No',
     q7: 'Yes, complete',
@@ -33,10 +33,11 @@ test('accepts a complete submission and builds one row per answer', () => {
 
   expect(result.ok).toBe(true);
   if (!result.ok) return;
-  // 6 single/slider answers + 2 tools + 1 comment
-  expect(result.rows).toHaveLength(9);
+  // 5 single/slider answers + 2 tools + 2 kinds of help + 1 comment
+  expect(result.rows).toHaveLength(10);
   expect(result.rows).toContainEqual({ questionId: 'q2', answer: '7' });
   expect(result.rows).toContainEqual({ questionId: 'q4', answer: 'Cursor' });
+  expect(result.rows).toContainEqual({ questionId: 'q5', answer: 'Pitching' });
   expect(result.rows).toContainEqual({ questionId: 'q5_comment', answer: 'Looking forward to it' });
 });
 
@@ -77,6 +78,25 @@ test('deduplicates repeated multi-choice options', () => {
   const result = validateSubmission(poll, { q4: ['Claude', 'Claude'] });
   expect(result.ok).toBe(true);
   if (result.ok) expect(result.rows).toHaveLength(1);
+});
+
+test('keeps the free-text comment of a multi-select question', () => {
+  const rows: PollRow[] = [
+    row('a', 'q5', 'Finding a team'),
+    row('a', 'q5', 'Pitching'),
+    row('a', 'q5_comment', 'Would love a design partner'),
+    row('b', 'q5', 'Finding a team'),
+  ];
+
+  const results = countAnswers('infosession', poll, rows);
+  const q5 = results.questions.find((q) => q.id === 'q5')!;
+  expect(q5.type).toBe('multi');
+  if (q5.type === 'multi') {
+    // two sessions answered, one of them picked two options
+    expect(q5.responses).toBe(2);
+    expect(q5.options.find((o) => o.label === 'Finding a team')!.count).toBe(2);
+    expect(q5.comments).toEqual(['Would love a design partner']);
+  }
 });
 
 test('counts answers per question and option', () => {
