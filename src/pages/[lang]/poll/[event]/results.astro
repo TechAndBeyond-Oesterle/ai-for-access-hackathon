@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import { POLLS, getPoll, type Poll } from '../../../../lib/polls';
+import {
+  POLLS,
+  getPoll,
+  type MultiQuestion,
+  type Poll,
+  type SingleQuestion,
+  type SliderQuestion,
+} from '../../../../lib/polls';
 import type { Lang } from '../../../../i18n/translations';
 
 export const prerender = true;
@@ -12,141 +19,553 @@ export function getStaticPaths() {
   );
 }
 
-const lang = (Astro.params.lang as Lang) || 'de';
 const event = String(Astro.params.event);
 const poll = getPoll(event) as Poll;
-const title = `${poll.title} — live results`;
+const title = `${poll.title}: live results`;
+
+// Every block is rendered here, once. The script only moves numbers, widths and
+// the sort order, so the beamer picture never flickers.
+const COMMENT_SLOTS = 8;
+const commentQuestion = poll.questions.find(
+  (q) => q.type === 'single' && q.comment,
+) as SingleQuestion | undefined;
 ---
 
 <BaseLayout title={title}>
-  <main class="mx-auto max-w-5xl px-6 py-8" data-event={event}>
-    <header class="flex flex-wrap items-end justify-between gap-4 border-b-2 border-accent pb-4">
-      <div>
-        <p class="font-mono text-sm uppercase tracking-widest text-accent">Live results</p>
-        <h1 class="font-display text-5xl sm:text-6xl leading-none mt-1">{poll.title}</h1>
-      </div>
-      <div class="text-right">
-        <p class="brutal-number text-accent" id="poll-total">0</p>
-        <p class="font-mono text-sm uppercase tracking-widest text-muted">answers</p>
-      </div>
+  <main class="stage" data-event={event}>
+    <header class="stage-head">
+      <p class="eyebrow">AI for Access, live</p>
+      <h1 class="stage-title">Who is in the room?</h1>
+      <p class="headline-count"><span id="poll-total">0</span> answers</p>
+      <p class="stamp">updated <span id="poll-stamp">just now</span></p>
     </header>
 
-    <div id="poll-results" class="mt-10 space-y-12"></div>
+    <section class="tiles">
+      <div class="tile">
+        <p class="tile-value" data-tile="experience">-</p>
+        <p class="tile-label">coding experience</p>
+      </div>
+      <div class="tile">
+        <p class="tile-value" data-tile="built">-</p>
+        <p class="tile-label">built with AI before</p>
+      </div>
+      <div class="tile">
+        <p class="tile-value" data-tile="idea">-</p>
+        <p class="tile-label">bring an own idea</p>
+      </div>
+      <div class="tile">
+        <p class="tile-value" data-tile="noteam">-</p>
+        <p class="tile-label">looking for a team</p>
+      </div>
+    </section>
 
-    <p class="mt-12 font-mono text-xs uppercase tracking-widest text-muted" id="poll-status">
-      Updating every 5 seconds
-    </p>
+    <div class="questions">
+      {poll.questions.map((q) => (
+        <section class="question" data-q={q.id}>
+          <h2 class="question-text">{q.text}</h2>
+
+          {q.type === 'single' && (
+            <div class="bars" data-bars data-limit="5">
+              {(q as SingleQuestion).options.map((option) => (
+                <div class="bar-row" data-option={option}>
+                  <div class="bar-head">
+                    <span class="bar-label">{option}</span>
+                    <span class="bar-value">
+                      <span data-pct>0%</span> <span class="bar-count" data-count>(0)</span>
+                    </span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill" data-fill></div></div>
+                </div>
+              ))}
+              <div class="bar-row" data-other hidden>
+                <div class="bar-head">
+                  <span class="bar-label" data-other-label>Other</span>
+                  <span class="bar-value">
+                    <span data-pct>0%</span> <span class="bar-count" data-count>(0)</span>
+                  </span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" data-fill></div></div>
+              </div>
+            </div>
+          )}
+
+          {q.type === 'slider' && (
+            <div class="slider-block">
+              <div class="slider-chart">
+                <div class="slider-marker" data-slider-marker hidden>
+                  <span class="slider-marker-label" data-slider-average></span>
+                </div>
+                {Array.from(
+                  { length: (q as SliderQuestion).max - (q as SliderQuestion).min + 1 },
+                  (_, i) => (q as SliderQuestion).min + i,
+                ).map((value) => (
+                  <div class="slider-col" data-slider-value={String(value)}>
+                    <span class="slider-count" data-count></span>
+                    <div class="slider-bar" data-fill></div>
+                    <span class="slider-tick">{value}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="slider-legend">
+                <span>{(q as SliderQuestion).minLabel}</span>
+                <span>{(q as SliderQuestion).maxLabel}</span>
+              </div>
+            </div>
+          )}
+
+          {q.type === 'multi' && (
+            <div class="groups">
+              {(q as MultiQuestion).groups.map((group) => (
+                <div class="group">
+                  {group.label && <p class="group-label">{group.label}</p>}
+                  <div class="bars bars-compact" data-bars data-limit="5">
+                    {group.options.map((option) => (
+                      <div class="bar-row" data-option={option}>
+                        <div class="bar-head">
+                          <span class="bar-label">{option}</span>
+                          <span class="bar-value">
+                            <span data-pct>0%</span> <span class="bar-count" data-count>(0)</span>
+                          </span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" data-fill></div></div>
+                      </div>
+                    ))}
+                    <div class="bar-row" data-other hidden>
+                      <div class="bar-head">
+                        <span class="bar-label" data-other-label>Other</span>
+                        <span class="bar-value">
+                          <span data-pct>0%</span> <span class="bar-count" data-count>(0)</span>
+                        </span>
+                      </div>
+                      <div class="bar-track"><div class="bar-fill" data-fill></div></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+
+    {commentQuestion && (
+      <section class="comments" data-comments={commentQuestion.id} hidden>
+        <p class="comments-label">In their own words</p>
+        <ul class="comments-list">
+          {Array.from({ length: COMMENT_SLOTS }).map(() => (
+            <li class="comment" data-comment hidden></li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <p class="foot" id="poll-status">Updating every 5 seconds. Press f for fullscreen.</p>
   </main>
 
   <style>
-    .bar-track {
-      background: color-mix(in srgb, var(--fg) 8%, transparent);
-      height: 2.5rem;
+    .stage {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      font-size: 20px;
     }
+    @media (min-width: 1280px) {
+      .stage { font-size: 23px; }
+    }
+
+    .stage-head {
+      padding-bottom: 2.5rem;
+      border-bottom: 3px solid var(--accent);
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68em;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin: 0;
+    }
+    .stage-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 0.95;
+      margin: 0.4rem 0 0;
+    }
+    .headline-count {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1;
+      color: var(--accent);
+      margin: 1.5rem 0 0;
+    }
+    .stamp {
+      font-family: var(--font-mono);
+      font-size: 0.62em;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fg-muted);
+      margin: 0.6rem 0 0;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    @media (min-width: 900px) {
+      .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .tile {
+      background: var(--bg-raised);
+      border: 2px solid color-mix(in srgb, var(--fg) 12%, transparent);
+      padding: 1.75rem 1.5rem;
+    }
+    .tile-value {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 6vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      margin: 0;
+    }
+    .tile-label {
+      font-family: var(--font-mono);
+      font-size: 0.6em;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fg-muted);
+      margin: 0.8rem 0 0;
+      line-height: 1.4;
+    }
+
+    .questions {
+      margin-top: 4.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+    .question-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+      line-height: 1.1;
+      margin: 0 0 1.75rem;
+    }
+
+    .bars {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .bars-compact { gap: 0.7rem; }
+    .bar-row[hidden] { display: none; }
+    .bar-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .bar-label { line-height: 1.3; }
+    .bars-compact .bar-label { font-size: 0.85em; }
+    .bar-value {
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    .bars-compact .bar-value { font-size: 0.8em; }
+    .bar-count { color: var(--fg-muted); }
+    .bar-track {
+      background: color-mix(in srgb, var(--fg) 7%, transparent);
+      height: 1.9rem;
+    }
+    .bars-compact .bar-track { height: 1.2rem; }
     .bar-fill {
       background: var(--accent);
       height: 100%;
-      transition: width 0.4s ease;
-      min-width: 2px;
+      width: 0;
+      transition: width 0.6s ease;
+    }
+
+    .groups {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+    .group-label {
+      font-family: var(--font-mono);
+      font-size: 0.6em;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin: 0 0 0.9rem;
+    }
+
+    .slider-chart {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      height: 16rem;
     }
     .slider-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+    }
+    .slider-count {
+      font-family: var(--font-mono);
+      font-size: 0.8em;
+      color: var(--fg-muted);
+      min-height: 1.3em;
+    }
+    .slider-bar {
+      width: 100%;
       background: var(--accent);
-      transition: height 0.4s ease;
-      min-height: 2px;
+      height: 0;
+      transition: height 0.6s ease;
+    }
+    .slider-tick {
+      font-family: var(--font-mono);
+      font-size: 0.8em;
+      margin-top: 0.5rem;
+    }
+    .slider-marker {
+      position: absolute;
+      top: 0;
+      bottom: 2rem;
+      width: 2px;
+      background: color-mix(in srgb, var(--fg) 45%, transparent);
+      transform: translateX(-1px);
+      transition: left 0.6s ease;
+      z-index: 1;
+    }
+    .slider-marker[hidden] { display: none; }
+    .slider-marker-label {
+      position: absolute;
+      top: -0.3rem;
+      left: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.72em;
+      white-space: nowrap;
+      background: var(--bg);
+      padding: 0 0.35rem;
+    }
+    .slider-legend {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.62em;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fg-muted);
+      margin-top: 0.75rem;
+    }
+
+    .comments {
+      margin-top: 4.5rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 1.75rem;
+    }
+    .comments[hidden] { display: none; }
+    .comments-label {
+      font-family: var(--font-mono);
+      font-size: 0.62em;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--fg-muted);
+      margin: 0 0 1.25rem;
+    }
+    .comments-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .comment { line-height: 1.45; }
+    .comment[hidden] { display: none; }
+
+    .foot {
+      margin-top: 4rem;
+      font-family: var(--font-mono);
+      font-size: 0.58em;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--fg-muted);
     }
   </style>
 
   <script>
     const root = document.querySelector('main[data-event]') as HTMLElement | null;
     if (root) {
-      const event = root.dataset.event as string;
-      const container = document.getElementById('poll-results') as HTMLElement;
+      const stage = root;
+      const event = stage.dataset.event as string;
       const totalEl = document.getElementById('poll-total') as HTMLElement;
+      const stampEl = document.getElementById('poll-stamp') as HTMLElement;
       const statusEl = document.getElementById('poll-status') as HTMLElement;
+      const FOOT_TEXT = 'Updating every 5 seconds. Press f for fullscreen.';
 
-      const esc = (s: string) =>
-        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      type Option = { label: string; count: number };
 
       const pct = (count: number, total: number) =>
         total > 0 ? Math.round((count / total) * 100) : 0;
 
-      function bars(options: { label: string; count: number }[], total: number) {
-        return options
-          .map((o) => `
-            <div>
-              <div class="flex items-baseline justify-between gap-4 mb-1">
-                <span class="text-xl sm:text-2xl leading-snug">${esc(o.label)}</span>
-                <span class="font-mono text-xl sm:text-2xl whitespace-nowrap">${pct(o.count, total)}% <span class="text-muted">(${o.count})</span></span>
-              </div>
-              <div class="bar-track"><div class="bar-fill" style="width:${pct(o.count, total)}%"></div></div>
-            </div>`)
-          .join('');
+      /** Share of the answers whose label starts with one of the given prefixes. */
+      const share = (options: Option[], total: number, prefixes: string[]) => {
+        if (!total) return '-';
+        const hit = options
+          .filter((o) => prefixes.some((p) => o.label.startsWith(p)))
+          .reduce((sum, o) => sum + o.count, 0);
+        return `${pct(hit, total)}%`;
+      };
+
+      const setTile = (key: string, value: string) => {
+        const el = stage.querySelector(`[data-tile="${key}"]`);
+        if (el) el.textContent = value;
+      };
+
+      function fillRow(row: HTMLElement, count: number, total: number, label?: string) {
+        const fill = row.querySelector('[data-fill]') as HTMLElement | null;
+        const pctEl = row.querySelector('[data-pct]') as HTMLElement | null;
+        const countEl = row.querySelector('[data-count]') as HTMLElement | null;
+        const labelEl = row.querySelector('[data-other-label]') as HTMLElement | null;
+        if (fill) fill.style.width = `${pct(count, total)}%`;
+        if (pctEl) pctEl.textContent = `${pct(count, total)}%`;
+        if (countEl) countEl.textContent = `(${count})`;
+        if (labelEl && label) labelEl.textContent = label;
       }
 
-      function renderQuestion(q: any, index: number) {
-        let body = '';
+      /** Sorts by count through the CSS `order` property, so no node is replaced. */
+      function updateBars(container: HTMLElement, options: Option[], total: number) {
+        const limit = Number(container.dataset.limit || '5');
+        const counts = new Map(options.map((o) => [o.label, o.count]));
+        const ranked = [...options].sort((a, b) => b.count - a.count);
+        const rank = new Map(ranked.map((o, i) => [o.label, i]));
 
-        if (q.type === 'slider') {
-          const max = Math.max(1, ...q.distribution.map((d: any) => d.count));
-          body = `
-            <div class="flex items-end gap-2 h-56 mt-6">
-              ${q.distribution
-                .map((d: any) => `
-                  <div class="flex-1 flex flex-col items-center justify-end h-full">
-                    <span class="font-mono text-lg">${d.count || ''}</span>
-                    <div class="slider-col w-full" style="height:${(d.count / max) * 100}%"></div>
-                    <span class="font-mono text-lg mt-2">${d.label}</span>
-                  </div>`)
-                .join('')}
-            </div>
-            <div class="flex justify-between font-mono text-sm uppercase tracking-widest text-muted mt-2">
-              <span>${esc(q.minLabel)}</span>
-              <span>average ${q.average === null ? '-' : q.average}</span>
-              <span>${esc(q.maxLabel)}</span>
-            </div>`;
-        } else if (q.type === 'multi') {
-          body = q.groups
-            .map((g: any) => `
-              <div class="mt-6">
-                ${g.label ? `<p class="font-mono text-sm uppercase tracking-widest text-accent mb-3">${esc(g.label)}</p>` : ''}
-                <div class="space-y-3">${bars(g.options, q.responses)}</div>
-              </div>`)
-            .join('');
-        } else {
-          body = `<div class="space-y-4 mt-6">${bars(q.options, q.responses)}</div>`;
-          if (q.comments && q.comments.length) {
-            body += `
-              <div class="mt-8 border-l-4 border-accent pl-5 space-y-3">
-                <p class="font-mono text-sm uppercase tracking-widest text-muted">Comments (${q.comments.length})</p>
-                ${q.comments.map((c: string) => `<p class="text-xl leading-snug">${esc(c)}</p>`).join('')}
-              </div>`;
+        let otherCount = 0;
+        let otherOptions = 0;
+
+        container.querySelectorAll<HTMLElement>('[data-option]').forEach((row) => {
+          const label = row.dataset.option as string;
+          const count = counts.get(label) ?? 0;
+          const position = rank.get(label) ?? limit;
+          row.style.order = String(position);
+
+          if (position >= limit) {
+            row.hidden = true;
+            otherCount += count;
+            otherOptions += 1;
+            return;
           }
+          row.hidden = false;
+          fillRow(row, count, total);
+        });
+
+        const other = container.querySelector('[data-other]') as HTMLElement | null;
+        if (other) {
+          other.style.order = String(limit);
+          other.hidden = otherOptions === 0;
+          if (otherOptions > 0) fillRow(other, otherCount, total, `Other (${otherOptions})`);
+        }
+      }
+
+      function updateSlider(section: HTMLElement, q: any) {
+        const peak = Math.max(1, ...q.distribution.map((d: any) => d.count));
+        for (const point of q.distribution) {
+          const col = section.querySelector(
+            `[data-slider-value="${point.label}"]`,
+          ) as HTMLElement | null;
+          if (!col) continue;
+          const bar = col.querySelector('[data-fill]') as HTMLElement | null;
+          const countEl = col.querySelector('[data-count]') as HTMLElement | null;
+          if (bar) bar.style.height = `${(point.count / peak) * 100}%`;
+          if (countEl) countEl.textContent = point.count ? String(point.count) : '';
         }
 
-        return `
-          <section>
-            <h2 class="font-display text-3xl sm:text-4xl leading-tight">
-              <span class="text-accent">${index + 1}.</span> ${esc(q.text)}
-              <span class="font-mono text-base text-muted ml-2">${q.responses}</span>
-            </h2>
-            ${body}
-          </section>`;
+        const marker = section.querySelector('[data-slider-marker]') as HTMLElement | null;
+        const average = section.querySelector('[data-slider-average]') as HTMLElement | null;
+        if (!marker) return;
+        marker.hidden = q.average === null;
+        if (q.average === null) return;
+        marker.style.left = `${((q.average + 0.5) / q.distribution.length) * 100}%`;
+        if (average) average.textContent = `average ${q.average}`;
+      }
+
+      function updateComments(comments: string[]) {
+        const box = stage.querySelector('[data-comments]') as HTMLElement | null;
+        if (!box) return;
+        const latest = comments.slice(-8).reverse();
+        box.hidden = latest.length === 0;
+        box.querySelectorAll<HTMLElement>('[data-comment]').forEach((slot, i) => {
+          const text = latest[i] || '';
+          slot.hidden = !text;
+          slot.textContent = text;
+        });
+      }
+
+      function render(data: any) {
+        totalEl.textContent = String(data.total);
+        stampEl.textContent = new Date(data.updatedAt).toLocaleTimeString('en-GB');
+
+        for (const q of data.questions) {
+          const section = stage.querySelector(`[data-q="${q.id}"]`) as HTMLElement | null;
+          if (!section) continue;
+
+          if (q.type === 'slider') {
+            updateSlider(section, q);
+            if (q.id === 'q2') {
+              setTile('experience', q.average === null ? '-' : `${q.average} / 10`);
+            }
+            continue;
+          }
+
+          if (q.type === 'multi') {
+            section.querySelectorAll<HTMLElement>('[data-bars]').forEach((bars, i) => {
+              const group = q.groups[i];
+              if (group) updateBars(bars, group.options, q.responses);
+            });
+            continue;
+          }
+
+          const bars = section.querySelector('[data-bars]') as HTMLElement | null;
+          if (bars) updateBars(bars, q.options, q.responses);
+          if (q.comments) updateComments(q.comments);
+
+          if (q.id === 'q3') {
+            setTile(
+              'built',
+              share(q.options, q.responses, ['Built a small thing', 'I build with AI every week']),
+            );
+          }
+          if (q.id === 'q6') setTile('idea', share(q.options, q.responses, ['Yes']));
+          if (q.id === 'q7') {
+            setTile('noteam', share(q.options, q.responses, ['No, I am looking for one']));
+          }
+        }
       }
 
       async function load() {
         try {
           const res = await fetch(`/api/poll/${event}`, { cache: 'no-store' });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          totalEl.textContent = String(data.total);
-          container.innerHTML = data.questions
-            .map((q: any, i: number) => renderQuestion(q, i))
-            .join('');
-          statusEl.textContent = 'Updating every 5 seconds';
+          render(await res.json());
+          statusEl.textContent = FOOT_TEXT;
         } catch (err) {
           statusEl.textContent = `Could not load results: ${String((err as Error).message)}`;
         }
       }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'f' || e.metaKey || e.ctrlKey || e.altKey) return;
+        const target = e.target as HTMLElement | null;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen().catch(() => {});
+      });
 
       load();
       setInterval(load, 5000);
