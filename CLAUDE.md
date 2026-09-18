@@ -1,62 +1,55 @@
-# context-mode — MANDATORY routing rules
+@~/code/tb-workspace/CLAUDE.md
 
-You have context-mode MCP tools available. These rules are NOT optional — they protect your context window from flooding. A single unrouted command can dump 56 KB into context and waste the entire session.
+# ai-for-access-hackathon
 
-## BLOCKED commands — do NOT attempt these
+Landingpage **hackathon.powercoders.org** für den AI for Access Hackathon
+(Powercoders × Tech & Beyond, 20.–21. November 2026, Stadtkloster Frieden Bern).
+Die Website ist die Wahrheitsquelle für Zeitplan, Challenges, Bewertungskriterien
+und Preise. Weicht eine Notiz oder ein Slide davon ab, gilt das Repo.
 
-### curl / wget — BLOCKED
-Any Bash command containing `curl` or `wget` is intercepted and replaced with an error message. Do NOT retry.
-Instead use:
-- `ctx_fetch_and_index(url, source)` to fetch and index web pages
-- `ctx_execute(language: "javascript", code: "const r = await fetch(...)")` to run HTTP calls in sandbox
+flow-Projekt `wevibecode-hackathon`, Ticket-Prefix `HCK`.
+Commits: `HCK | HCK-nn - Kurze Beschreibung` (ohne Ticket: `HCK | …`).
 
-### Inline HTTP — BLOCKED
-Any Bash command containing `fetch('http`, `requests.get(`, `requests.post(`, `http.get(`, or `http.request(` is intercepted and replaced with an error message. Do NOT retry with Bash.
-Instead use:
-- `ctx_execute(language, code)` to run HTTP calls in sandbox — only stdout enters context
+## Stack
 
-### WebFetch — BLOCKED
-WebFetch calls are denied entirely. The URL is extracted and you are told to use `ctx_fetch_and_index` instead.
-Instead use:
-- `ctx_fetch_and_index(url, source)` then `ctx_search(queries)` to query the indexed content
+- Astro 6 (`output: 'server'`, Vercel-Adapter), React 19, Tailwind 4.
+- i18n de/en: Texte in `src/i18n/translations.ts`, Seiten unter `src/pages/[lang]/`,
+  `defaultLocale: 'de'` mit Prefix (`/de/…`, `/en/…`).
+- Paketmanager **bun**: `bun install --frozen-lockfile`, `bun run dev`,
+  `bun run build`, `bun test` (Tests in `src/lib/*.test.ts`, `src/pages/api/*.test.ts`,
+  `discord/*.test.mjs`).
 
-## REDIRECTED tools — use sandbox equivalents
+## Deploy
 
-### Bash (>20 lines output)
-Bash is ONLY for: `git`, `mkdir`, `rm`, `mv`, `cd`, `ls`, `npm install`, `pip install`, and other short-output commands.
-For everything else, use:
-- `ctx_batch_execute(commands, queries)` — run multiple commands + search in ONE call
-- `ctx_execute(language: "shell", code: "...")` — run in sandbox, only stdout enters context
+Push auf `main` deployt Produktion auf Vercel. CLI immer mit Scope:
+`vercel … --scope tech-and-beyond`.
+Env: `AIRTABLE_PAT`, `AIRTABLE_BASE_ID` (Default `appapD55EOTAiqT0I`),
+dazu `RESEND_*` für die Bestätigungsmails. Vollständig in `.env.example`.
 
-### Read (for analysis)
-If you are reading a file to **Edit** it → Read is correct (Edit needs content in context).
-If you are reading to **analyze, explore, or summarize** → use `ctx_execute_file(path, language, code)` instead. Only your printed summary enters context. The raw file content stays in the sandbox.
+## Daten (Airtable)
 
-### Grep (large results)
-Grep results can flood context. Use `ctx_execute(language: "shell", code: "grep ...")` to run searches in sandbox. Only your printed summary enters context.
+Base „Anmeldungen" mit den Tabellen Registrations, Challenges, Mentors, PollAnswers.
+Geschrieben wird ausschliesslich über `src/lib/airtable.ts` (Tabellen-IDs stehen in den
+jeweiligen API-Routen unter `src/pages/api/`). Schema-Änderungen laufen über
+`node scripts/airtable-schema.mjs` (Meta-API, idempotent), nicht von Hand.
 
-## Tool selection hierarchy
+## Poll-Tool (HCK-30)
 
-1. **GATHER**: `ctx_batch_execute(commands, queries)` — Primary tool. Runs all commands, auto-indexes output, returns search results. ONE call replaces 30+ individual calls.
-2. **FOLLOW-UP**: `ctx_search(queries: ["q1", "q2", ...])` — Query indexed content. Pass ALL questions as array in ONE call.
-3. **PROCESSING**: `ctx_execute(language, code)` | `ctx_execute_file(path, language, code)` — Sandbox execution. Only stdout enters context.
-4. **WEB**: `ctx_fetch_and_index(url, source)` then `ctx_search(queries)` — Fetch, chunk, index, query. Raw HTML never enters context.
-5. **INDEX**: `ctx_index(content, source)` — Store content in FTS5 knowledge base for later search.
+Fragen je Event stehen im Code: `src/lib/polls.ts`. Routen `/[lang]/poll/[event]` und
+`/[lang]/poll/[event]/results`, API `src/pages/api/poll/[event].ts`,
+Speicherung `src/lib/poll-store.ts`. Plan und Entscheidungen:
+`docs/2026-09-17_poll-tool-plan.md`.
 
-## Subagent routing
+## Discord
 
-When spawning subagents (Agent/Task tool), the routing block is automatically injected into their prompt. Bash-type subagents are upgraded to general-purpose so they have access to MCP tools. You do NOT need to manually instruct subagents about context-mode.
+Bot und Setup-Skripte liegen unter `discord/` mit eigener Doku
+(`discord/README.md`, `discord/DEPLOY.md`). Eigenes `package.json`, npm statt bun.
 
-## Output constraints
+## Konventionen
 
-- Keep responses under 500 words.
-- Write artifacts (code, configs, PRDs) to FILES — never return them as inline text. Return only: file path + 1-line description.
-- When indexing content, use descriptive source labels so others can `ctx_search(source: "label")` later.
-
-## ctx commands
-
-| Command | Action |
-|---------|--------|
-| `ctx stats` | Call the `ctx_stats` MCP tool and display the full output verbatim |
-| `ctx doctor` | Call the `ctx_doctor` MCP tool, run the returned shell command, display as checklist |
-| `ctx upgrade` | Call the `ctx_upgrade` MCP tool, run the returned shell command, display as checklist |
+- Screenshots aus UI-Arbeit nach `docs/screenshots/YYYY-MM-DD_HHMM_<ticket>-<feature>_<inhalt>.png`
+  plus eine Zeile in `docs/screenshots/README.md`.
+- Kein Em-Dash („—") in neuem Code, Kommentaren, Commits: Punkt, Doppelpunkt, Komma.
+  Bestehende Seitentitel und Fliesstexte nutzen ihn historisch, die bleiben.
+- Logos: Tech & Beyond ist die Wortmarke `public/images/logos/tech-and-beyond*.svg`.
+  Der Drachen-Kreis (`tech-and-beyond.jpg` / `.webp`) ist alt und nicht mehr referenziert.
