@@ -48,7 +48,7 @@ export const COMMENT_MAX_LENGTH = 280;
 export const POLLS = {
   infosession: {
     title: 'Info session poll',
-    subtitle: 'Seven questions, under a minute. No name, no login.',
+    subtitle: 'Eight questions, under a minute. No name, no login.',
     questions: [
       {
         id: 'q1',
@@ -123,6 +123,12 @@ export const POLLS = {
         type: 'single',
         text: 'Do you have a team?',
         options: ['Yes, complete', 'Partly, we need people', 'No, I am looking for one'],
+      },
+      {
+        id: 'q8',
+        type: 'single',
+        text: 'How many hackathons have you taken part in?',
+        options: ['None, this would be my first', '1', '2 to 4', '5 or more'],
       },
     ],
   },
