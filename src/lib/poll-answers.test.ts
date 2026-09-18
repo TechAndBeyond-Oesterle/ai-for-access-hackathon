@@ -1,5 +1,13 @@
 import { expect, test } from 'bun:test';
-import { countAnswers, isTestSession, validateSubmission, type PollRow } from './poll-answers';
+import {
+  countAnswers,
+  hashEmail,
+  isTestSession,
+  isValidEmail,
+  normalizeEmail,
+  validateSubmission,
+  type PollRow,
+} from './poll-answers';
 import { POLLS, type Poll } from './polls';
 
 const poll = POLLS.infosession as Poll;
@@ -147,4 +155,29 @@ test('test sessions are stored but never counted', () => {
   if (q1.type === 'single') {
     expect(q1.options.find((o) => o.label === 'Other')!.count).toBe(1);
   }
+});
+
+test('email addresses are normalized before hashing', () => {
+  expect(normalizeEmail('  Anna.Example@Mail.CH  ')).toBe('anna.example@mail.ch');
+  expect(normalizeEmail(undefined)).toBe('');
+});
+
+test('email validation is loose but rejects nonsense and overlong values', () => {
+  expect(isValidEmail('anna@example.ch')).toBe(true);
+  expect(isValidEmail('')).toBe(false);
+  expect(isValidEmail('anna')).toBe(false);
+  expect(isValidEmail('anna@example')).toBe(false);
+  expect(isValidEmail('anna example@mail.ch')).toBe(false);
+  expect(isValidEmail(`${'a'.repeat(250)}@mail.ch`)).toBe(false);
+});
+
+test('the email hash is deterministic, case-insensitive and hides the address', async () => {
+  const lower = await hashEmail('anna@example.ch');
+  const mixed = await hashEmail('  Anna@Example.CH ');
+  const other = await hashEmail('bea@example.ch');
+
+  expect(lower).toMatch(/^[0-9a-f]{64}$/);
+  expect(mixed).toBe(lower);
+  expect(other).not.toBe(lower);
+  expect(lower).not.toContain('anna');
 });

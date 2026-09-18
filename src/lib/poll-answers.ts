@@ -33,6 +33,31 @@ export const TEST_SESSION_PREFIX = 'test-';
 export const isTestSession = (sessionKey: string) =>
   sessionKey.startsWith(TEST_SESSION_PREFIX);
 
+/** Deliberately loose: this is a duplicate guard, not an address verification. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const EMAIL_MAX_LENGTH = 254;
+
+/** One person, one spelling: trimmed and lower-cased before hashing. */
+export const normalizeEmail = (value: unknown): string =>
+  String(value ?? '')
+    .trim()
+    .toLowerCase();
+
+export const isValidEmail = (email: string): boolean =>
+  email.length > 0 && email.length <= EMAIL_MAX_LENGTH && EMAIL_RE.test(email);
+
+/**
+ * SHA-256 hex of the normalized address. Only this hash is stored, never the
+ * address: it counts each person once and stays unreadable afterwards.
+ */
+export async function hashEmail(email: string): Promise<string> {
+  const data = new TextEncoder().encode(normalizeEmail(email));
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 /**
  * Turns a submitted answer map into Airtable rows, or rejects it.
  * Every question is optional, but an empty submission is rejected.

@@ -1,5 +1,13 @@
 import { afterEach, expect, test } from 'bun:test';
-import { createRows, hasSubmitted, listRows, safeSessionKey } from './poll-store';
+import {
+  createRows,
+  hasSubmitted,
+  hasSubmittedEmail,
+  isRegistered,
+  listRows,
+  safeFormulaValue,
+  safeSessionKey,
+} from './poll-store';
 
 const realFetch = globalThis.fetch;
 afterEach(() => {
@@ -78,4 +86,49 @@ test('listing follows Airtable pagination', async () => {
   expect(calls).toHaveLength(2);
   expect(calls[1].url).toContain('offset=page2');
   expect(rows.map((r) => r.sessionKey)).toEqual(['a', 'b']);
+});
+
+test('formula values lose quotes and backslashes', () => {
+  expect(safeFormulaValue('anna@example.ch')).toBe('anna@example.ch');
+  expect(safeFormulaValue('a"),{x}=(1')).toBe('a),{x}=(1');
+  expect(safeFormulaValue('back\\slash')).toBe('backslash');
+  expect(safeFormulaValue(undefined)).toBe('');
+});
+
+test('a known email hash is detected as a duplicate', async () => {
+  const calls = stubFetch([{ records: [{ id: 'rec1' }] }]);
+  expect(await hasSubmittedEmail('infosession', 'abc123')).toBe(true);
+  expect(calls[0].url).toContain('maxRecords=1');
+  expect(decodeURIComponent(calls[0].url)).toContain(
+    'AND({event}="infosession",{emailHash}="abc123")',
+  );
+});
+
+test('an unknown email hash is not a duplicate', async () => {
+  stubFetch([{ records: [] }]);
+  expect(await hasSubmittedEmail('infosession', 'fresh-hash')).toBe(false);
+});
+
+test('the registration lookup asks the Registrations table for the address', async () => {
+  const calls = stubFetch([{ records: [{ id: 'rec1' }] }]);
+  expect(await isRegistered('Anna@Example.ch')).toBe(true);
+  expect(decodeURIComponent(calls[0].url)).toContain('LOWER({E-Mail})="anna@example.ch"');
+
+  stubFetch([{ records: [] }]);
+  expect(await isRegistered('nobody@example.ch')).toBe(false);
+});
+
+test('submission meta is written on every row, the address never is', async () => {
+  const calls = stubFetch([{ records: [] }]);
+  await createRows('infosession', 'abc-123', [{ questionId: 'q1', answer: 'Other' }], {
+    emailHash: 'deadbeef',
+    registered: 'yes',
+  });
+
+  const body = String(calls[0].init?.body);
+  const fields = JSON.parse(body).records[0].fields;
+  expect(fields.emailHash).toBe('deadbeef');
+  expect(fields.registered).toBe('yes');
+  expect(fields.email).toBeUndefined();
+  expect(body).not.toContain('@');
 });

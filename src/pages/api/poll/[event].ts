@@ -1,7 +1,20 @@
 import type { APIRoute } from 'astro';
 import { getPoll } from '../../../lib/polls';
-import { countAnswers, validateSubmission, type PollResults } from '../../../lib/poll-answers';
-import { createRows, hasSubmitted, listRows, safeSessionKey } from '../../../lib/poll-store';
+import {
+  countAnswers,
+  hashEmail,
+  isValidEmail,
+  normalizeEmail,
+  validateSubmission,
+  type PollResults,
+} from '../../../lib/poll-answers';
+import {
+  createRows,
+  hasSubmittedEmail,
+  isRegistered,
+  listRows,
+  safeSessionKey,
+} from '../../../lib/poll-store';
 
 export const prerender = false;
 
@@ -32,16 +45,32 @@ export const POST: APIRoute = async ({ params, request }) => {
     return json({ error: 'Missing sessionKey' }, 400);
   }
 
+  const email = normalizeEmail(body?.email);
+  if (!isValidEmail(email)) {
+    return json({ error: 'Please enter the email you registered with' }, 400);
+  }
+
   const validated = validateSubmission(poll, body?.answers);
   if (!validated.ok) {
     return json({ error: validated.error }, 400);
   }
 
   try {
-    if (await hasSubmitted(event, sessionKey)) {
+    // The address itself is never stored, only this hash.
+    const emailHash = await hashEmail(email);
+    if (await hasSubmittedEmail(event, emailHash)) {
       return json({ ok: true, duplicate: true }, 200);
     }
-    await createRows(event, sessionKey, validated.rows);
+
+    // Nice to know, never a gate: a failed lookup stays "unknown".
+    let registered = 'unknown';
+    try {
+      registered = (await isRegistered(email)) ? 'yes' : 'no';
+    } catch (err) {
+      console.error('[Poll] Registration lookup failed:', err);
+    }
+
+    await createRows(event, sessionKey, validated.rows, { emailHash, registered });
   } catch (err) {
     console.error('[Poll] Airtable error:', err);
     return json({ error: 'Could not save answers' }, 500);
