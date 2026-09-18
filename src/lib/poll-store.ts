@@ -65,11 +65,11 @@ export async function hasSubmittedEmail(event: string, emailHash: string): Promi
 }
 
 /**
- * Looks the address up in the Registrations table. Only the yes/no result is
- * kept, and the caller treats every error as "unknown": this never blocks a
- * submission.
+ * Looks the address up in the Registrations table and returns the record id,
+ * or null when it is not registered. The caller treats every error as
+ * "unknown": this never blocks a submission.
  */
-export async function isRegistered(email: string): Promise<boolean> {
+export async function findRegistrationId(email: string): Promise<string | null> {
   const formula = `LOWER({E-Mail})="${safeFormulaValue(email).toLowerCase()}"`;
   const params = new URLSearchParams({
     maxRecords: '1',
@@ -77,10 +77,23 @@ export async function isRegistered(email: string): Promise<boolean> {
   });
   params.append('fields[]', 'E-Mail');
   const data = await airtable(`${registrationsEndpoint()}?${params.toString()}`);
-  return Array.isArray(data.records) && data.records.length > 0;
+  const first = Array.isArray(data.records) ? data.records[0] : undefined;
+  return first && typeof first.id === 'string' ? first.id : null;
 }
 
-export type SubmissionMeta = { emailHash: string; registered: string };
+/** True when the address exists in the Registrations table. */
+export async function isRegistered(email: string): Promise<boolean> {
+  return (await findRegistrationId(email)) !== null;
+}
+
+export type SubmissionMeta = {
+  emailHash: string;
+  registered: string;
+  /** Lower-cased registration email, stored so answers can be matched to participants. */
+  email?: string;
+  /** Registrations record id when the address was found there. */
+  registrationId?: string | null;
+};
 
 /** Writes the rows of one submission. Airtable takes at most 10 records per request. */
 export async function createRows(
@@ -97,7 +110,14 @@ export async function createRows(
       questionId: row.questionId,
       answer: row.answer,
       createdAt,
-      ...(meta ? { emailHash: meta.emailHash, registered: meta.registered } : {}),
+      ...(meta
+        ? {
+            emailHash: meta.emailHash,
+            registered: meta.registered,
+            ...(meta.email ? { email: meta.email } : {}),
+            ...(meta.registrationId ? { registration: [meta.registrationId] } : {}),
+          }
+        : {}),
     },
   }));
 

@@ -21,8 +21,12 @@ const FIELDS = [
   { name: 'sessionKey', type: 'singleLineText' },
   { name: 'questionId', type: 'singleLineText' },
   { name: 'answer', type: 'singleLineText' },
-  // SHA-256 of the lower-cased registration email. The address itself is never stored.
+  // SHA-256 of the lower-cased registration email, used for the one-answer check.
   { name: 'emailHash', type: 'singleLineText' },
+  // Lower-cased registration email, kept so answers can be matched to participants (Jonas, 18.09.).
+  { name: 'email', type: 'singleLineText' },
+  // Link to the Registrations record when the address was found there.
+  { name: 'registration', type: 'multipleRecordLinks', options: { linkedTableId: 'tblDlijXwL2EsAeRm' } },
   // yes, no or unknown: was that address found in the Registrations table?
   { name: 'registered', type: 'singleLineText' },
   {

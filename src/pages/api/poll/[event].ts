@@ -10,8 +10,8 @@ import {
 } from '../../../lib/poll-answers';
 import {
   createRows,
+  findRegistrationId,
   hasSubmittedEmail,
-  isRegistered,
   listRows,
   safeSessionKey,
 } from '../../../lib/poll-store';
@@ -56,7 +56,8 @@ export const POST: APIRoute = async ({ params, request }) => {
   }
 
   try {
-    // The address itself is never stored, only this hash.
+    // The hash is the one-answer check. The address is stored as well so the
+    // team can match answers to registrations (decided 18.09.).
     const emailHash = await hashEmail(email);
     if (await hasSubmittedEmail(event, emailHash)) {
       return json({ ok: true, duplicate: true }, 200);
@@ -64,13 +65,20 @@ export const POST: APIRoute = async ({ params, request }) => {
 
     // Nice to know, never a gate: a failed lookup stays "unknown".
     let registered = 'unknown';
+    let registrationId: string | null = null;
     try {
-      registered = (await isRegistered(email)) ? 'yes' : 'no';
+      registrationId = await findRegistrationId(email);
+      registered = registrationId ? 'yes' : 'no';
     } catch (err) {
       console.error('[Poll] Registration lookup failed:', err);
     }
 
-    await createRows(event, sessionKey, validated.rows, { emailHash, registered });
+    await createRows(event, sessionKey, validated.rows, {
+      emailHash,
+      registered,
+      email,
+      registrationId,
+    });
   } catch (err) {
     console.error('[Poll] Airtable error:', err);
     return json({ error: 'Could not save answers' }, 500);
