@@ -12,7 +12,6 @@ const t = useTranslations(lang);
 const prizes = [
   { title: t('prizes.main'), desc: t('prizes.main.desc'), accent: true },
   { title: t('prizes.newcomer'), desc: t('prizes.newcomer.desc'), accent: false },
-  { title: t('prizes.company'), desc: t('prizes.company.desc'), accent: false },
   { title: t('prizes.public'), desc: t('prizes.public.desc'), accent: false },
 ];
 
@@ -54,9 +53,6 @@ const criteria = [
           {t('prizes.pool.amount')}
         </span>
       </div>
-      <p class="text-sm sm:text-base text-muted mt-4 max-w-md mx-auto">
-        {t('prizes.pool.note')}
-      </p>
     </div>
 
     <!-- Prize Cards — bold flat grid -->

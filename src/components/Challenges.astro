@@ -16,6 +16,7 @@ const paths = [
     title: t('challenges.path2.title'),
     desc: t('challenges.path2.desc'),
     note: t('challenges.path2.note'),
+    risk: t('challenges.path2.risk'),
   },
   { num: '03', title: t('challenges.path3.title'), desc: t('challenges.path3.desc') },
 ];
@@ -58,6 +59,11 @@ const examples = [
             <p class="text-sm sm:text-base leading-relaxed max-w-lg text-muted">{path.desc}</p>
             {path.note && (
               <p class="mt-3 text-sm font-semibold text-accent">{path.note}</p>
+            )}
+            {path.risk && (
+              <p class="mt-3 max-w-lg border-l-2 border-[var(--accent)] pl-3 text-sm leading-relaxed text-muted">
+                {path.risk}
+              </p>
             )}
           </div>
         </div>

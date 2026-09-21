@@ -465,6 +465,11 @@ export default function ChallengeForm({ lang }: Props) {
             {t('challenges.form.type.personal')}
           </label>
         </div>
+        {!form.isCompanyChallenge && (
+          <p className="mt-3 border-l-2 border-[var(--accent)] pl-3 text-sm leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
+            {t('challenges.form.type.personal.risk')}
+          </p>
+        )}
       </fieldset>
 
       {form.isCompanyChallenge && (

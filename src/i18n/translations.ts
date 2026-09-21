@@ -113,6 +113,8 @@ export const translations = {
       "Bring deine Idee mit und finde am Freitagabend ein Team.",
     "challenges.path2.note":
       "Wenn du deine eigene Idee umsetzen möchtest, musst du sie vorher als Challenge einreichen.",
+    "challenges.path2.risk":
+      "Hinweis: Im Gegensatz zu Unternehmens-Challenges werden eigene Ideen nicht vorab auf Impact geprüft. Das kann zu einer tieferen Bewertung beim Kriterium Impact führen.",
     "challenges.path3.title": "Spontan",
     "challenges.path3.desc":
       "Komm ohne Idee und schliess dich einem Team an — bei einer Challenge oder gepitchten Idee.",
@@ -162,6 +164,8 @@ export const translations = {
     "challenges.form.type": "Wer reicht die Challenge ein?",
     "challenges.form.type.company": "Unternehmen / Organisation",
     "challenges.form.type.personal": "Ich reiche meine eigene Idee ein",
+    "challenges.form.type.personal.risk":
+      "Hinweis: Im Gegensatz zu Unternehmens-Challenges werden eigene Ideen nicht vorab auf Impact geprüft. Das kann zu einer tieferen Bewertung beim Kriterium Impact führen.",
     "challenges.form.company": "Unternehmen / Organisation",
     "challenges.form.contactName": "Ansprechperson",
     "challenges.form.contact": "Kontakt-E-Mail",
@@ -226,14 +230,10 @@ export const translations = {
     "prizes.pool.upto": "bis zu",
     "prizes.pool.amount": "CHF 8'000",
     "prizes.pool.label": "Preisgeld-Pool",
-    "prizes.pool.note":
-      "Für das Siegerteam — damit ihr eure Projektidee nach dem Hackathon weiterentwickeln könnt.",
     "prizes.main": "Hauptpreis",
     "prizes.main.desc": "Bestes Gesamtprojekt — mit Preisgeld zum Weiterbauen.",
     "prizes.newcomer": "Best Newcomer Impact",
     "prizes.newcomer.desc": "Projekte mit klarem Integrationsbezug",
-    "prizes.company": "Firmenpreise",
-    "prizes.company.desc": "Challenge-gebende Firmen vergeben eigene Preise",
     "prizes.public": "Publikumspreis",
     "prizes.public.desc": "Live-Voting während der Pitches",
     "prizes.criteria": "Bewertungskriterien",
@@ -527,6 +527,8 @@ export const translations = {
     "challenges.path2.desc": "Bring your idea and find a team on Friday evening.",
     "challenges.path2.note":
       "If you want to work on your own idea, you must submit it as a challenge beforehand.",
+    "challenges.path2.risk":
+      "Note: Unlike company challenges, individual ideas are not pre-screened for impact. This can result in a lower score for the impact criterion.",
     "challenges.path3.title": "Spontaneous",
     "challenges.path3.desc":
       "Come without an idea and join a team — at a challenge or a pitched idea.",
@@ -575,6 +577,8 @@ export const translations = {
     "challenges.form.type": "Who is submitting the challenge?",
     "challenges.form.type.company": "Company / organisation",
     "challenges.form.type.personal": "I'm submitting my own idea",
+    "challenges.form.type.personal.risk":
+      "Note: Unlike company challenges, individual ideas are not pre-screened for impact. This can result in a lower score for the impact criterion.",
     "challenges.form.company": "Company / Organisation",
     "challenges.form.contactName": "Contact Person",
     "challenges.form.contact": "Contact Email",
@@ -636,15 +640,11 @@ export const translations = {
     "prizes.pool.upto": "up to",
     "prizes.pool.amount": "CHF 8,000",
     "prizes.pool.label": "Prize pool",
-    "prizes.pool.note":
-      "For the winning team — so you can keep developing your project idea after the hackathon.",
     "prizes.main": "Grand Prize",
     "prizes.main.desc":
       "Best overall project — with prize money to keep building.",
     "prizes.newcomer": "Best Newcomer Impact",
     "prizes.newcomer.desc": "Projects with clear integration impact",
-    "prizes.company": "Company Prizes",
-    "prizes.company.desc": "Challenge-giving companies award their own prizes",
     "prizes.public": "Audience Award",
     "prizes.public.desc": "Live voting during pitches",
     "prizes.criteria": "Judging Criteria",
