@@ -81,6 +81,15 @@ const confirmedSponsors = [
     bg: '#000',
   },
   {
+    name: 'PostFinance',
+    logo: '/images/logos/postfinance.svg',
+    url: 'https://www.postfinance.ch',
+    tier: 'challenge',
+    keepColor: true,
+    bg: '#ffcc00',
+    box: 'w-48 h-16 sm:w-56 p-0 border-2',
+  },
+  {
     name: 'Capacity',
     logo: '/images/logos/capacity.png',
     url: 'https://www.capacity.swiss',
@@ -133,7 +142,7 @@ const scales = {
 const tiers = [
   { key: 'main', name: t('sponsors.tier.main'), openSlots: 1, scale: 'large' as const },
   { key: 'ai', name: t('sponsors.tier.ai'), openSlots: 1, scale: 'medium' as const },
-  { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 2, scale: 'medium' as const },
+  { key: 'challenge', name: t('sponsors.tier.challenge'), openSlots: 1, scale: 'medium' as const },
   { key: 'micro', name: t('sponsors.tier.micro'), openSlots: 3, scale: 'small' as const },
   { key: 'community', name: t('sponsors.tier.community'), openSlots: 1, scale: 'tiny' as const },
 ];
@@ -167,7 +176,7 @@ const tiers = [
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class:list={['flex items-center justify-center transition-all duration-150 hover:border-[var(--accent)]', box]}
+                  class:list={['flex items-center justify-center transition-all duration-150 hover:border-[var(--accent)]', sponsor.box ?? box]}
                   style={`border-color: color-mix(in srgb, var(--fg) 15%, transparent); background: ${sponsor.bg ?? 'var(--bg-raised)'};`}
                   title={sponsor.name}
                 >
