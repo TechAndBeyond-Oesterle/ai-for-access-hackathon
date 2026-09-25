@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import type { Lang } from '../i18n/translations';
+import { SKILL_AREAS, SKILL_LEVELS, TEAM_STATUSES } from '../lib/matching-fields';
+import { ROLES, PARTICIPANT_CONFLICTS, hasRoleConflict } from '../lib/registration-roles';
 
 interface Props {
   lang: Lang;
@@ -8,7 +10,6 @@ interface Props {
 const API_ENDPOINT = '/api/register';
 const DISCORD_INVITE = 'https://discord.gg/yaZTAY2yx';
 
-const ROLES = ['Participant', 'Mentor/Coach', 'Volunteer', 'Jury', 'Organizer', 'Sponsor/Partner', 'Other'] as const;
 const DIETARY = ['No preference', 'Vegetarian', 'Vegan', 'Pescatarian', 'Halal', 'Kosher'] as const;
 const INFO_SESSIONS = ['18.09. 18:30–19:30', '25.09. 18:30–19:30', '23.10. 18:00–19:05', 'Not attending'] as const;
 const CHILDCARE_DAYS = ['Friday', 'Saturday'] as const;
@@ -40,7 +41,14 @@ const initial = {
   fullName: '',
   email: '',
   age: '',
-  role: '',
+  roles: [] as string[],
+  skills: [] as string[],
+  otherSkill: '',
+  skillLevels: Object.fromEntries(SKILL_AREAS.map((area) => [area.value, 'NA'])) as Record<string, string>,
+  teamStatus: 'No team',
+  teamName: '',
+  teamSize: '',
+  wantsTeammates: null as boolean | null,
   organization: '',
   dietary: [] as string[],
   allergies: '',
@@ -66,7 +74,7 @@ export default function RegisterForm({ lang }: Props) {
   const childCount = Math.min(Math.max(Number(form.numChildren) || 0, 0), MAX_CHILDREN);
 
   const set = (patch: Partial<typeof initial>) => setForm((f) => ({ ...f, ...patch }));
-  const toggle = (key: 'dietary' | 'infoSession' | 'childcareDays', v: string) =>
+  const toggle = (key: 'roles' | 'skills' | 'dietary' | 'infoSession' | 'childcareDays', v: string) =>
     setForm((f) => ({
       ...f,
       [key]: f[key].includes(v) ? f[key].filter((x) => x !== v) : [...f[key], v],
@@ -76,7 +84,19 @@ export default function RegisterForm({ lang }: Props) {
     const e: Record<string, string> = {};
     if (!form.fullName.trim()) e.fullName = de ? 'Name ist erforderlich' : 'Name is required';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = de ? 'Gültige E-Mail erforderlich' : 'Valid email required';
-    if (!form.role) e.role = de ? 'Bitte Rolle wählen' : 'Please pick a role';
+    if (!form.roles.length) e.roles = de ? 'Bitte mindestens eine Rolle wählen' : 'Please pick at least one role';
+    if (hasRoleConflict(form.roles)) e.roles = de ? 'Teilnahme kann nicht mit Mentoring, Volunteer oder Jury kombiniert werden' : 'Participant cannot be combined with mentor, volunteer or jury';
+    if (form.roles.includes('Participant')) {
+      if (!form.skills.length) e.skills = de ? 'Bitte mindestens einen Bereich wählen' : 'Please select at least one area';
+      if (form.skills.includes('Other') && !form.otherSkill.trim()) e.otherSkill = de ? 'Bitte Bereich angeben' : 'Please describe the area';
+      if (SKILL_AREAS.some((area) => form.skills.includes(area.value) && (!SKILL_LEVELS.includes(form.skillLevels[area.value] as typeof SKILL_LEVELS[number]) || form.skillLevels[area.value] === 'NA')))
+        e.skillLevels = de ? 'Bitte Kenntnisse für jeden gewählten Bereich einschätzen' : 'Please rate each selected area';
+      if (form.teamStatus === '') e.teamStatus = de ? 'Bitte Teamstatus wählen' : 'Please choose your team status';
+      if (form.teamStatus !== 'No team' && !form.teamName.trim()) e.teamName = de ? 'Bitte Teamnamen angeben' : 'Please enter a team name';
+      if (form.teamStatus === 'Partly formed' && !['2', '3'].includes(form.teamSize)) e.teamSize = de ? 'Bitte 2 oder 3 Personen angeben' : 'Please enter 2 or 3 people';
+      if (form.teamStatus === 'Partly formed' && form.wantsTeammates === null)
+        e.wantsTeammates = de ? 'Bitte Ja oder Nein wählen' : 'Please choose Yes or No';
+    }
     if (form.childcare) {
       const n = Math.min(Math.max(Number(form.numChildren) || 0, 0), MAX_CHILDREN);
       if (n < 1) e.numChildren = de ? 'Bitte Anzahl Kinder angeben' : 'Please enter the number of children';
@@ -138,7 +158,11 @@ export default function RegisterForm({ lang }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto text-left">
+    <form onSubmit={handleSubmit} className="space-y-10 max-w-2xl mx-auto text-left">
+      <section aria-labelledby="reg-personal-heading" className="space-y-5">
+        <h2 id="reg-personal-heading" className="text-lg font-semibold" style={{ color: 'var(--fg)' }}>
+          {de ? 'Persönliche Angaben' : 'Personal details'}
+        </h2>
       <Field id="reg-name" label={(de ? 'Vollständiger Name' : 'Full name') + ' *'}>
         <input id="reg-name" type="text" value={form.fullName} onChange={(e) => set({ fullName: e.target.value })}
           className={inputCls} style={errors.fullName ? errStyle : inputStyle} />
@@ -156,20 +180,146 @@ export default function RegisterForm({ lang }: Props) {
           className={inputCls} style={inputStyle} />
       </Field>
 
-      <Field id="reg-role" label={(de ? 'Rolle am Hackathon' : 'Role at hackathon') + ' *'}>
-        <select id="reg-role" value={form.role} onChange={(e) => set({ role: e.target.value })}
-          className={inputCls} style={errors.role ? errStyle : inputStyle}>
-          <option value="">{de ? 'Bitte wählen…' : 'Please select…'}</option>
-          {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
-        </select>
-        {errors.role && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.role}</p>}
-      </Field>
-
       <Field id="reg-org" label={de ? 'Organisation/Schule' : 'Organization/School'}>
         <input id="reg-org" type="text" value={form.organization} onChange={(e) => set({ organization: e.target.value })}
           className={inputCls} style={inputStyle} />
       </Field>
+      </section>
 
+      <section aria-labelledby="reg-participation-heading" className="space-y-5">
+        <h2 id="reg-participation-heading" className="text-lg font-semibold" style={{ color: 'var(--fg)' }}>
+          {de ? 'Teilnahme' : 'Participation'}
+        </h2>
+      <Field label={(de ? 'Rollen am Hackathon' : 'Roles at hackathon') + ' *'}>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {ROLES.map((role) => (
+            <label key={role} className="flex items-center gap-2 text-sm cursor-pointer has-disabled:cursor-not-allowed has-disabled:opacity-50" style={{ color: 'var(--fg)' }}>
+              <input
+                type="checkbox"
+                checked={form.roles.includes(role)}
+                onChange={() => toggle('roles', role)}
+                disabled={role === 'Participant'
+                  ? PARTICIPANT_CONFLICTS.some((conflict) => form.roles.includes(conflict))
+                  : form.roles.includes('Participant') && PARTICIPANT_CONFLICTS.some((conflict) => conflict === role)}
+                className="w-4 h-4"
+              />
+              {role}
+            </label>
+          ))}
+        </div>
+        {errors.roles && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.roles}</p>}
+      </Field>
+
+      {form.roles.includes('Participant') && (
+        <div className="space-y-5">
+          <fieldset>
+            <legend className="mb-2 text-sm" style={labelStyle}>{(de ? 'In welchen Bereichen hast du Kenntnisse? (Mehrfachauswahl)' : 'Which areas do you know something about? (Select all that apply)') + ' *'}</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {SKILL_AREAS.map((area) => (
+                <label key={area.value} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+                  <input type="checkbox" checked={form.skills.includes(area.value)}
+                    onChange={() => setForm((f) => ({
+                      ...f,
+                      skills: f.skills.includes(area.value) ? f.skills.filter((skill) => skill !== area.value) : [...f.skills, area.value],
+                      skillLevels: { ...f.skillLevels, [area.value]: f.skills.includes(area.value) ? 'NA' : '' },
+                    }))} className="w-4 h-4" />
+                  {de ? area.de : area.en}
+                </label>
+              ))}
+              <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+                <input type="checkbox" checked={form.skills.includes('Other')} onChange={() => toggle('skills', 'Other')} className="w-4 h-4" />
+                {de ? 'Anderes' : 'Other'}
+              </label>
+            </div>
+            {form.skills.includes('Other') && (
+              <div className="mt-2">
+                <label htmlFor="reg-other-skill" className="block mb-1.5" style={labelStyle}>{de ? 'Anderer Bereich *' : 'Other area *'}</label>
+                <input id="reg-other-skill" type="text" value={form.otherSkill} onChange={(e) => set({ otherSkill: e.target.value })}
+                  className={inputCls} style={errors.otherSkill ? errStyle : inputStyle} />
+                {errors.otherSkill && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.otherSkill}</p>}
+              </div>
+            )}
+            {errors.skills && <p className="mt-2 text-xs" style={{ color: ERROR_RED }}>{errors.skills}</p>}
+          </fieldset>
+          {form.skills.some((skill) => skill !== 'Other') && (
+            <fieldset>
+              <legend className="mb-2 text-sm" style={labelStyle}>
+                {de ? 'Wie schätzt du deine Kenntnisse im Vergleich zu Personen ein, mit denen du arbeitest oder lernst?' : 'How would you rate your skills compared with people you work or study with?'}
+              </legend>
+              <div className="space-y-3">
+                {SKILL_AREAS.filter((area) => form.skills.includes(area.value)).map((area) => (
+                  <div key={area.value}>
+                    <label htmlFor={`reg-level-${SKILL_AREAS.indexOf(area)}`} className="block mb-1 text-sm" style={{ color: 'var(--fg)' }}>{de ? area.de : area.en}</label>
+                    <select id={`reg-level-${SKILL_AREAS.indexOf(area)}`} value={form.skillLevels[area.value]}
+                      onChange={(e) => set({ skillLevels: { ...form.skillLevels, [area.value]: e.target.value } })}
+                      className={inputCls} style={errors.skillLevels && !form.skillLevels[area.value] ? errStyle : inputStyle}>
+                      <option value="">{de ? 'Bitte wählen…' : 'Please select…'}</option>
+                      {SKILL_LEVELS.filter((level) => level !== 'NA').map((level) => (
+                        <option key={level} value={level}>{de ? ({ Novice: 'Einsteiger:in', 'Some experience': 'Etwas Erfahrung', Experienced: 'Erfahren', Advanced: 'Fortgeschritten', Expert: 'Expert:in' } as Record<string, string>)[level] : level}</option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              </div>
+              {errors.skillLevels && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.skillLevels}</p>}
+            </fieldset>
+          )}
+          <div className="space-y-3">
+            <h3 className="text-sm" style={labelStyle}>{de ? 'Dein Team' : 'Your team'}</h3>
+            <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+              <input type="checkbox" checked={form.teamStatus !== 'No team'}
+                onChange={(e) => set({ teamStatus: e.target.checked ? '' : 'No team', teamName: '', teamSize: '', wantsTeammates: null })}
+                className="w-4 h-4 shrink-0" />
+              {de ? 'Ich habe bereits ein Team' : 'I already have a team'}
+            </label>
+          {form.teamStatus !== 'No team' && <>
+            <Field id="reg-team-status" label={(de ? 'Ist dein Team vollständig?' : 'Is your team complete?') + ' *'}>
+              <select id="reg-team-status" value={form.teamStatus} onChange={(e) => set({ teamStatus: e.target.value, teamSize: '', wantsTeammates: null })}
+                className={inputCls} style={errors.teamStatus ? errStyle : inputStyle}>
+                <option value="">{de ? 'Bitte wählen…' : 'Please select…'}</option>
+                {TEAM_STATUSES.filter((status) => status !== 'No team').map((status) => <option key={status} value={status}>
+                  {de ? (status === 'Partly formed' ? 'Noch nicht vollständig' : 'Vollständig') : (status === 'Partly formed' ? 'Not yet complete' : 'Complete')}
+                </option>)}
+              </select>
+              {errors.teamStatus && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.teamStatus}</p>}
+            </Field>
+            <Field id="reg-team-name" label={(de ? 'Teamname (alle Teammitglieder geben denselben Namen ein)' : 'Team name (each teammate should enter the same name)') + ' *'}>
+              <input id="reg-team-name" type="text" maxLength={100} value={form.teamName} onChange={(e) => set({ teamName: e.target.value })}
+                className={inputCls} style={errors.teamName ? errStyle : inputStyle} />
+              {errors.teamName && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.teamName}</p>}
+            </Field>
+          {form.teamStatus === 'Partly formed' && (
+            <Field id="reg-team-size" label={(de ? 'Aktuelle Teamgrösse (inklusive dir)' : 'Current team size (including you)') + ' *'}>
+              <select id="reg-team-size" value={form.teamSize} onChange={(e) => set({ teamSize: e.target.value })}
+                className={inputCls} style={errors.teamSize ? errStyle : inputStyle}>
+                <option value="">{de ? 'Bitte wählen…' : 'Please select…'}</option>
+                <option value="2">2</option><option value="3">3</option>
+              </select>
+              {errors.teamSize && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.teamSize}</p>}
+            </Field>
+          )}
+          {form.teamStatus === 'Partly formed' && (
+            <fieldset>
+              <legend className="mb-2 text-sm" style={labelStyle}>{(de ? 'Dürfen wir zusätzlich Personen für dein bestehendes Team vorschlagen?' : 'May we also suggest people to join your existing team?') + ' *'}</legend>
+              <div className="flex gap-4">
+                {[true, false].map((value) => <label key={String(value)} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--fg)' }}>
+                  <input type="radio" name="wantsTeammates" checked={form.wantsTeammates === value} onChange={() => set({ wantsTeammates: value })} />
+                  {value ? (de ? 'Ja' : 'Yes') : (de ? 'Nein' : 'No')}
+                </label>)}
+              </div>
+              {errors.wantsTeammates && <p className="mt-1 text-xs" style={{ color: ERROR_RED }}>{errors.wantsTeammates}</p>}
+            </fieldset>
+          )}
+          </>}
+          </div>
+        </div>
+      )}
+      </section>
+
+      <section aria-labelledby="reg-support-heading" className="space-y-5">
+        <h2 id="reg-support-heading" className="text-lg font-semibold" style={{ color: 'var(--fg)' }}>
+          {de ? 'Verpflegung & Unterstützung' : 'Food & support'}
+        </h2>
       <Field label={de ? 'Ernährung' : 'Dietary preference'}>
         <div className="flex flex-wrap gap-3">
           {DIETARY.map((d) => (
@@ -195,7 +345,12 @@ export default function RegisterForm({ lang }: Props) {
         <textarea id="reg-access" rows={2} value={form.accessibility} onChange={(e) => set({ accessibility: e.target.value })}
           className={inputCls} style={inputStyle} />
       </Field>
+      </section>
 
+      <section aria-labelledby="reg-event-heading" className="space-y-5">
+        <h2 id="reg-event-heading" className="text-lg font-semibold" style={{ color: 'var(--fg)' }}>
+          {de ? 'Organisatorisches' : 'Event details'}
+        </h2>
       <Field label={de ? 'Info-Session' : 'Info session'}>
         <p
           className="mb-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-sm"
@@ -294,6 +449,7 @@ export default function RegisterForm({ lang }: Props) {
           {de ? 'Infos zu zukünftigen Events erhalten' : 'Send me info about future events'}
         </label>
       </div>
+      </section>
 
       {errors.email && !errors.fullName && (
         <p className="text-xs" style={{ color: ERROR_RED }}>{errors.email}</p>

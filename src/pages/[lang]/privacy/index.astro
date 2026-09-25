@@ -24,32 +24,32 @@ const isDE = lang === 'de';
         <div>
           <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Datenerhebung' : 'Data Collection'}</h2>
           <p>{isDE
-            ? 'Bei der Anmeldung zum Hackathon erheben wir: Name, E-Mail-Adresse, Rolle, Sprachpräferenz und optional eine Motivationsnachricht. Diese Daten werden ausschliesslich für die Organisation des Events verwendet.'
-            : 'When registering for the hackathon, we collect: name, email address, role, language preference, and optionally a motivation message. This data is used exclusively for organizing the event.'
+            ? 'Bei der Anmeldung erheben wir Name, E-Mail-Adresse und Rolle. Optional erfassen wir Alter, Organisation, Angaben zu Essen und Barrierefreiheit, Info-Session, Foto-/Video-Einverständnis und Kinderbetreuung. Teilnehmende geben zusätzlich ihre Kenntnisse, eine Selbsteinschätzung ihrer Fähigkeiten im Vergleich zu Personen aus Arbeit oder Ausbildung und ihren Teamstatus an. Challenge-Präferenzen fragen wir erst später ab.'
+            : 'Registration collects your name, email address and role. Optional details include age, organization, food and accessibility needs, info session, photo/video preference and childcare. Participants also provide their knowledge areas, a skill rating compared with people they work or study with, and their team status. We ask about challenge preferences later.'
           }</p>
         </div>
 
         <div>
           <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Verwendungszweck' : 'Purpose'}</h2>
           <p>{isDE
-            ? 'Deine Daten werden verwendet für: Bestätigung der Anmeldung, Event-Kommunikation (Ablauf, Updates, Vorbereitung), Teamzusammenstellung und anonyme Statistik zur Erfolgsmessung.'
-            : 'Your data is used for: registration confirmation, event communication (schedule, updates, preparation), team composition, and anonymous statistics for success measurement.'
+            ? 'Wir verwenden deine Angaben für die Anmeldung, Event-Kommunikation, Organisation von Essen und Kinderbetreuung sowie für Teamvorschläge für alle Teilnehmenden und spätere Challenge-Vorschläge. Deine Kenntnisse und Teamangaben helfen uns auch, die Qualität der Vorschläge auszuwerten. Ob du einen Teamvorschlag annimmst, entscheidest du selbst.'
+            : 'We use your answers for registration, event communication, food and childcare planning, team suggestions for every participant, and later challenge suggestions. Your skill and team answers also help us evaluate the quality of those suggestions. You decide whether to accept a team suggestion.'
           }</p>
         </div>
 
         <div>
           <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Weitergabe' : 'Data Sharing'}</h2>
           <p>{isDE
-            ? 'Wir geben deine Daten nicht an Dritte weiter, mit Ausnahme des unten genannten Auftragsverarbeiters. Sponsor-Unternehmen erhalten keinen Zugang zu Teilnehmer-Daten, es sei denn, du gibst dem ausdrücklich zu.'
-            : 'We do not share your data with third parties, except for the data processor mentioned below. Sponsor companies do not receive access to participant data unless you explicitly consent.'
+            ? 'Dieses Formular übermittelt keine identifizierbaren Anmeldedaten an die Forschungspartnerin. Über eine allfällige Weitergabe für die Studie informieren wir dich gesondert. Sponsor-Unternehmen erhalten keinen Zugang zu Teilnehmer-Daten, es sei denn, du gibst dem ausdrücklich zu.'
+            : 'This form does not send identifiable registration data to the research partner. We will provide separate information before any data is shared for the study. Sponsor companies do not receive participant data unless you explicitly consent.'
           }</p>
         </div>
 
         <div>
           <h2 class="font-display text-lg font-bold mb-2" style="color: var(--fg);">{isDE ? 'Auftragsverarbeiter' : 'Data Processor'}</h2>
           <p>{isDE
-            ? 'Zur Verwaltung der Anmeldungen nutzen wir Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA). Deine Daten (Name, E-Mail, Rolle) werden auf Servern von Airtable in den USA gespeichert. Airtable ist nach SOC 2 Type II zertifiziert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) bzw. deine Einwilligung bei der Anmeldung.'
-            : 'To manage registrations, we use Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA). Your data (name, email, role) is stored on Airtable servers in the USA. Airtable is SOC 2 Type II certified. Legal basis is Art. 6(1)(b) GDPR (contract performance) or your consent upon registration.'
+            ? 'Zur Verwaltung der Anmeldungen nutzen wir Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA). Die oben genannten Anmeldedaten werden dort gespeichert.'
+            : 'We use Airtable (Formagrid Inc., 799 Market Street, San Francisco, CA 94103, USA) to manage registrations. The registration data listed above is stored there.'
           }</p>
           <p class="mt-2"><a href="https://www.airtable.com/privacy" target="_blank" class="text-accent hover:underline">{isDE ? 'Datenschutzerklärung von Airtable' : 'Airtable Privacy Policy'}</a></p>
         </div>

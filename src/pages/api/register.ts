@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { submitToAirtable } from '../../lib/airtable';
 import { sendEmail, confirmationEmail, addToAudience } from '../../lib/resend';
+import { matchingFields } from '../../lib/matching-fields';
+import { ROLES, hasRoleConflict } from '../../lib/registration-roles';
 
 export const prerender = false;
 
@@ -16,9 +18,17 @@ export const POST: APIRoute = async ({ request }) => {
     const fullName = String(b.fullName ?? '').trim();
     const email = String(b.email ?? '').trim();
     const lang: 'de' | 'en' = b.lang === 'en' ? 'en' : 'de';
+    const roles = Array.isArray(b.roles) ? b.roles.filter((role: unknown): role is string => typeof role === 'string' && ROLES.some((allowed) => allowed === role)) : [];
 
-    if (!fullName || !EMAIL_RE.test(email) || !b.role) {
+    if (!fullName || !EMAIL_RE.test(email) || !roles.length) {
       return json({ error: 'Full name, valid email and role are required' }, 400);
+    }
+    if (hasRoleConflict(roles)) {
+      return json({ error: 'Participant cannot be combined with mentor, volunteer or jury' }, 400);
+    }
+    const matching = roles.includes('Participant') ? matchingFields(b) : null;
+    if (roles.includes('Participant') && !matching) {
+      return json({ error: 'Please complete your skills and team details' }, 400);
     }
 
     const childcare = Boolean(b.childcare);
@@ -37,10 +47,11 @@ export const POST: APIRoute = async ({ request }) => {
       'E-Mail': email,
       Status: 'Todo',
       RegisteredAt: new Date().toISOString(),
-      'Role at hackathon': b.role,
+      'Role at hackathon': roles,
       'Photo/video consent': b.photoConsent || 'Ask me first',
       'Bringing a child/needs childcare': childcare,
       'Infos for next events': Boolean(b.futureInfos),
+      ...matching,
     };
 
     if (b.age !== '' && b.age != null && !Number.isNaN(Number(b.age)))
