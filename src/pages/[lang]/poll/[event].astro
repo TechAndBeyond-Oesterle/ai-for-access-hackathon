@@ -45,7 +45,7 @@ const resultsHref = `/${lang}/poll/${event}/results`;
           class="w-full mt-3 border-2 border-[color-mix(in_srgb,var(--fg)_15%,transparent)] bg-theme p-4 text-base focus:border-accent focus:outline-none"
         />
         <p class="text-sm text-muted mt-2">
-          Used to count each person once and to match your answers with your registration. Not published.
+          Used to count each person once per day and to match your answers with your registration. Not published.
         </p>
       </div>
 
@@ -168,7 +168,7 @@ const resultsHref = `/${lang}/poll/${event}/results`;
         href={resultsHref}
         class="inline-block mt-8 border-2 border-accent text-accent font-display text-2xl px-8 py-3 hover:bg-accent hover:text-white transition-colors"
       >
-        See live results
+        See today's results
       </a>
     </div>
   </main>
@@ -190,17 +190,23 @@ const resultsHref = `/${lang}/poll/${event}/results`;
       const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
       const newKey = () => `${isLocal ? 'test-' : ''}${crypto.randomUUID()}`;
 
-      const storageKey = `poll:${event}:sessionKey`;
-      let sessionKey = '';
-      try {
-        sessionKey = localStorage.getItem(storageKey) || '';
-        if (!sessionKey) {
-          sessionKey = newKey();
-          localStorage.setItem(storageKey, sessionKey);
+      const getSessionKey = () => {
+        const parts = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Europe/Zurich', year: 'numeric', month: '2-digit', day: '2-digit',
+        }).formatToParts(new Date());
+        const value = (type: string) => parts.find((part) => part.type === type)!.value;
+        const storageKey = `poll:${event}:${value('year')}-${value('month')}-${value('day')}:sessionKey`;
+        try {
+          let key = localStorage.getItem(storageKey);
+          if (!key) {
+            key = newKey();
+            localStorage.setItem(storageKey, key);
+          }
+          return key;
+        } catch {
+          return newKey();
         }
-      } catch {
-        sessionKey = newKey();
-      }
+      };
 
       // Slider readout
       form.querySelectorAll<HTMLInputElement>('input[type=range]').forEach((input) => {
@@ -257,12 +263,12 @@ const resultsHref = `/${lang}/poll/${event}/results`;
           const res = await fetch(`/api/poll/${event}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionKey, email, answers }),
+            body: JSON.stringify({ sessionKey: getSessionKey(), email, answers }),
           });
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Something went wrong');
           thanksText.textContent = data.duplicate
-            ? 'You already answered, thanks.'
+            ? 'You already answered today, thanks.'
             : 'Your answers are in.';
           form.classList.add('hidden');
           thanks.classList.remove('hidden');

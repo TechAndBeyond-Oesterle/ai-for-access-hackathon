@@ -36,6 +36,8 @@ const commentQuestion = poll.questions.find(hasComment) as CommentableQuestion |
     <header class="stage-head">
       <p class="eyebrow">AI for Access, live</p>
       <h1 class="stage-title">Who is in the room?</h1>
+      <p id="poll-scope">Today's results (Bern time)</p>
+      <a id="poll-scope-link" href="?all=1" class="inline-block mt-4 border-2 border-accent text-accent font-display text-xl px-5 py-2 hover:bg-accent hover:text-white transition-colors">See all results</a>
       <p class="headline-count"><span id="poll-total">0</span> answers</p>
       <p class="stamp">updated <span id="poll-stamp">just now</span></p>
     </header>
@@ -408,6 +410,13 @@ const commentQuestion = poll.questions.find(hasComment) as CommentableQuestion |
       const totalEl = document.getElementById('poll-total') as HTMLElement;
       const stampEl = document.getElementById('poll-stamp') as HTMLElement;
       const statusEl = document.getElementById('poll-status') as HTMLElement;
+      const all = new URLSearchParams(location.search).get('all') === '1';
+      if (all) {
+        (document.getElementById('poll-scope') as HTMLElement).textContent = 'All-time results';
+        const link = document.getElementById('poll-scope-link') as HTMLAnchorElement;
+        link.textContent = "See today's results";
+        link.href = location.pathname;
+      }
       const FOOT_TEXT = 'Updating every 5 seconds. Press f for fullscreen.';
 
       type Option = { label: string; count: number };
@@ -560,7 +569,7 @@ const commentQuestion = poll.questions.find(hasComment) as CommentableQuestion |
 
       async function load() {
         try {
-          const res = await fetch(`/api/poll/${event}`, { cache: 'no-store' });
+          const res = await fetch(`/api/poll/${event}${all ? '?all=1' : ''}`, { cache: 'no-store' });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           render(await res.json());
           statusEl.textContent = FOOT_TEXT;

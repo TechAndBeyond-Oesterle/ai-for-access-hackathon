@@ -39,6 +39,8 @@ Fragen je Event stehen im Code: `src/lib/polls.ts`. Routen `/[lang]/poll/[event]
 `/[lang]/poll/[event]/results`, API `src/pages/api/poll/[event].ts`,
 Speicherung `src/lib/poll-store.ts`. Plan und Entscheidungen:
 `docs/2026-09-17_poll-tool-plan.md`.
+Ergebnisse und E-Mail-Duplikatsprüfung gelten pro Kalendertag in `Europe/Zurich`.
+Die Ergebnisseite zeigt standardmässig heute; `?all=1` zeigt alle Runden zusammen.
 
 ## Discord
 

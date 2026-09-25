@@ -5,6 +5,7 @@ import {
   hasSubmittedEmail,
   isRegistered,
   listRows,
+  pollDay,
   safeFormulaValue,
   safeSessionKey,
 } from './poll-store';
@@ -95,18 +96,34 @@ test('formula values lose quotes and backslashes', () => {
   expect(safeFormulaValue(undefined)).toBe('');
 });
 
+test('poll days follow Bern time on either side of midnight and DST', () => {
+  expect(pollDay(new Date('2026-09-24T21:59:59Z'))).toBe('2026-09-24');
+  expect(pollDay(new Date('2026-09-24T22:00:00Z'))).toBe('2026-09-25');
+  expect(pollDay(new Date('2026-12-24T23:00:00Z'))).toBe('2026-12-25');
+});
+
+test('today only filters answers in Airtable, while all-time reads every day', async () => {
+  const calls = stubFetch([{ records: [] }]);
+  await listRows('infosession', '2026-09-25');
+  await listRows('infosession');
+  expect(decodeURIComponent(calls[0].url)).toContain(
+    `DATETIME_FORMAT(SET_TIMEZONE({createdAt},'Europe/Zurich'),'YYYY-MM-DD')="2026-09-25"`,
+  );
+  expect(decodeURIComponent(calls[1].url)).toContain('filterByFormula={event}="infosession"');
+});
+
 test('a known email hash is detected as a duplicate', async () => {
   const calls = stubFetch([{ records: [{ id: 'rec1' }] }]);
-  expect(await hasSubmittedEmail('infosession', 'abc123')).toBe(true);
+  expect(await hasSubmittedEmail('infosession', 'abc123', '2026-09-25')).toBe(true);
   expect(calls[0].url).toContain('maxRecords=1');
   expect(decodeURIComponent(calls[0].url)).toContain(
-    'AND({event}="infosession",{emailHash}="abc123")',
+    `AND({event}="infosession",{emailHash}="abc123",DATETIME_FORMAT(SET_TIMEZONE({createdAt},'Europe/Zurich'),'YYYY-MM-DD')="2026-09-25")`,
   );
 });
 
 test('an unknown email hash is not a duplicate', async () => {
   stubFetch([{ records: [] }]);
-  expect(await hasSubmittedEmail('infosession', 'fresh-hash')).toBe(false);
+  expect(await hasSubmittedEmail('infosession', 'fresh-hash', '2026-09-25')).toBe(false);
 });
 
 test('the registration lookup asks the Registrations table for the address', async () => {

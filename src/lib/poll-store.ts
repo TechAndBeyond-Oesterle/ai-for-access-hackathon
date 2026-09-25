@@ -19,6 +19,17 @@ const endpoint = () => `${API}/${baseId()}/${encodeURIComponent(tableRef())}`;
 const registrationsEndpoint = () =>
   `${API}/${baseId()}/${encodeURIComponent(registrationsRef())}`;
 
+export const pollDay = (date = new Date()): string => {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Zurich', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const value = (type: string) => parts.find((part) => part.type === type)!.value;
+  return `${value('year')}-${value('month')}-${value('day')}`;
+};
+
+const dayFormula = (day: string) =>
+  `DATETIME_FORMAT(SET_TIMEZONE({createdAt},'Europe/Zurich'),'YYYY-MM-DD')="${day}"`;
+
 async function airtable(url: string, init: RequestInit = {}) {
   const res = await fetch(url, {
     ...init,
@@ -57,8 +68,8 @@ export async function hasSubmitted(event: string, sessionKey: string): Promise<b
 }
 
 /** True when this person already answered this poll. One email, one answer. */
-export async function hasSubmittedEmail(event: string, emailHash: string): Promise<boolean> {
-  const formula = `AND({event}="${event}",{emailHash}="${safeFormulaValue(emailHash)}")`;
+export async function hasSubmittedEmail(event: string, emailHash: string, day: string): Promise<boolean> {
+  const formula = `AND({event}="${event}",{emailHash}="${safeFormulaValue(emailHash)}",${dayFormula(day)})`;
   const url = `${endpoint()}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
   const data = await airtable(url);
   return Array.isArray(data.records) && data.records.length > 0;
@@ -130,8 +141,8 @@ export async function createRows(
 }
 
 /** Reads every row of an event, following Airtable's `offset` pagination. */
-export async function listRows(event: string): Promise<PollRow[]> {
-  const formula = `{event}="${event}"`;
+export async function listRows(event: string, day?: string): Promise<PollRow[]> {
+  const formula = day ? `AND({event}="${event}",${dayFormula(day)})` : `{event}="${event}"`;
   const out: PollRow[] = [];
   let offset: string | undefined;
 

@@ -11,3 +11,4 @@ Die Playwright-CLI ist im Repo nicht installiert.
 - `2026-09-17_1752_HCK-tb-wordmark_header-sponsors-footer.png`: neue Tech & Beyond Wortmarke statt Drachen-Logo. Header (Desktop + Mobile 375), Hosts-Karten, Sponsoren-Tier Community und Footer (`/de/about/`, `/de/sponsors/`).
 - `2026-09-25_1545_HCK-registration_sections-desktop.png`: Anmeldeformular mit vier durch Abstand getrennten Abschnitten und integrierten Matching-Fragen (`/de/register/`, Desktop).
 - `2026-09-25_1545_HCK-registration_sections-mobile.png`: dieselbe Anordnung auf 375 px Breite (`/de/register/`, Mobile).
+- `2026-09-25_1738_HCK-poll_today-results.png`: Ergebnisansicht mit Tagesfilter und „See all results“-Link (`/en/poll/infosession/results`, leere API-Antwort im Browser simuliert).
