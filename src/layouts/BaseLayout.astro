@@ -5,6 +5,7 @@ import { getLangFromUrl } from '../i18n/utils';
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -17,7 +18,7 @@ const defaultDescription = lang === 'de'
   ? 'Du musst nicht coden können. Du musst ein Problem verstehen. 20.–21. November 2026, Stadtkloster Frieden, Bern. 100 Plätze.'
   : 'You don\'t need to code. You need to understand a problem. November 20–21, 2026, Stadtkloster Frieden, Bern. 100 spots.';
 
-const { title = defaultTitle, description = defaultDescription } = Astro.props;
+const { title = defaultTitle, description = defaultDescription, noindex = false } = Astro.props;
 const siteUrl = 'https://aiforaccess.ch'; // TODO: update when domain is confirmed
 const currentUrl = `${siteUrl}/${lang}/`;
 ---
@@ -28,6 +29,7 @@ const currentUrl = `${siteUrl}/${lang}/`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

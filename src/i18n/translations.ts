@@ -1,5 +1,10 @@
 export const translations = {
   de: {
+    "recording.title": "Info-Session: Aufzeichnung",
+    "recording.description": "Schau dir die Info-Session zum AI for Access Hackathon an, wann immer du möchtest.",
+    "recording.date": "18. September 2026 · 60 Minuten",
+    "recording.playback": "Mit den Videosteuerungen kannst du pausieren, vor- und zurückspulen oder ins Vollbild wechseln.",
+    "recording.fallback": "Video direkt öffnen",
     // Header
     "nav.logo": "AI for Access",
     "nav.cta": "Platz sichern",
@@ -417,6 +422,11 @@ export const translations = {
   },
 
   en: {
+    "recording.title": "Info session recording",
+    "recording.description": "Watch or rewatch the AI for Access Hackathon info session whenever you like.",
+    "recording.date": "18 September 2026 · 60 minutes",
+    "recording.playback": "Use the video controls to pause, skip backwards or forwards, or watch in full screen.",
+    "recording.fallback": "Open video directly",
     // Header
     "nav.logo": "AI for Access",
     "nav.cta": "Get Your Spot",

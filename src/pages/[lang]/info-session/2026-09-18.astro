@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { useTranslations } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/translations';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'de' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const media = '/media/info-session-20260918';
+---
+
+<BaseLayout title={`${t('recording.title')} | AI for Access`} description={t('recording.description')} noindex>
+  <Header lang={lang} />
+  <main class="pt-32 pb-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between gap-4 mb-4 text-sm font-mono text-muted">
+        <p>{t('recording.date')}</p>
+        <a href={`/${lang === 'de' ? 'en' : 'de'}/info-session/2026-09-18/`} class="text-accent hover:underline" hreflang={lang === 'de' ? 'en' : 'de'}>
+          {lang === 'de' ? 'English' : 'Deutsch'}
+        </a>
+      </div>
+      <h1 id="recording-title" class="font-display text-3xl sm:text-5xl font-bold text-accent mb-6">{t('recording.title')}</h1>
+      <p class="text-muted mb-8">{t('recording.description')}</p>
+      <video
+        controls
+        playsinline
+        preload="none"
+        poster={`${media}/poster.jpg`}
+        width="1280"
+        height="720"
+        class="w-full aspect-video bg-black"
+        aria-labelledby="recording-title"
+        aria-describedby="recording-help"
+      >
+        <source src={`${media}/recording.mp4`} type="video/mp4" />
+        <a href={`${media}/recording.mp4`}>{t('recording.fallback')}</a>
+      </video>
+      <p id="recording-help" class="text-sm text-muted mt-4">{t('recording.playback')}</p>
+      <a href={`${media}/recording.mp4`} class="inline-block text-sm text-accent hover:underline mt-4">{t('recording.fallback')}</a>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
