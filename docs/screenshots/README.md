@@ -1,6 +1,12 @@
 # Screenshots
 
+- `2026-09-30_1442_HCK-recording_mobile.png`: Unverlinkte Info-Session-Aufzeichnung mit nativem Videoplayer (`/en/info-session/2026-09-18/`, Mobile 390 px).
+
 Konvention: `YYYY-MM-DD_HHMM_<ticket>-<feature>_<inhalt>.png`
+
+- `2026-10-05_1610_HCK-anniversary-logo_desktop.png`, `2026-10-05_1610_HCK-anniversary-logo_mobile.png`: Jubiläumsbanner mit weisser Powercoders-Wortmarke, EN Desktop und DE Mobile.
+
+- `2026-10-05_1553_HCK-anniversary_desktop.png`, `2026-10-05_1553_HCK-anniversary_mobile.png`, `2026-10-05_1553_HCK-anniversary_hosts.png`: Jubiläumsmarke für 10 Jahre Powercoders im Hero (EN Desktop, DE Mobile) und vollständiger Veranstalterbereich auf der Startseite.
 
 Aufnahme: `bun run dev` auf einem freien Port, dann ein Node-Skript mit
 `chromium` aus `/Users/jonas/code/site-snapshots/node_modules/playwright-core`

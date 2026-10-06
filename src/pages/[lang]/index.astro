@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
+import Hosts from '../../components/Hosts.astro';
 import Vision from '../../components/Vision.astro';
 import Timeline from '../../components/Timeline.astro';
 import Mentoring from '../../components/Mentoring.astro';
@@ -46,27 +47,7 @@ const t = useTranslations(lang);
 
     <Prizes lang={lang} />
 
-    <!-- Hosts teaser -->
-    <section class="relative py-16 sm:py-20">
-      <div class="absolute top-0 left-0 right-0 h-px accent-divider"></div>
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <a href={`/${lang}/about/`} class="group card-bold p-8 block">
-          <span class="text-xs font-mono tracking-[0.3em] uppercase text-accent block mb-3">
-            {t('hosts.label')}
-          </span>
-          <h3 class="font-display text-xl sm:text-2xl font-bold mb-2">
-            {t('hosts.headline')}
-          </h3>
-          <p class="text-sm text-muted mb-4">
-            {t('hosts.teaser')}
-          </p>
-          <span class="inline-flex items-center gap-2 text-sm font-medium text-accent group-hover:underline underline-offset-4">
-            {t('hosts.cta')}
-            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </span>
-        </a>
-      </div>
-    </section>
+    <Hosts lang={lang} />
 
     <Sponsors lang={lang} />
 

@@ -15,6 +15,8 @@ export const translations = {
 
     // Hero
     "hero.tagline": "10 Jahre. 10 Stunden. 10× Output.",
+    "hero.anniversary.title": "Jahre",
+    "hero.anniversary.description": "Feier mit uns. Besuche unsere Website.",
     "hero.title.line1": "AI for Access",
     "hero.title.line2": "Hackathon",
     "hero.subtitle":
@@ -437,6 +439,8 @@ export const translations = {
 
     // Hero
     "hero.tagline": "10 Years. 10 Hours. 10× Output.",
+    "hero.anniversary.title": "years of",
+    "hero.anniversary.description": "Celebrate with us. Visit our website.",
     "hero.title.line1": "AI for Access",
     "hero.title.line2": "Hackathon",
     "hero.subtitle":
