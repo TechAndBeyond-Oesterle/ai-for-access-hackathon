@@ -1,14 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import type { Lang } from '../i18n/translations';
 import { SKILL_AREAS, SKILL_LEVELS, TEAM_STATUSES } from '../lib/matching-fields';
-import { ROLES, PARTICIPANT_CONFLICTS, hasRoleConflict } from '../lib/registration-roles';
+import { ROLES, PARTICIPANT_CONFLICTS, hasRoleConflict, discordInvite } from '../lib/registration-roles';
 
 interface Props {
   lang: Lang;
 }
 
 const API_ENDPOINT = '/api/register';
-const DISCORD_INVITE = 'https://discord.gg/yaZTAY2yx';
 
 const DIETARY = ['No preference', 'Vegetarian', 'Vegan', 'Pescatarian', 'Halal', 'Kosher'] as const;
 const INFO_SESSIONS = ['18.09. 18:30–19:30', '25.09. 18:30–19:30', '23.10. 18:00–19:05', 'Not attending'] as const;
@@ -145,7 +144,7 @@ export default function RegisterForm({ lang }: Props) {
             : 'Team formation starts on 1 November. You can already join our Discord though — all the info is there and you can ask questions.'}
         </p>
         <a
-          href={DISCORD_INVITE}
+          href={discordInvite(form.roles)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full transition-all hover:scale-[1.02]"

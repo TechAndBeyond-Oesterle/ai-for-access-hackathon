@@ -1,3 +1,5 @@
+import { discordInvite } from './registration-roles';
+
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 export async function sendEmail(opts: {
@@ -57,9 +59,8 @@ export async function addToAudience(email: string, name: string) {
   if (!res.ok) throw new Error(await res.text());
 }
 
-export const DISCORD_INVITE = 'https://discord.gg/yaZTAY2yx';
-
-export function confirmationEmail(lang: 'de' | 'en', name: string) {
+export function confirmationEmail(lang: 'de' | 'en', name: string, roles: readonly string[]) {
+  const invite = discordInvite(roles);
   const first = (name || '').trim().split(/\s+/)[0] || '';
   if (lang === 'de') {
     return {
@@ -69,8 +70,8 @@ export function confirmationEmail(lang: 'de' | 'en', name: string) {
           <p>Hallo${first ? ' ' + escapeHtml(first) : ''},</p>
           <p>deine Anmeldung für den <strong>AI for Access Hackathon</strong> (20.–21. November 2026, Stadtkloster Frieden, Bern) ist eingegangen. 🎉</p>
           <p>Die <strong>Teambildung startet am 1. November</strong>. Unserem Discord-Server kannst du aber schon jetzt beitreten — dort findest du alle Infos und kannst Fragen stellen:</p>
-          <p><a href="${DISCORD_INVITE}" style="display:inline-block;background:#5865F2;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600">Discord beitreten</a></p>
-          <p style="color:#666;font-size:13px">${DISCORD_INVITE}</p>
+          <p><a href="${invite}" style="display:inline-block;background:#5865F2;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600">Discord beitreten</a></p>
+          <p style="color:#666;font-size:13px">${invite}</p>
           <p>Bis bald!<br/>Das AI for Access Team</p>
         </div>`,
     };
@@ -82,8 +83,8 @@ export function confirmationEmail(lang: 'de' | 'en', name: string) {
         <p>Hi${first ? ' ' + escapeHtml(first) : ''},</p>
         <p>your registration for the <strong>AI for Access Hackathon</strong> (20–21 November 2026, Stadtkloster Frieden, Bern) has been received. 🎉</p>
         <p><strong>Team formation starts on 1 November.</strong> You can already join our Discord server though — all the info is there and you can ask questions:</p>
-        <p><a href="${DISCORD_INVITE}" style="display:inline-block;background:#5865F2;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600">Join Discord</a></p>
-        <p style="color:#666;font-size:13px">${DISCORD_INVITE}</p>
+        <p><a href="${invite}" style="display:inline-block;background:#5865F2;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600">Join Discord</a></p>
+        <p style="color:#666;font-size:13px">${invite}</p>
         <p>See you soon!<br/>The AI for Access team</p>
       </div>`,
   };

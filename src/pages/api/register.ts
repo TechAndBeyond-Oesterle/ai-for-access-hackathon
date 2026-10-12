@@ -91,7 +91,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Confirmation email — never fail the registration if this errors
     try {
-      const { subject, html } = confirmationEmail(lang, fullName);
+      const { subject, html } = confirmationEmail(lang, fullName, roles);
       await sendEmail({ to: email, subject, html });
     } catch (err) {
       console.error('[Register] Resend error:', err);
