@@ -6,7 +6,7 @@ test('participant cannot also be mentor, volunteer or jury', () => {
     expect(hasRoleConflict(['Participant', role])).toBe(true);
     expect(hasRoleConflict([role])).toBe(false);
   }
-  expect(hasRoleConflict(['Participant', 'Organizer', 'Other'])).toBe(false);
+  expect(hasRoleConflict(['Participant', 'Sponsor/Partner', 'Other'])).toBe(false);
 });
 
 test('discord invite follows the selected role', () => {
