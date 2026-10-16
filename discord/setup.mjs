@@ -65,22 +65,22 @@ const ROLES = [
 // ---------------------------------------------------------------------------
 const CATEGORIES = [
   { name: '📢 START-HIER', readonly: true, channels: [
-    { name: 'willkommen',        type: 'text', topic: 'Willkommen beim AI for Access Hackathon! Start hier: Regeln lesen, Rolle wählen, vorstellen.' },
-    { name: 'verhaltenskodex',   type: 'text', topic: 'Code of Conduct — kurz & verbindlich.' },
-    { name: 'rollen-waehlen',    type: 'text', topic: 'Wähle deine Skill-Tags: Dev / Design / Domain-Expert / Newcomer / PM.' },
-    { name: 'ankuendigungen',    type: 'announcement', topic: 'Offizielle Ansagen der Orga.' }, // braucht Community-Modus
-    { name: 'zeitplan',          type: 'text', topic: 'Programm Fr 20.11. (Warm-up) + Sa 21.11. (10h Hack). Details auch als Discord-Events.' },
-    { name: 'faq',               type: 'text', topic: 'Häufige Fragen. EN as common language.' },
-    { name: 'tools-und-credits', type: 'text', topic: 'AI-Tools, API-Credits, Lizenzen der Tool-Partner.' },
-    { name: 'crashkurs-videos',  type: 'text', topic: 'Eröffnungs-Talk + 30-Min Tool-Crashkurs als Video (extern gehostet, hier verlinkt).' },
+    { name: 'willkommen',        type: 'text', topic: 'Welcome to the AI for Access Hackathon! Start here: read the rules, pick your role, introduce yourself.' },
+    { name: 'verhaltenskodex',   type: 'text', topic: 'Code of Conduct: short & binding.' },
+    { name: 'rollen-waehlen',    type: 'text', topic: 'Pick your skill tags: Dev / Design / Domain Expert / Newcomer / PM.' },
+    { name: 'ankuendigungen',    type: 'announcement', topic: 'Official announcements from the organizers.' }, // braucht Community-Modus
+    { name: 'zeitplan',          type: 'text', topic: 'Programme Fri 20 Nov (warm-up) + Sat 21 Nov (10h hack). Details also as Discord events.' },
+    { name: 'faq',               type: 'text', topic: 'Frequently asked questions. English is our common language.' },
+    { name: 'tools-und-credits', type: 'text', topic: 'AI tools, API credits, licences from our tool partners.' },
+    { name: 'crashkurs-videos',  type: 'text', topic: 'Opening talk + 30-min tool crash course as video (hosted externally, linked here).' },
   ]},
 
   { name: '🤝 TEAMFINDUNG', channels: [
     // Bewusst ohne Forum-Tags (17.09.): bei einer einstelligen Zahl an Challenges ist eine
     // Filterleiste mehr Bedienoberflaeche als Nutzen. challenges.mjs setzt Tags, falls doch welche da sind.
-    { name: 'challenges',       type: 'forum', readonly: true, post: ['challenge'], topic: '1 Post je Firmen-Challenge: Problem, Zielgruppe, Ressourcen, Owner.' },
-    { name: 'ideen-marktplatz', type: 'forum', topic: '1 Post = 1 Idee. Der Thread wird euer Team-Chat-in-spe. Tags: Challenge / eigene Idee.' },
-    { name: 'team-suche',       type: 'text',  topic: 'Suche/biete Skill: "Suche Designer" / "Biete Legal-Domain".' },
+    { name: 'challenges',       type: 'forum', readonly: true, post: ['challenge'], topic: '1 post per company challenge: problem, target group, resources, owner.' },
+    { name: 'ideen-marktplatz', type: 'forum', topic: '1 post = 1 idea. The thread becomes your future team chat.' },
+    { name: 'team-suche',       type: 'text',  topic: 'Looking for / offering skills: "Looking for a designer" / "Offering legal domain knowledge".' },
   ]},
 
   { name: '💬 ALLGEMEIN', channels: [
@@ -97,7 +97,7 @@ const CATEGORIES = [
   { name: '🛠️ TEAMS', channels: [] },
 
   { name: '🧑‍🏫 MENTORING', channels: [
-    { name: 'mentor-anfragen', type: 'forum', topic: 'Stellt hier eure Mentoring-Anfrage (1 Post je Anliegen). Mentor:innen greifen sich Threads.' },
+    { name: 'mentor-anfragen', type: 'forum', topic: 'Post your mentoring request here (1 post per request). Mentors pick up threads.' },
     { name: 'Mentoring-1', type: 'voice' },
     { name: 'Mentoring-2', type: 'voice' },
     { name: 'Mentoring-3', type: 'voice' },
@@ -105,18 +105,18 @@ const CATEGORIES = [
 
   { name: '🎤 BÜHNE & PITCHES', channels: [
     { name: 'Bühne',        type: 'stage' }, // braucht Community-Modus (kein Topic: Stage/Voice-Topics werden streng gefiltert)
-    { name: 'projekte',     type: 'forum', topic: '1 Post je Team = Projekt: Team, Repo/Demo, Pitch-Video (≤2 min, als EXTERNER Link!), 2-Satz-Beschreibung. Ab Code-Freeze read-only.' },
-    { name: 'pitch-fragen', type: 'text',  topic: 'Fragen ans pitchende Team.' },
-    { name: 'voting',       type: 'text',  topic: 'Native Polls: Speedrun-Top-10-Auswahl & Publikumspreis.' },
+    { name: 'projekte',     type: 'forum', topic: '1 post per team = project: team, repo/demo, pitch video (≤2 min, as an EXTERNAL link!), 2-sentence description. Read-only after code freeze.' },
+    { name: 'pitch-fragen', type: 'text',  topic: 'Questions for the team that is pitching.' },
+    { name: 'voting',       type: 'text',  topic: 'Native polls: speedrun top 10 selection & audience award.' },
   ]},
 
   { name: '📸 DOKU & PRESSE', private: ['media'], channels: [
-    { name: 'doku-und-presse', type: 'text', topic: 'Fotos/Video-Sammlung (Samir), Social-Media-Freigaben. Einwilligung Bild/Ton beachten.' },
+    { name: 'doku-und-presse', type: 'text', topic: 'Photo/video collection (Samir), social media approvals. Respect consent for images/audio.' },
   ]},
 
   { name: '🏆 JURY', private: ['jury'], channels: [
     { name: 'jury-intern', type: 'text' },
-    { name: 'bewertung',   type: 'text', topic: 'Scoring-Sheet (4 Kriterien: Impact/AI/Prototyp/Pitch) — Link hier.' },
+    { name: 'bewertung',   type: 'text', topic: 'Scoring sheet (4 criteria: Impact/AI/Prototype/Pitch), link here.' },
   ]},
 
   { name: '🏢 SPONSOREN', private: ['challenge'], channels: [
@@ -208,6 +208,10 @@ async function ensureStructure(guild, roleMap) {
       if (existing) {
         step(`  ✓ ${ch.type.padEnd(12)} #${ch.name}`);
         if (!DRY && chOw.length) await existing.permissionOverwrites.set(chOw);
+        if (ch.topic && existing.topic !== ch.topic) {
+          step(`    ~ Topic aktualisieren`);
+          if (!DRY) await existing.setTopic(ch.topic);
+        }
       } else {
         step(`  + ${ch.type.padEnd(12)} #${ch.name}`);
         if (!DRY) await guild.channels.create({

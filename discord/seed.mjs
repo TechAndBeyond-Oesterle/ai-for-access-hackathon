@@ -31,120 +31,109 @@ if (!DISCORD_TOKEN || !GUILD_ID) {
 // ---------------------------------------------------------------------------
 const TEXT_SEED = {
   willkommen: [
-`👋 **Willkommen beim AI for Access Hackathon 2026!**
-🗓️ **20.–21. November 2026** · 📍 **Stadtkloster Frieden**, Friedensstrasse 9, Bern
+`👋 **Welcome to the AI for Access Hackathon 2026!**
+🗓️ **20–21 November 2026** · 📍 **Stadtkloster Frieden**, Friedensstrasse 9, Bern
 🤝 Powercoders × Tech & Beyond
 
-**Du musst nicht coden können. Du musst ein Problem verstehen.** In interdisziplinären Teams baut ihr mit AI-Tools in ~10 Stunden echte Prototypen zum Thema **Access** — Zugang zu Gesundheit, Recht, Bildung, Arbeit und Gemeinschaft.`,
-`**So startest du:**
-1️⃣ Lies den 👉 {#verhaltenskodex}
-2️⃣ Wähle deine Skill-Tags in 👉 {#rollen-waehlen}
-3️⃣ Stell dich kurz vor in 👉 {#vorstellung}
-4️⃣ Stöbere in {#challenges} & {#ideen-marktplatz} und finde dein Team.
+**You don't need to code. You need to understand a problem.** In interdisciplinary teams you build real prototypes with AI tools in ~10 hours on the theme of **Access**: access to health, justice, education, work and community.`,
+`**How to start:**
+1️⃣ Read the 👉 {#verhaltenskodex}
+2️⃣ Pick your skill tags in 👉 {#rollen-waehlen}
+3️⃣ Introduce yourself in 👉 {#vorstellung}
+4️⃣ Browse {#challenges} & {#ideen-marktplatz} and find your team.
 
-*EN as our common language — schreib gern auf Deutsch oder Englisch.* 🇩🇪🇬🇧`,
+*The event language is English.* 🇬🇧`,
   ],
   verhaltenskodex: [
-`📜 **Code of Conduct — kurz & verbindlich**
+`📜 **Code of Conduct: short & binding**
 
-Wir wollen einen sicheren, offenen Raum für **alle** — besonders für Newcomer und Menschen ohne Coding-Hintergrund.
+We want a safe, open space for **everyone**, especially newcomers and people without a coding background.
 
-• **Respekt** — keine Belästigung, Diskriminierung oder abwertende Sprache.
-• **Hilfsbereitschaft** — Fragen sind willkommen, niemand ist "zu Anfänger:in".
-• **Fairness** — AI-Tools ja, aber ehrlich; keine fertigen Projekte "recyceln".
-• **Einwilligung** — Fotos/Videos nur mit OK der abgebildeten Personen (→ #doku-und-presse).
+• **Respect**: no harassment, discrimination or demeaning language.
+• **Helpfulness**: questions are welcome, nobody is "too much of a beginner".
+• **Fairness**: AI tools yes, but honestly; no "recycling" of finished projects.
+• **Consent**: photos/videos only with the OK of the people shown (→ #doku-und-presse).
 
-Verstoß? → DM an ein **@Orga**-Mitglied. Danke, dass ihr diesen Space tragt. 💜`,
+Something wrong? → DM a member of **@Orga**. Thanks for helping carry this space. 💜`,
   ],
-  'rollen-waehlen': [
-`🎭 **Wähle deine Skill-Tags** — damit Teams sich leichter finden.
-
-Reagiere auf diese Nachricht (im echten Betrieb via Reaction-Roles):
-💻 **Dev** — Entwicklung / Engineering
-🎨 **Design** — UX / UI / Product
-🧠 **Domain-Expert** — Medizin, Recht, Bildung, Soziales …
-📊 **PM / Business** — Produkt, Strategie, Pitch
-✨ **Newcomer** — neu in Tech / im Hackathon-Format — herzlich willkommen!
-
-Mehrfachauswahl ist ok. *(Setup-Hinweis: Reaction-Roles werden später verknüpft.)*`,
-  ],
+  // #rollen-waehlen: den Skill-Post samt Buttons legt bot.mjs selbst an (posts/choose-your-role.md).
   ankuendigungen: [
-`📢 **[Beispiel] T-14 · Registrierung ist offen!**
-Die Anmeldung läuft — teilt den Link in euren Netzwerken. Ziel: ~100 Teilnehmende, davon ≥30 % ohne Coding-Hintergrund. 🚀`,
-`📢 **[Beispiel] Programm steht — schaut in die Event-Übersicht!**
-Der komplette Fr/Sa-Ablauf ist als **Discord-Events** hinterlegt (oben unter „Events" auf „Interessiert" klicken → ihr bekommt Reminder). Highlights: Crash-Kurs, Mentor-Check-in, Pitch-Speedrun → Top-10-Live. 🏆`,
+`📢 **[Example] T-14 · Registration is open!**
+Sign-up is live, share the link in your networks. Goal: ~100 participants, at least 30 % without a coding background. 🚀`,
+`📢 **[Example] The programme is set, check the event overview!**
+The full Fri/Sat schedule is available as **Discord events** (at the top under "Events", click "Interested" to get reminders). Highlights: crash course, mentor check-in, pitch speedrun → top 10 live. 🏆`,
   ],
   zeitplan: [
-`🗓️ **Programm** (Details + Reminder unter „Events")
+`🗓️ **Programme** (details + reminders under "Events")
 
-**Freitag, 20.11.**
+**Friday, 20 Nov**
 18:00 Doors Open & Networking
-18:30 Eröffnung & Keynote
-19:15 Ideen-Pitches & Teamfindung
-20:30 Konzeptphase · 21:00 Ende
+18:30 Opening & Keynote
+19:15 Idea Pitches & Team Building
+20:30 Concept Phase · 21:00 End
 
-**Samstag, 21.11.**
-09:00 Doors & Kaffee · 09:30 **Hack-Start (10h)**
+**Saturday, 21 Nov**
+09:00 Doors & Coffee · 09:30 **Hack Start (10h)**
 12:30 Lunch · 14:00 Yoga
-15:00 Mentor-Check-in · 17:00 Yoga
-18:30 **Code Freeze** → Einreichung in {#projekte}
-19:00 **Pitch-Speedrun → Top 10 Live** (Bühne)
+15:00 Mentor Check-in · 17:00 Yoga
+18:30 **Code Freeze** → submission in {#projekte}
+19:00 **Pitch Speedrun → Top 10 Live** (stage)
 20:30 🎉 Awards & Apéro`,
   ],
   faq: [
 `❓ **FAQ**
 
-**Muss ich programmieren können?** Nein! Domain-Wissen, Design, Moderation, Pitch — alles zählt.
-**Was brauche ich?** Laptop, Ladegerät, gute Laune. AI-Tool-Zugänge stellen wir (→ {#tools-und-credits}).
-**Muss ich ein Team mitbringen?** Nein — Teams bilden sich Freitagabend ({#ideen-marktplatz} / {#team-suche}).
-**Wie reiche ich ein?** 1 Post in {#projekte} mit Repo/Demo + **Pitch-Video ≤ 2 Min (als Link!)**.
-**Kosten?** Teilnahme kostenlos. Verpflegung inklusive.
-**Sprache?** Deutsch & Englisch, EN als gemeinsame Sprache.`,
+**Do I need to know how to code?** No! Domain knowledge, design, facilitation, pitching: it all counts.
+**What do I need?** Laptop, charger, good mood. We provide access to AI tools (→ {#tools-und-credits}).
+**Do I need to bring a team?** No, teams form on Friday evening ({#ideen-marktplatz} / {#team-suche}).
+**How do I submit?** 1 post in {#projekte} with repo/demo + **pitch video ≤ 2 min (as a link!)**.
+**Cost?** Participation is free. Food included.
+**Language?** English.`,
   ],
   'tools-und-credits': [
-`🛠️ **AI-Tools & Credits** (Beispiele — final via Tool-Partner)
+`🛠️ **AI Tools & Credits** (examples, final list via tool partners)
 
-• **Claude** (Anthropic) — Coding, Text, Analyse
-• **Cursor** / **v0** — App- & UI-Prototyping
-• **Lovable** / **Bolt** — Full-Stack aus dem Prompt
-• **Figma** (+ AI) — Design
-• **Supabase / Vercel** — Backend & Deploy
+• **Claude** (Anthropic): coding, text, analysis
+• **Cursor** / **v0**: app & UI prototyping
+• **Lovable** / **Bolt**: full stack from a prompt
+• **Figma** (+ AI): design
+• **Supabase / Vercel**: backend & deploy
 
-🎟️ Team-Credits/Codes werden am Freitagabend hier gepostet. Fragt bei Bedarf ein **@Orga**-Mitglied.`,
+🎟️ Team credits/codes will be posted here on Friday evening. Ask a member of **@Orga** if you need anything.`,
   ],
   'crashkurs-videos': [
-`🎥 **Crash-Kurs & Video-Reihe** (30 Min „von der Idee zum Prototyp mit AI")
+`🎥 **Crash Course & Video Series** (30 min "from idea to prototype with AI")
 
-[Beispiel-Links — extern gehostet, hier nur verlinkt]
-▶️ Teil 1 — Vibe-Coding-Basics: https://youtu.be/AI4A-crash-01
-▶️ Teil 2 — Prototyp deployen: https://youtu.be/AI4A-crash-02
-▶️ Aufzeichnung Eröffnungs-Keynote: (folgt nach dem Event)
+[Example links, hosted externally and only linked here]
+▶️ Part 1: Vibe coding basics: https://youtu.be/AI4A-crash-01
+▶️ Part 2: Deploying a prototype: https://youtu.be/AI4A-crash-02
+▶️ Recording of the opening keynote: (after the event)
 
-*Warum extern? Pitch-/Kurs-Videos sprengen Discords Upload-Limit → immer als Link posten.*`,
+*Why external? Pitch/course videos exceed Discord's upload limit, so always post them as a link.*`,
   ],
   vorstellung: [
-`👋 [Beispiel] **Amina**, Ärztin aus Damaskus, jetzt in Bern. Kein Code, aber viele Ideen rund um **Health Access**. Suche Team! 🩺`,
-`👋 [Beispiel] **Luca**, UX-Designer aus Bern. Figma, Prototyping, gern barrierefreie Interfaces. 🎨`,
-`👋 [Beispiel] **Sara**, Informatikstudentin BFH. React/Next.js, mag Legal-Tech. Newcomer beim Hackathon! 💻`,
+`👋 [Example] **Amina**, doctor from Damascus, now in Bern. No code, but lots of ideas around **health access**. Looking for a team! 🩺`,
+`👋 [Example] **Luca**, UX designer from Bern. Figma, prototyping, likes accessible interfaces. 🎨`,
+`👋 [Example] **Sara**, computer science student at BFH. React/Next.js, into legal tech. First hackathon! 💻`,
   ],
   'team-suche': [
-`🔎 [Beispiel] **Suche Dev** für „Behörden-Navigator" (Foto→Todo-Liste). Habe Konzept + Domain-Wissen, brauche jemanden fürs Prototyping. — Amina`,
-`🙋 [Beispiel] **Biete Design** (UX/UI, Figma). Schließe mich gern einem Team im Access-/Bildungsbereich an. — Luca`,
-`🔎 [Beispiel] Wir sind zu zweit (Legal-Domain + PM) und **suchen 1 Dev** für „Access Law". — Team Mietrecht`,
+`🔎 [Example] **Looking for a dev** for "Authority Navigator" (photo → to-do list). I have the concept + domain knowledge, need someone for prototyping. (Amina)`,
+`🙋 [Example] **Offering design** (UX/UI, Figma). Happy to join a team working on access or education. (Luca)`,
+`🔎 [Example] We are two (legal domain + PM) and **looking for 1 dev** for "Access Law". (Team Tenancy Law)`,
   ],
   'pitch-fragen': [
-`💬 [Beispiel] An Team „Behörden-Navigator": Wie geht ihr mit sensiblen Daten aus den Briefen um — läuft die Verarbeitung lokal oder in der Cloud? 🔐`,
+`💬 [Example] To team "Authority Navigator": how do you handle sensitive data from the letters? Does processing run locally or in the cloud? 🔐`,
   ],
   bewertung: [
-`⚖️ **Jury — Bewertung** (intern)
+`⚖️ **Jury: Scoring** (internal)
 
-Scoring-Sheet (4 Kriterien, je 1–5): **[Beispiel]** https://docs.google.com/spreadsheets/AI4A-jury
-• **Impact** — löst es ein echtes Zugangsproblem?
-• **AI-Einsatz** — wie smart genutzt?
-• **Prototyp** — funktioniert es?
-• **Pitch** — Klarheit & Story?
+Scoring sheet (4 criteria, 1–5 each): **[Example]** https://docs.google.com/spreadsheets/AI4A-jury
+• **Impact**: does it solve a real access problem?
+• **Use of AI**: how smartly is it used?
+• **Prototype**: does it work?
+• **Pitch**: clarity & story?
 
-Ablauf: Speedrun-Videos in {#projekte} sichten → Top 10 → Live-Pitches bewerten → Konsens hier im Kanal.`,
+Process: review speedrun videos in {#projekte} → top 10 → score live pitches → consensus here in the channel.`,
   ],
 };
 
@@ -153,64 +142,64 @@ Ablauf: Speedrun-Videos in {#projekte} sichten → Top 10 → Live-Pitches bewer
 // ---------------------------------------------------------------------------
 const FORUM_SEED = {
   challenges: [
-    { name: '🏢 [Challenge] Behörden-Navigator — Sponsor: KantonTech AG',
-      body: `**Problem:** Amtliche Briefe (Steueramt, Migration, Krankenkasse) sind für viele unverständlich — besonders für Newcomer.
-**Zielgruppe:** Menschen mit wenig Behörden-/Sprach-Erfahrung.
-**Warum jetzt?** AI kann Briefe erklären, übersetzen und in To-dos mit Deadlines verwandeln.
-**Ressourcen:** Beispiel-Briefe (anonymisiert), API-Credits, Domain-Expertin vor Ort.
-**Challenge-Owner:** @KantonTech (Samstag anwesend) · Kein IP-Claim auf Ergebnisse.` },
-    { name: '🏢 [Challenge] Health Access — Sponsor: MediBern',
-      body: `**Problem:** Patient:innen kommen unvorbereitet zum Arzt, Sprachbarrieren erschweren die Anamnese.
-**Zielgruppe:** Neuzugezogene, ältere Menschen.
-**Warum jetzt?** AI kann Symptome in der eigenen Sprache erfassen und ein Vorbereitungsblatt generieren.
-**Ressourcen:** medizinische Terminologie-Liste, Test-Personas, Ärztin als Mentorin.
-**Challenge-Owner:** @MediBern · Firmenpreis: 1× Innovations-Workshop.` },
-    { name: '🏢 [Challenge] Skill Match — Sponsor: Powercoders',
-      body: `**Problem:** Qualifikationen von Newcomern werden im CH-Arbeitsmarkt nicht erkannt.
-**Zielgruppe:** Hochqualifizierte Geflüchtete & Career-Changer.
-**Warum jetzt?** AI kann aus einem CV ein Kompetenzprofil bauen und mit CH-Berufen matchen.
-**Ressourcen:** anonymisierte CV-Beispiele, Berufsnomenklatur, Alumni als Tester.
-**Challenge-Owner:** @Powercoders` },
+    { name: '🏢 [Challenge] Authority Navigator (Sponsor: KantonTech AG)',
+      body: `**Problem:** Official letters (tax office, migration, health insurance) are hard to understand for many people, especially newcomers.
+**Target group:** People with little experience with authorities or the language.
+**Why now?** AI can explain and translate letters and turn them into to-dos with deadlines.
+**Resources:** Example letters (anonymised), API credits, domain expert on site.
+**Challenge owner:** @KantonTech (on site Saturday) · No IP claim on results.` },
+    { name: '🏢 [Challenge] Health Access (Sponsor: MediBern)',
+      body: `**Problem:** Patients arrive at the doctor unprepared, language barriers make taking a medical history hard.
+**Target group:** Newly arrived people, older people.
+**Why now?** AI can capture symptoms in one's own language and generate a preparation sheet.
+**Resources:** Medical terminology list, test personas, a doctor as mentor.
+**Challenge owner:** @MediBern · Company prize: 1× innovation workshop.` },
+    { name: '🏢 [Challenge] Skill Match (Sponsor: Powercoders)',
+      body: `**Problem:** Newcomers' qualifications are not recognised on the Swiss job market.
+**Target group:** Highly qualified refugees & career changers.
+**Why now?** AI can build a skills profile from a CV and match it with Swiss occupations.
+**Resources:** Anonymised CV examples, occupational classification, alumni as testers.
+**Challenge owner:** @Powercoders` },
   ],
   'ideen-marktplatz': [
-    { name: '💡 Digi-Coach — AI-Begleiter für digital abgehängte Menschen',
-      body: `[Beispiel-Idee · Weg 2: eigene Idee]
-Ein Schritt-für-Schritt-Assistent, der durch Online-Prozesse führt (Steuererklärung, Arzttermin, Kassenwechsel). Sprachbasiert, geduldig, in einfacher Sprache.
-**Suche:** 1 Dev, 1 UX. **Rolle offen:** Domain (Sozialarbeit). 🙋 Reagiert im Thread!` },
-    { name: '💡 Access Law — Rechtsfragen verständlich machen',
-      body: `[Beispiel-Idee · passt zu #challenges „Access"]
-AI beantwortet Alltagsrecht (Miete, Arbeit, Versicherung) in verständlicher Sprache und zeigt den Weg zur passenden Beratungsstelle.
-**Team bisher:** Legal-Domain + PM. **Suchen:** 1 Dev. 💻` },
-    { name: '💡 Barrier-Free Bern — Accessibility-Checker',
-      body: `[Beispiel-Idee]
-Tool scannt Behörden-Websites, generiert konkrete Barrierefreiheits-Verbesserungen + Report.
-**Suche:** Frontend-Dev mit a11y-Interesse, Designer:in. 🎨` },
+    { name: '💡 Digi-Coach: AI companion for people left behind digitally',
+      body: `[Example idea · path 2: own idea]
+A step-by-step assistant that guides through online processes (tax return, doctor's appointment, switching health insurance). Voice-based, patient, in plain language.
+**Looking for:** 1 dev, 1 UX. **Open role:** domain (social work). 🙋 Reply in the thread!` },
+    { name: '💡 Access Law: making legal questions understandable',
+      body: `[Example idea · fits #challenges "Access"]
+AI answers everyday legal questions (rent, work, insurance) in plain language and points to the right advice centre.
+**Team so far:** legal domain + PM. **Looking for:** 1 dev. 💻` },
+    { name: '💡 Barrier-Free Bern: Accessibility Checker',
+      body: `[Example idea]
+A tool that scans government websites and generates concrete accessibility improvements + a report.
+**Looking for:** frontend dev interested in a11y, designer. 🎨` },
   ],
   'mentor-anfragen': [
-    { name: '🧑‍🏫 [Beispiel] Team Digi-Coach — Scoping-Hilfe',
-      body: `Wir wollen für 10h zu viel. Können wir mit einer Mentorin den Scope auf **ein** Feature eindampfen? Zeitfenster ~15:00. 🙏` },
-    { name: '🧑‍🏫 [Beispiel] Team Access Law — Deploy-Frage',
-      body: `Prototyp läuft lokal, wir kriegen ihn nicht auf Vercel deployed. Kurz-Support möglich? 🚀` },
+    { name: '🧑‍🏫 [Example] Team Digi-Coach: scoping help',
+      body: `We want too much for 10h. Can a mentor help us cut the scope down to **one** feature? Around 15:00. 🙏` },
+    { name: '🧑‍🏫 [Example] Team Access Law: deploy question',
+      body: `The prototype runs locally, but we can't get it deployed on Vercel. Quick support possible? 🚀` },
   ],
   projekte: [
-    { name: '🚀 Behörden-Navigator — Team Amina & Sara',
-      body: `**Team:** Amina (Domain/Health), Sara (Dev), Luca (Design)
-**Challenge:** Behörden-Navigator (KantonTech)
-**Was:** Foto vom Amtsbrief → AI erklärt in einfacher Sprache + erzeugt To-do-Liste mit Deadlines.
-**Repo/Demo:** [Beispiel] https://ai4access-navigator.vercel.app · https://github.com/ai4a/navigator
-🎥 **Pitch-Video (1:52):** [Beispiel] https://youtu.be/AI4A-proj-navigator
-*(Video ≤2 Min, extern gehostet — genau so einreichen!)*` },
-    { name: '🚀 Access Law — Team Mietrecht',
-      body: `**Team:** Jonas (PM), Nadia (Legal), Tim (Dev)
-**Was:** Chat für Alltagsrecht in verständlicher Sprache + Verweis auf Beratungsstelle.
-**Repo/Demo:** [Beispiel] https://ai4access-law.vercel.app
-🎥 **Pitch-Video (1:47):** [Beispiel] https://youtu.be/AI4A-proj-law` },
-    { name: '🚀 Skill Match — Team Powercoders Alumni',
-      body: `**Team:** 3 Alumni
+    { name: '🚀 Authority Navigator: Team Amina & Sara',
+      body: `**Team:** Amina (domain/health), Sara (dev), Luca (design)
+**Challenge:** Authority Navigator (KantonTech)
+**What:** Photo of an official letter → AI explains it in plain language + creates a to-do list with deadlines.
+**Repo/Demo:** [Example] https://ai4access-navigator.vercel.app · https://github.com/ai4a/navigator
+🎥 **Pitch video (1:52):** [Example] https://youtu.be/AI4A-proj-navigator
+*(Video ≤2 min, hosted externally: submit exactly like this!)*` },
+    { name: '🚀 Access Law: Team Tenancy Law',
+      body: `**Team:** Jonas (PM), Nadia (legal), Tim (dev)
+**What:** Chat for everyday legal questions in plain language + referral to an advice centre.
+**Repo/Demo:** [Example] https://ai4access-law.vercel.app
+🎥 **Pitch video (1:47):** [Example] https://youtu.be/AI4A-proj-law` },
+    { name: '🚀 Skill Match: Team Powercoders Alumni',
+      body: `**Team:** 3 alumni
 **Challenge:** Skill Match (Powercoders)
-**Was:** CV → Kompetenzprofil → Match mit CH-Berufen + nächste Schritte zur Anerkennung.
-**Repo/Demo:** [Beispiel] https://ai4access-skillmatch.vercel.app
-🎥 **Pitch-Video (2:00):** [Beispiel] https://youtu.be/AI4A-proj-skillmatch` },
+**What:** CV → skills profile → match with Swiss occupations + next steps towards recognition.
+**Repo/Demo:** [Example] https://ai4access-skillmatch.vercel.app
+🎥 **Pitch video (2:00):** [Example] https://youtu.be/AI4A-proj-skillmatch` },
   ],
 };
 
@@ -219,9 +208,9 @@ Tool scannt Behörden-Websites, generiert konkrete Barrierefreiheits-Verbesserun
 // ---------------------------------------------------------------------------
 const POLL_SEED = {
   voting: {
-    question: { text: '🏆 Publikumspreis — welches Projekt hat dich überzeugt?' },
+    question: { text: '🏆 Audience award: which project won you over?' },
     answers: [
-      { text: 'Behörden-Navigator', emoji: '📬' },
+      { text: 'Authority Navigator', emoji: '📬' },
       { text: 'Access Law', emoji: '⚖️' },
       { text: 'Skill Match', emoji: '🧩' },
       { text: 'Digi-Coach', emoji: '🤖' },

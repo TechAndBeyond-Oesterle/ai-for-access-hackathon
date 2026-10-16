@@ -124,7 +124,7 @@ const titleOf = ({ f }) => f.Title || plain(f['Headline (Problem Statement)']) |
 function threadTitle(rec) {
   const { f } = rec;
   const company = f['Company Challenge'] ? f['Company or Organisation'] : null;
-  const name = `${f['Company Challenge'] ? '🏢' : '💡'} ${titleOf(rec) ?? '(ohne Titel)'}`
+  const name = `${f['Company Challenge'] ? '🏢' : '💡'} ${titleOf(rec) ?? '(untitled)'}`
     + `${company ? ` · ${company}` : ''}`;
   return name.length > THREAD_NAME_LIMIT ? `${name.slice(0, THREAD_NAME_LIMIT - 1)}…` : name;
 }
@@ -376,14 +376,14 @@ async function runReport(guild) {
 
   const lines = ['**Challenge → Teams**', ''];
   for (const r of rows) {
-    const mark = r.teams.length ? '' : r.company ? ' ⚠️ **noch kein Team**' : ' (noch kein Team)';
+    const mark = r.teams.length ? '' : r.company ? ' ⚠️ **no team yet**' : ' (no team yet)';
     lines.push(`- ${r.title}: ${r.teams.length ? r.teams.join(', ') : '—'}${mark}`);
-    if (r.solo.length) lines.push(`  - ohne Team-Rolle: ${r.solo.join(', ')}`);
+    if (r.solo.length) lines.push(`  - without team role: ${r.solo.join(', ')}`);
   }
 
   const orphans = rows.filter((r) => r.company && !r.teams.length);
   if (orphans.length) {
-    lines.push('', `⚠️ ${orphans.length} Sponsor-Challenge(s) ohne Team — bitte am Challenge-Markt ansprechen.`);
+    lines.push('', `⚠️ ${orphans.length} sponsor challenge(s) without a team. Please follow up at the challenge market.`);
   }
 
   const report = lines.join('\n');

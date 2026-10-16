@@ -50,6 +50,7 @@ const TEAM_COLORS = [0x58A6FF, 0x3FB950, 0xBC8CFF, 0xF778BA, 0xE3B341, 0x22D3EE,
 const SWEEP_INTERVAL_MS = 5 * 60_000;     // Nachlauf, falls ein Gateway-Event verloren geht
 const EMPTY_GRACE_MS = 15 * 60_000;       // so lange darf ein Team leer stehen, bevor es fällt
 const LOG_CHANNEL = 'bot-logs';           // Orga-interner Kanal für Team-Ereignisse
+const BOT_NAME = 'AI-Pro-Hacker-2000';
 
 // Sprache: Alles, was Teilnehmende sehen, ist ENGLISCH — bei Powercoders ist Englisch die
 // gemeinsame Sprache, Deutsch nicht bei allen vorausgesetzt. Konsolen-Ausgaben und
@@ -108,7 +109,7 @@ async function logEvent(guild, text) {
     const channel = guild.channels.cache.find(
       (c) => c.type === ChannelType.GuildText && c.name === LOG_CHANNEL,
     );
-    if (channel) await channel.send(`-# ${new Date().toLocaleString('de-CH')}\n${text}`);
+    if (channel) await channel.send(`-# ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/Zurich' })}\n${text}`);
   } catch (err) {
     console.error(`  (Log nach #${LOG_CHANNEL} fehlgeschlagen: ${err?.message || err})`);
   }
@@ -144,7 +145,7 @@ async function handleCreate(interaction) {
   }
 
   const color = TEAM_COLORS[Math.floor(guild.roles.cache.size) % TEAM_COLORS.length];
-  const teamRole = await guild.roles.create({ name: `${TEAM_ROLE_PREFIX}${name}`, color, mentionable: true, reason: 'Team-Raum' });
+  const teamRole = await guild.roles.create({ name: `${TEAM_ROLE_PREFIX}${name}`, color, mentionable: true, reason: 'Team room' });
   await interaction.member.roles.add(teamRole);
 
   const everyone = guild.roles.everyone.id;
@@ -160,15 +161,15 @@ async function handleCreate(interaction) {
   const category = await ensureTeamsCategory(guild);
   const text = await guild.channels.create({
     name: `team-${s}`, type: ChannelType.GuildText, parent: category.id,
-    topic: `Privater Raum für Team „${name}". [teamRole:${teamRole.id}]`,
-    permissionOverwrites: base, reason: 'Team-Raum',
+    topic: `Private room for team "${name}". [teamRole:${teamRole.id}]`,
+    permissionOverwrites: base, reason: 'Team room',
   });
   const voice = await guild.channels.create({
     name: `team-${s}-voice`, type: ChannelType.GuildVoice, parent: category.id,
-    permissionOverwrites: base, reason: 'Team-Raum',
+    permissionOverwrites: base, reason: 'Team room',
   });
   // Voice-ID mit in den Topic, damit das Aufräumen beide Räume sicher findet.
-  await text.setTopic(`Privater Raum für Team „${name}". [teamRole:${teamRole.id}] [teamVoice:${voice.id}]`);
+  await text.setTopic(`Private room for team "${name}". [teamRole:${teamRole.id}] [teamVoice:${voice.id}]`);
 
   await text.send(`👋 Welcome to **${name}**! Use \`/team add @person\` here to bring in more members. `
     + '`/team leave` gets you out again — once the last person leaves, the bot removes the role and these rooms. '
@@ -274,7 +275,7 @@ async function sweepEmptyTeams(guild, { dryRun = DRY_RUN, graceMs = EMPTY_GRACE_
       continue;
     }
 
-    const reason = 'Team ohne Mitglieder (Auto-Cleanup)';
+    const reason = 'Team without members (auto-cleanup)';
     await text?.delete(reason).catch((e) => console.error(`  Channel: ${e?.message || e}`));
     await voice?.delete(reason).catch((e) => console.error(`  Voice: ${e?.message || e}`));
     await role.delete(reason).catch((e) => console.error(`  Rolle: ${e?.message || e}`));
@@ -327,12 +328,18 @@ function registerHandlers(c) {
       return await handleAdd(interaction);
     } catch (err) {
       console.error('team-command error:', err);
-      return interaction.editReply(`❌ Fehler: ${err?.message || err}`);
+      return interaction.editReply(`❌ Error: ${err?.message || err}`);
     }
   });
 
   c.once(Events.ClientReady, async () => {
     console.log(`🤖 Online als ${c.user.tag}`);
+    // Nur bei Abweichung umbenennen: Discord erlaubt nur wenige Namensänderungen pro Stunde.
+    if (c.user.username !== BOT_NAME) {
+      await c.user.setUsername(BOT_NAME)
+        .then(() => console.log(`✓ Bot-Name gesetzt: ${BOT_NAME}`))
+        .catch((e) => console.error('❌ Bot-Name nicht gesetzt:', e?.message || e));
+    }
     const guild = await c.guilds.fetch(GUILD_ID);
 
     // Einmal-Modus: nur aufräumen (bzw. zeigen, was fiele) und beenden — ohne Grace-Period,

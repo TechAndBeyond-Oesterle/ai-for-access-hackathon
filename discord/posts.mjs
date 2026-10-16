@@ -10,7 +10,7 @@
  *   node posts.mjs --dry-run                 # zeigt nur, was passieren würde
  *   node posts.mjs --channel orga-intern     # alles in den Orga-Channel (Preview/Abnahme)
  *   node posts.mjs                           # in die in der Datei angegebenen Channels
- *   node posts.mjs --only team-anleitung-de  # nur eine Datei
+ *   node posts.mjs --only team-anleitung-en  # nur eine Datei
  *
  * Wiedererkennung: Am Ende jeder Nachricht steht ein unauffälliger Marker im
  * Discord-Subtext (`-# ⟨post:<name>⟩`). Der Bot sucht damit seine eigene frühere

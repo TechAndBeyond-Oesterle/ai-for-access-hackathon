@@ -170,7 +170,7 @@ muss dafür Code anfassen oder alte Posts von Hand löschen.
 npm run posts:dry        # zeigt nur, was passieren würde
 npm run posts:preview    # alles nach #orga-intern (nur Orga sieht es) — zur Abnahme
 npm run posts            # in die Channels aus dem Frontmatter
-node posts.mjs --only team-anleitung-de --channel orga-intern
+node posts.mjs --only team-anleitung-en --channel orga-intern
 ```
 
 **Beim zweiten Lauf wird die bestehende Nachricht editiert, nicht neu gepostet.** Der Bot

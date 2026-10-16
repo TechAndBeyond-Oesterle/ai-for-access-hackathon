@@ -131,8 +131,8 @@ export function createRoleButtons(guild, botId, { report = console.error } = {})
           const member = await guild.members.fetch({ user: interaction.user.id, force: true });
           const remove = member.roles.cache.has(role.id);
           const updated = remove
-            ? await member.roles.remove(role.id, 'Skill-Button: entfernen')
-            : await member.roles.add(role.id, 'Skill-Button: hinzufügen');
+            ? await member.roles.remove(role.id, 'Skill button: remove')
+            : await member.roles.add(role.id, 'Skill button: add');
           const selected = SKILL_ROLES.filter((s) => updated.roles.cache.some((r) => s.names.includes(r.name)))
             .map((s) => s.names[0]).join(' · ') || 'none yet';
           return `✅ **${skill.names[0]}** ${remove ? 'removed' : 'added'}.\nYour skill tags: **${selected}**.`;

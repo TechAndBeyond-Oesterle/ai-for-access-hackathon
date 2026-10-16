@@ -59,7 +59,7 @@ client.once(Events.ClientReady, async () => {
       if (DRY) continue;
 
       const teamRole = await guild.roles.create({
-        name: `Team: ${name}`, color: TEAM_COLORS[i % TEAM_COLORS.length], mentionable: true, reason: 'Beispiel-Team',
+        name: `Team: ${name}`, color: TEAM_COLORS[i % TEAM_COLORS.length], mentionable: true, reason: 'Example team',
       });
       const everyone = guild.roles.everyone.id;
       const ow = [
@@ -71,14 +71,14 @@ client.once(Events.ClientReady, async () => {
 
       const text = await guild.channels.create({
         name: `team-${s}`, type: ChannelType.GuildText, parent: category?.id,
-        topic: `Privater Raum für Team „${name}". [teamRole:${teamRole.id}]`,
-        permissionOverwrites: ow, reason: 'Beispiel-Team',
+        topic: `Private room for team "${name}". [teamRole:${teamRole.id}]`,
+        permissionOverwrites: ow, reason: 'Example team',
       });
       await guild.channels.create({
         name: `team-${s}-voice`, type: ChannelType.GuildVoice, parent: category?.id,
-        permissionOverwrites: ow, reason: 'Beispiel-Team',
+        permissionOverwrites: ow, reason: 'Example team',
       });
-      await text.send(`👋 [Beispiel] Team **${name}** — privater Raum. Im echten Betrieb entsteht der per \`/team create\`, weitere Mitglieder via \`/team add @person\`. Projekt einreichen in #projekte (Pitch-Video ≤2 min als Link).`);
+      await text.send(`👋 [Example] Team **${name}**: private room. In the real event this is created with \`/team create\`; add members via \`/team add @person\`. Submit your project in #projekte (pitch video ≤2 min as a link).`);
     }
 
     console.log(`\n✅ ${DRY ? 'Dry-Run fertig.' : 'Beispiel-Teams angelegt.'}`);

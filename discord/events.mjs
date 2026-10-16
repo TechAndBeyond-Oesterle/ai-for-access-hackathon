@@ -37,33 +37,33 @@ const remap = (s) => { if (!DEMO) return s; const [d, t] = s.split('T'); return 
 // name, start, end (Europe/Zurich). Ende = nächster Slot bzw. +Puffer.
 const SCHEDULE = [
   // Freitag 20.11.2026 — Warm-up
-  ['🚪 Fr · Doors Open & Networking',       '2026-11-20T18:00:00', '2026-11-20T18:30:00',
-    '📍 Stadtkloster Frieden, Bern. Ankommen, Namensschild schnappen, erstes Essen & Kennenlernen. Neu hier? Sag Hallo in #vorstellung — und ein 🧭 Discord-Lotse hilft dir beim Onboarding.'],
-  ['🎤 Fr · Eröffnung & Keynote',            '2026-11-20T18:30:00', '2026-11-20T19:15:00',
-    'Auf der 🎙️ Bühne: 10 Jahre Powercoders, die These „AI for Access" (du musst nicht coden können!) und die Vorstellung der Firmen-Challenges. Danach weißt du, worum es geht.'],
-  ['💡 Fr · Ideen-Pitches & Teamfindung',    '2026-11-20T19:15:00', '2026-11-20T20:30:00',
-    '60-Sekunden-Pitches, dann Marktplatz: Teams bilden sich. → Stöbere in #challenges & #ideen-marktplatz, poste in #team-suche, und legt euren Raum mit /team create an. Ziel: 3–5 Leute, gemischte Skills.'],
-  ['✏️ Fr · Konzeptphase',                    '2026-11-20T20:30:00', '2026-11-20T21:00:00',
-    'Idee schärfen: EIN Problem, EINE Zielgruppe, EIN Prototyp-Ziel für morgen. Erste Skizzen im Team-Channel. Weniger ist mehr — der Tag ist kurz.'],
+  ['🚪 Fri · Doors Open & Networking',      '2026-11-20T18:00:00', '2026-11-20T18:30:00',
+    '📍 Stadtkloster Frieden, Bern. Arrive, grab your name tag, first food & getting to know each other. New here? Say hi in #vorstellung, and a 🧭 Discord guide will help you get started.'],
+  ['🎤 Fri · Opening & Keynote',             '2026-11-20T18:30:00', '2026-11-20T19:15:00',
+    'On the 🎙️ stage: 10 years of Powercoders, the idea behind "AI for Access" (you don\'t need to code!) and the company challenges. Afterwards you know what it\'s all about.'],
+  ['💡 Fri · Idea Pitches & Team Building',  '2026-11-20T19:15:00', '2026-11-20T20:30:00',
+    '60-second pitches, then the marketplace: teams form. Browse #challenges & #ideen-marktplatz, post in #team-suche, and create your room with /team create. Goal: 3 to 5 people, mixed skills.'],
+  ['✏️ Fri · Concept Phase',                  '2026-11-20T20:30:00', '2026-11-20T21:00:00',
+    'Sharpen your idea: ONE problem, ONE target group, ONE prototype goal for tomorrow. First sketches in your team channel. Less is more, the day is short.'],
   // Samstag 21.11.2026 — Hack Day
-  ['☕ Sa · Doors Open & Kaffee',             '2026-11-21T09:00:00', '2026-11-21T09:30:00',
-    'Kaffee, Setup, Laptops auf. Tool-Credits & Codes findet ihr in #tools-und-credits.'],
-  ['🚀 Sa · Hack-Start (10h-Countdown)',      '2026-11-21T09:30:00', '2026-11-21T12:30:00',
-    'Der 10-Stunden-Countdown läuft! Baut mit AI-Tools (Claude, Cursor, v0, Lovable …). Steckt ihr fest? → #mentor-anfragen. Optionaler Crash-Kurs in #crashkurs-videos.'],
-  ['🍽️ Sa · Mittagessen',                     '2026-11-21T12:30:00', '2026-11-21T13:30:00',
-    'Verpflegung vor Ort (Infos in #verpflegung-logistik). Weiterarbeiten erlaubt — aber gönnt euch die Pause.'],
-  ['🧘 Sa · Yoga & Pause (14:00)',            '2026-11-21T14:00:00', '2026-11-21T14:45:00',
-    'Kurze Yoga-Einheit zum Durchatmen und Kopf freikriegen. Kein Muss — aber tut gut.'],
-  ['🧑‍🏫 Sa · Mentor-Check-in',                '2026-11-21T15:00:00', '2026-11-21T16:00:00',
-    'Mentor:innen gehen von Team zu Team: Standortbestimmung, Scope-Check, Deploy-Hilfe. Anfragen bündeln in #mentor-anfragen.'],
-  ['🧘 Sa · Yoga & Pause (17:00)',            '2026-11-21T17:00:00', '2026-11-21T17:45:00',
-    'Zweite Yoga-Runde vor dem Endspurt. Nochmal Kraft tanken für Code Freeze & Pitches.'],
-  ['🔒 Sa · Code Freeze & Einreichung',       '2026-11-21T18:30:00', '2026-11-21T19:00:00',
-    'Tools runter! Reicht euer Projekt in #projekte ein: 1 Post mit Team, Repo/Demo-Link, 2-Satz-Beschreibung und **Pitch-Video ≤2 min als externer Link** (YouTube unlisted / Drive — nicht direkt hochladen!).'],
-  ['🏆 Sa · Pitch-Speedrun → Top 10 Live',    '2026-11-21T19:00:00', '2026-11-21T20:30:00',
-    'Digitaler Speedrun: Jury sichtet alle Pitch-Videos in #projekte, das Publikum votet in #voting → die Top 10 pitchen live auf der 🎙️ Bühne (3 min + 2 min Q&A). Spannung pur!'],
-  ['🎉 Sa · Awards & Apéro',                  '2026-11-21T20:30:00', '2026-11-21T21:30:00',
-    'Preisverleihung: Hauptpreis, „Best Newcomer Impact", Firmenpreise & Publikumspreis (Preispool bis CHF 8\'000). Danach Apéro, Networking, feiern — ihr habt in 10h etwas Echtes gebaut. 👏'],
+  ['☕ Sat · Doors Open & Coffee',            '2026-11-21T09:00:00', '2026-11-21T09:30:00',
+    'Coffee, setup, laptops open. Tool credits & codes are in #tools-und-credits.'],
+  ['🚀 Sat · Hack Start (10h countdown)',     '2026-11-21T09:30:00', '2026-11-21T12:30:00',
+    'The 10-hour countdown is on! Build with AI tools (Claude, Cursor, v0, Lovable …). Stuck? Go to #mentor-anfragen. Optional crash course in #crashkurs-videos.'],
+  ['🍽️ Sat · Lunch',                          '2026-11-21T12:30:00', '2026-11-21T13:30:00',
+    'Food on site (info in #verpflegung-logistik). You can keep working, but treat yourself to the break.'],
+  ['🧘 Sat · Yoga & Break (14:00)',           '2026-11-21T14:00:00', '2026-11-21T14:45:00',
+    'Short yoga session to breathe and clear your head. Optional, but it helps.'],
+  ['🧑‍🏫 Sat · Mentor Check-in',               '2026-11-21T15:00:00', '2026-11-21T16:00:00',
+    'Mentors go from team to team: status check, scope check, deploy help. Collect your requests in #mentor-anfragen.'],
+  ['🧘 Sat · Yoga & Break (17:00)',           '2026-11-21T17:00:00', '2026-11-21T17:45:00',
+    'Second yoga round before the final sprint. Recharge for code freeze & pitches.'],
+  ['🔒 Sat · Code Freeze & Submission',       '2026-11-21T18:30:00', '2026-11-21T19:00:00',
+    'Tools down! Submit your project in #projekte: 1 post with team, repo/demo link, 2-sentence description and **pitch video ≤2 min as an external link** (YouTube unlisted / Drive, don\'t upload directly!).'],
+  ['🏆 Sat · Pitch Speedrun → Top 10 Live',   '2026-11-21T19:00:00', '2026-11-21T20:30:00',
+    'Digital speedrun: the jury watches all pitch videos in #projekte, the audience votes in #voting, then the top 10 pitch live on the 🎙️ stage (3 min + 2 min Q&A).'],
+  ['🎉 Sat · Awards & Apéro',                 '2026-11-21T20:30:00', '2026-11-21T21:30:00',
+    'Award ceremony: main prize, "Best Newcomer Impact", company prizes & audience award (prize pool up to CHF 8\'000). Then apéro, networking, celebrating: you built something real in 10h. 👏'],
 ];
 
 const iso = (s) => new Date(`${remap(s)}${TZ}`);
@@ -77,28 +77,39 @@ client.once(Events.ClientReady, async () => {
     console.log(`\n📅 Events für: ${full.name}  (${DRY ? 'DRY-RUN' : 'LIVE'})`);
 
     const existing = await full.scheduledEvents.fetch();
-    const wantNames = new Set(SCHEDULE.map((s) => s[0]));
 
-    // Orphans entfernen (z.B. alte gleichnamige Yoga-Dubletten oder umbenannte Events)
+    // Zuordnung per Name, sonst per Startzeit: so wird ein umbenanntes Event (z.B. DE → EN)
+    // editiert statt neu angelegt, und die "Interessiert"-Klicks bleiben erhalten.
+    const matched = new Map();
+    const used = new Set();
+    for (const pass of [(ev, [n]) => ev.name === n, (ev, [, s]) => ev.scheduledStartTimestamp === iso(s).getTime()]) {
+      for (const entry of SCHEDULE) {
+        if (matched.has(entry[0])) continue;
+        const ev = existing.find((e) => !used.has(e.id) && pass(e, entry));
+        if (ev) { matched.set(entry[0], ev); used.add(ev.id); }
+      }
+    }
+
+    // Orphans entfernen (z.B. alte Yoga-Dubletten oder gestrichene Events)
     for (const [, ev] of existing) {
-      if (!wantNames.has(ev.name)) {
+      if (!used.has(ev.id)) {
         console.log(`│ - Orphan löschen: ${ev.name}`);
         if (!DRY) await ev.delete().catch(() => {});
       }
     }
-    const byName = new Map();
-    for (const [, ev] of existing) if (wantNames.has(ev.name) && !byName.has(ev.name)) byName.set(ev.name, ev);
 
     for (const [name, start, end, description] of SCHEDULE) {
       const startAt = iso(start);
       const endAt = iso(end);
-      const ev = byName.get(name);
+      const ev = matched.get(name);
       if (ev) {
         const timeChanged = ev.scheduledStartTimestamp !== startAt.getTime() || ev.scheduledEndTimestamp !== endAt.getTime();
         const descChanged = ev.description !== description;
-        if (!timeChanged && !descChanged) { console.log(`│ ✓ aktuell: ${name}`); continue; }
-        console.log(`│ ~ aktualisieren: ${name}${timeChanged ? ' (Zeit)' : ''}${descChanged ? ' (Text)' : ''}`);
-        if (!DRY) await ev.edit({ description, scheduledStartTime: startAt, scheduledEndTime: endAt });
+        const nameChanged = ev.name !== name;
+        if (!timeChanged && !descChanged && !nameChanged) { console.log(`│ ✓ aktuell: ${name}`); continue; }
+        console.log(`│ ~ aktualisieren: ${name}${nameChanged ? ` (Name, war: ${ev.name})` : ''}`
+          + `${timeChanged ? ' (Zeit)' : ''}${descChanged ? ' (Text)' : ''}`);
+        if (!DRY) await ev.edit({ name, description, scheduledStartTime: startAt, scheduledEndTime: endAt });
         continue;
       }
       if (startAt.getTime() < Date.now()) {
