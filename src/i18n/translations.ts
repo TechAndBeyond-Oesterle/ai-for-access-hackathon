@@ -167,6 +167,9 @@ export const translations = {
     "challenges.form.resources": "Daten & Ressourcen (optional)",
     "challenges.form.resources.hint":
       "Könnt ihr Daten, APIs oder anderes Material zur Verfügung stellen, mit dem Teams arbeiten können?",
+    "challenges.form.files": "Dateien (optional)",
+    "challenges.form.files.hint":
+      "Beispieldaten, PDFs, Präsentationen oder Bilder. Maximal 5 Dateien, zusammen höchstens 4 MB.",
     "challenges.form.type": "Wer reicht die Challenge ein?",
     "challenges.form.type.company": "Unternehmen / Organisation",
     "challenges.form.type.personal": "Ich reiche meine eigene Idee ein",
@@ -204,6 +207,7 @@ export const translations = {
     "challenges.form.error.generic":
       "Etwas ist schiefgelaufen. Bitte nochmal versuchen.",
     "challenges.form.error.network": "Netzwerkfehler. Bitte nochmal versuchen.",
+    "challenges.form.error.files": "Maximal 5 Dateien, zusammen höchstens 4 MB.",
 
     // Audience
     "audience.label": "Für wen?",
@@ -586,6 +590,9 @@ export const translations = {
     "challenges.form.resources": "Data & Resources (optional)",
     "challenges.form.resources.hint":
       "Can you provide data, APIs, or other material for teams to work with?",
+    "challenges.form.files": "Files (optional)",
+    "challenges.form.files.hint":
+      "Sample data, PDFs, slides or images. Up to 5 files, 4 MB in total.",
     "challenges.form.type": "Who is submitting the challenge?",
     "challenges.form.type.company": "Company / organisation",
     "challenges.form.type.personal": "I'm submitting my own idea",
@@ -622,6 +629,7 @@ export const translations = {
     "challenges.form.error.category": "Select at least one category",
     "challenges.form.error.generic": "Something went wrong. Please try again.",
     "challenges.form.error.network": "Network error. Please try again.",
+    "challenges.form.error.files": "Up to 5 files, 4 MB in total.",
 
     // Audience
     "audience.label": "Who is it for?",

@@ -185,6 +185,7 @@ export default function ChallengeForm({ lang }: Props) {
   // ponytail: an example is read-only mock data, not a real submission — fields lock and
   // submit is disabled while one is loaded. "Start your own" resets to a blank form.
   const [isExample, setIsExample] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
 
   function updateForm(patch: Partial<typeof form>) {
     setForm((f) => ({ ...f, ...patch }));
@@ -207,6 +208,9 @@ export default function ChallengeForm({ lang }: Props) {
       errs.contactAddress = t('challenges.form.error.contact');
     if (form.availability.length === 0) errs.availability = t('challenges.form.error.availability');
     if (form.category.length === 0) errs.category = t('challenges.form.error.category');
+    // Same limits as MAX_FILES / MAX_TOTAL_BYTES in src/pages/api/challenges.ts.
+    if (files.length > 5 || files.reduce((sum, f) => sum + f.size, 0) > 4 * 1024 * 1024)
+      errs.files = t('challenges.form.error.files');
     return errs;
   }
 
@@ -242,11 +246,10 @@ export default function ChallengeForm({ lang }: Props) {
     setSubmitting(true);
 
     try {
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
+      const body = new FormData();
+      body.append('data', JSON.stringify(form));
+      files.forEach((file) => body.append('files', file));
+      const res = await fetch(API_ENDPOINT, { method: 'POST', body });
       setSubmitting(false);
       if (res.ok) {
         setSubmitted(true);
@@ -437,6 +440,26 @@ export default function ChallengeForm({ lang }: Props) {
           className="w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] disabled:opacity-70"
           style={inputStyle}
         />
+      </div>
+
+      <div>
+        <label htmlFor="challenge-files" className="block mb-1.5" style={labelStyle}>
+          {t('challenges.form.files')}
+        </label>
+        <p id="challenge-files-hint" className="text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
+          {t('challenges.form.files.hint')}
+        </p>
+        <input
+          id="challenge-files"
+          type="file"
+          multiple
+          onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
+          disabled={isExample}
+          aria-describedby="challenge-files-hint"
+          className="w-full px-4 py-3 rounded-xl border text-sm file:mr-3 file:px-3 file:py-1 file:rounded-full file:border-0 file:bg-[var(--accent)] file:text-white disabled:opacity-70"
+          style={errors.files ? errorStyle : inputStyle}
+        />
+        {errors.files && <p className="mt-1 text-xs" style={{ color: 'var(--accent-alt)' }}>{errors.files}</p>}
       </div>
 
       <fieldset>

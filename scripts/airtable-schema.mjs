@@ -3,6 +3,7 @@
  * Idempotent Airtable schema setup for the poll tool (HCK-30).
  *
  * Creates the `PollAnswers` table if it is missing and adds any missing fields.
+ * Also adds the `Attachments` field to the Challenges table (challenge file uploads).
  * Airtable cannot delete tables or fields via API, so this script only adds.
  *
  * Usage:
@@ -129,6 +130,21 @@ async function main() {
         scopeHint(err);
         process.exit(4);
       }
+    }
+  }
+
+  const challenges = tables.find((t) => t.id === 'tbluAK4cJ5wfSdnnz');
+  if (challenges && !challenges.fields.some((f) => f.name === 'Attachments')) {
+    console.log('Adding field Attachments to Challenges');
+    try {
+      await api(`/tables/${challenges.id}/fields`, {
+        method: 'POST',
+        body: JSON.stringify({ name: 'Attachments', type: 'multipleAttachments', options: { isReversed: false } }),
+      });
+    } catch (err) {
+      console.error(String(err.message));
+      scopeHint(err);
+      process.exit(5);
     }
   }
 
