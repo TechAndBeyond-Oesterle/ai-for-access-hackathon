@@ -9,7 +9,7 @@ export const SKILL_ROLES = [
   { key: 'newcomer', emoji: '✨', names: ['Newcomer'] },
 ];
 export const ROLE_POST_MARKER = '-# ⟨post:choose-your-role⟩';
-const CHANNEL_NAMES = ['choose-your-role', 'rollen-waehlen'];
+const CHANNEL_NAMES = ['choose-your-role', 'choose-your-role'];
 const F = PermissionsBitField.Flags;
 
 export function isSkillButton(interaction) {

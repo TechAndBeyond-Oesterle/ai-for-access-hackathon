@@ -173,7 +173,7 @@ async function handleCreate(interaction) {
 
   await text.send(`👋 Welcome to **${name}**! Use \`/team add @person\` here to bring in more members. `
     + '`/team leave` gets you out again — once the last person leaves, the bot removes the role and these rooms. '
-    + 'Remember to post your project in **#projekte** (pitch video ≤2 min as an external link).');
+    + 'Remember to post your project in **#projects** (pitch video ≤2 min as an external link).');
   await logEvent(guild, `✚ **${name}** created by <@${interaction.user.id}> — <#${text.id}>`);
   return interaction.editReply(`✅ Team **${name}** created: <#${text.id}> + voice channel. You've got the <@&${teamRole.id}> role.`);
 }

@@ -1,5 +1,5 @@
 ---
-channel: team-suche
+channel: team-search
 ---
 # 🛠️ How to create your team
 
@@ -26,8 +26,8 @@ Anyone on the team can do this — no need to wait for whoever created it.
 
 ## If something doesn't work
 
-• **"This application did not respond"** → the bot is offline right now. Post in {#hilfe-und-support}.
+• **"This application did not respond"** → the bot is offline right now. Post in {#help-and-support}.
 • **"You're already in …"** → you're still in another team. Run `/team leave`, then try again.
 • **"A team channel … already exists"** → that name is taken, pick another one.
 
-Still looking for teammates? Check {#ideen-marktplatz} — one post per idea, and the thread naturally becomes your team chat.
+Still looking for teammates? Check {#idea-marketplace} — one post per idea, and the thread naturally becomes your team chat.

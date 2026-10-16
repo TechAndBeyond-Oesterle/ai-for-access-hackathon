@@ -6,8 +6,8 @@
  * Teilnehmende geöffnet wird. Foren werden Thread für Thread geleert, Text-Channels
  * Nachricht für Nachricht.
  *
- *   node clear.mjs --dry-run challenges ideen-marktplatz    # zeigt nur, was fiele
- *   node clear.mjs challenges ideen-marktplatz              # löscht wirklich
+ *   node clear.mjs --dry-run challenges idea-marketplace    # zeigt nur, was fiele
+ *   node clear.mjs challenges idea-marketplace              # löscht wirklich
  *
  * Kanalnamen müssen **immer explizit** übergeben werden — es gibt bewusst kein
  * „alles leeren", damit hier nichts aus Versehen passiert.
@@ -26,7 +26,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const names = process.argv.slice(2).filter((a) => !a.startsWith('--')).map((n) => n.replace(/^#/, ''));
 
 if (!names.length) {
-  console.error('❌ Keine Kanäle angegeben. Beispiel:\n   node clear.mjs --dry-run challenges ideen-marktplatz');
+  console.error('❌ Keine Kanäle angegeben. Beispiel:\n   node clear.mjs --dry-run challenges idea-marketplace');
   process.exit(1);
 }
 

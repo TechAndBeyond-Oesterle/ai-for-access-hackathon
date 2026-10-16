@@ -46,8 +46,8 @@ aus dem [Spike-Blueprint](./docs/2026-07-28_discord-spike.html) anlegt. Zum Aufs
 
 - **Rollen**: Orga (Admin), Jury, Mentor:in, Challenge-Owner, Media/Doku, Teilnehmer:in
   + Skill-Tags (Dev/Design/Domain-Expert/Newcomer/PM)
-- **Kategorien/Channels**: START-HIER · TEAMFINDUNG · ALLGEMEIN · TEAMS (leer, per Bot) ·
-  MENTORING · BÜHNE & PITCHES · DOKU & PRESSE · JURY · SPONSOREN · ORGA
+- **Kategorien/Channels**: START HERE · TEAM FINDING · GENERAL · TEAMS (leer, per Bot) ·
+  MENTORING · STAGE & PITCHES · DOCS & PRESS · JURY · SPONSORS · ORGA
 - **Rechte**: Info-Kanäle read-only, private Kategorien (Jury/Sponsoren/Doku/Orga) nur für ihre Rollen,
   `#challenges` nur von Challenge-Ownern bepostbar.
 
@@ -56,14 +56,14 @@ aus dem [Spike-Blueprint](./docs/2026-07-28_discord-spike.html) anlegt. Zum Aufs
 - **`Unknown Guild`** → Bot ist nicht auf dem Server. Invite-URL (Schritt 2) ausführen; mit dem
   Check-Snippet verifizieren, dass der Bot auf dem richtigen Server ist.
 - **`Invalid Form Body … type must be one of {…}`** beim Announcement-Channel → **Announcement-Channels
-  (Typ 5) brauchen Community-Modus.** `#ankuendigungen` läuft daher als read-only Text-Channel.
+  (Typ 5) brauchen Community-Modus.** `#announcements` läuft daher als read-only Text-Channel.
 - **`Cannot execute action on this channel type`** bei der Bühne → **Stage-Channels (Typ 13) brauchen
-  Community-Modus.** `#Bühne` läuft daher als Voice-Channel.
+  Community-Modus.** `#Stage` läuft daher als Voice-Channel.
 - **`CHANNEL_TOPIC_INVALID … word that is not allowed`** → Discords Wort-Filter für **Voice**-Channel-Topics
   ist streng; Voice-Channels bekommen deshalb keinen Topic.
 
 **Community-Upgrade (erledigt 2026-07-28):** Der Server ist auf **Community** umgestellt. `setup.mjs` legt
-`#ankuendigungen` (Announcement) und `#Bühne` (Stage) jetzt direkt korrekt an. Für einen bereits
+`#announcements` (Announcement) und `#Stage` (Stage) jetzt direkt korrekt an. Für einen bereits
 bestehenden Server, der noch die Text-/Voice-Varianten hat, wandelt `npm run upgrade`
 (`community-upgrade.mjs`) sie in-place um (idempotent, `--dry-run`-fähig; Voice→Stage per Neu-Anlage).
 
@@ -168,9 +168,9 @@ muss dafür Code anfassen oder alte Posts von Hand löschen.
 
 ```bash
 npm run posts:dry        # zeigt nur, was passieren würde
-npm run posts:preview    # alles nach #orga-intern (nur Orga sieht es) — zur Abnahme
+npm run posts:preview    # alles nach #organizers-internal (nur Orga sieht es) — zur Abnahme
 npm run posts            # in die Channels aus dem Frontmatter
-node posts.mjs --only team-anleitung-en --channel orga-intern
+node posts.mjs --only team-anleitung-en --channel organizers-internal
 ```
 
 **Beim zweiten Lauf wird die bestehende Nachricht editiert, nicht neu gepostet.** Der Bot
@@ -182,10 +182,10 @@ Aufbau einer Datei:
 
 ```markdown
 ---
-channel: team-suche
+channel: team-search
 ---
 # Überschrift
-Text … {#hilfe-und-support} wird zu einem echten Kanal-Link.
+Text … {#help-and-support} wird zu einem echten Kanal-Link.
 ```
 
 - `{#kanal-name}` wird zu `<#id>` aufgelöst — ein einfaches `#kanal` bliebe im per API
@@ -219,7 +219,7 @@ npm run challenges          # Teaser-Fassung anlegen/aktualisieren (Freitag, Kic
 npm run challenges:full     # dieselben Threads auf die Vollfassung heben (Samstag früh)
 npm run challenges:reveal   # Forum freischalten
 npm run challenges:report   # ✋-Reaktionen → "Challenge → Teams"
-node challenges.mjs --report --post-summary    # Übersicht zusätzlich nach #orga-intern
+node challenges.mjs --report --post-summary    # Übersicht zusätzlich nach #organizers-internal
 node challenges.mjs --preview --full          # Vollfassung gegenlesen
 node challenges.mjs --preview --any-status    # auch Entwürfe, die noch nicht freigegeben sind
 ```
@@ -230,7 +230,7 @@ abnehmen, bevor irgendwas im Server steht.
 
 **Zwei Stufen statt einer.** Freitagabend ist Teamfindung, Samstag wird gehackt. Stünden die
 Challenges erst Samstagmorgen im Server, würden sich die Teams Freitag ausschließlich um die
-eigenen Ideen aus `#ideen-marktplatz` bilden, und die Sponsor-Challenges fänden niemanden mehr.
+eigenen Ideen aus `#idea-marketplace` bilden, und die Sponsor-Challenges fänden niemanden mehr.
 Deshalb Freitag die **Teaser-Fassung** (Titel, Sponsor, Fokus, ein Satz) und Samstagmorgen die
 **Vollfassung** (Kontext, Problem, Ressourcen, Ansprechperson). Gleiche Threads, gleiche
 Reaktionen, nur mehr Text: `--full` editiert, es entsteht nichts doppelt.
@@ -266,13 +266,13 @@ die am Challenge-Markt Samstagmorgen abgearbeitet wird. Wer noch kein Team hat, 
 
 Die **native Discord-Umfrage** ist das Abstimmungswerkzeug für den Publikumspreis: kein
 zweites Tool, kein Login, alle sind ohnehin im Server. Die Optionen tippt am Samstagabend
-niemand ab, sie kommen aus den Projekt-Threads in `#projekte`.
+niemand ab, sie kommen aus den Projekt-Threads in `#projects`.
 
 ```bash
-npm run voting:dry      # zeigt die Optionen aus #projekte, postet nichts
+npm run voting:dry      # zeigt die Optionen aus #projects, postet nichts
 npm run voting          # Umfrage in #voting, Laufzeit 2 h
 node voting.mjs --poll --nominated --duration 2                # nur die Top 10 der Jury
-node voting.mjs --poll --duration 1 --channel orga-intern      # Probelauf, nur für die Orga sichtbar
+node voting.mjs --poll --duration 1 --channel organizers-internal      # Probelauf, nur für die Orga sichtbar
 npm run voting:result   # Zwischenstand oder Endergebnis als Balken in der Konsole
 npm run voting:end      # Umfrage vorzeitig schließen
 ```
@@ -281,7 +281,7 @@ npm run voting:end      # Umfrage vorzeitig schließen
 
 | Zeit | Was passiert | Befehl |
 |------|--------------|--------|
-| 18:00 | Code Freeze, Teams posten ihr Projekt als Thread in `#projekte` | |
+| 18:00 | Code Freeze, Teams posten ihr Projekt als Thread in `#projects` | |
 | 18:45 | Jury Speedrun: die Jury markiert die Top 10 mit 🏅 auf dem Startpost | |
 | 19:45 | Pitches starten, die Umfrage läuft live mit | `node voting.mjs --poll --nominated --duration 2` |
 | ~21:10 | Umfrage schließen, Ergebnis holen | `npm run voting:end` + `npm run voting:result` |
@@ -318,7 +318,7 @@ npm run events       # legt an (idempotent: gleicher Name wird übersprungen)
 ## Rollen-Buttons mit privater Bestätigung
 
 `bot.mjs` verknüpft beim Start den eigenen Post in `#choose-your-role`
-(alter Kanalname `#rollen-waehlen` wird ebenfalls erkannt) mit den fünf Skill-Rollen:
+(alter Kanalname `#choose-your-role` wird ebenfalls erkannt) mit den fünf Skill-Rollen:
 💻 Dev · 🎨 Design · 🧠 Domain-Expert · 📊 PM / Business · ✨ Newcomer.
 Mehrfachauswahl ist möglich; Klick vergibt die Rolle, erneuter Klick entfernt sie.
 Erfolg oder Fehler erscheinen nur für die klickende Person (Ephemeral-Antwort).
@@ -350,6 +350,6 @@ erneut anklicken → nur diese Rolle verschwindet. Nach Bot-Neustart denselben P
 
 ## Noch nicht enthalten (spätere Ausbaustufe)
 
-- Code-Freeze-Timer (schaltet `#projekte` um 18:30 automatisch read-only)
+- Code-Freeze-Timer (schaltet `#projects` um 18:30 automatisch read-only)
 - Gepinnte Willkommens-/Regel-Posts (aktuell als Channel-Topics)
 - Airtable-Verify (bewusst verworfen)

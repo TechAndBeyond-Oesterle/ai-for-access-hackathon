@@ -30,21 +30,21 @@ if (!DISCORD_TOKEN || !GUILD_ID) {
 // TEXT-/ANNOUNCEMENT-CHANNELS: Liste von Nachrichten (nacheinander gepostet)
 // ---------------------------------------------------------------------------
 const TEXT_SEED = {
-  willkommen: [
+  welcome: [
 `👋 **Welcome to the AI for Access Hackathon 2026!**
 🗓️ **20–21 November 2026** · 📍 **Stadtkloster Frieden**, Friedensstrasse 9, Bern
 🤝 Powercoders × Tech & Beyond
 
 **You don't need to code. You need to understand a problem.** In interdisciplinary teams you build real prototypes with AI tools in ~10 hours on the theme of **Access**: access to health, justice, education, work and community.`,
 `**How to start:**
-1️⃣ Read the 👉 {#verhaltenskodex}
-2️⃣ Pick your skill tags in 👉 {#rollen-waehlen}
-3️⃣ Introduce yourself in 👉 {#vorstellung}
-4️⃣ Browse {#challenges} & {#ideen-marktplatz} and find your team.
+1️⃣ Read the 👉 {#code-of-conduct}
+2️⃣ Pick your skill tags in 👉 {#choose-your-role}
+3️⃣ Introduce yourself in 👉 {#introductions}
+4️⃣ Browse {#challenges} & {#idea-marketplace} and find your team.
 
 *The event language is English.* 🇬🇧`,
   ],
-  verhaltenskodex: [
+  'code-of-conduct': [
 `📜 **Code of Conduct: short & binding**
 
 We want a safe, open space for **everyone**, especially newcomers and people without a coding background.
@@ -52,18 +52,18 @@ We want a safe, open space for **everyone**, especially newcomers and people wit
 • **Respect**: no harassment, discrimination or demeaning language.
 • **Helpfulness**: questions are welcome, nobody is "too much of a beginner".
 • **Fairness**: AI tools yes, but honestly; no "recycling" of finished projects.
-• **Consent**: photos/videos only with the OK of the people shown (→ #doku-und-presse).
+• **Consent**: photos/videos only with the OK of the people shown (→ #docs-and-press).
 
 Something wrong? → DM a member of **@Orga**. Thanks for helping carry this space. 💜`,
   ],
-  // #rollen-waehlen: den Skill-Post samt Buttons legt bot.mjs selbst an (posts/choose-your-role.md).
-  ankuendigungen: [
+  // #choose-your-role: den Skill-Post samt Buttons legt bot.mjs selbst an (posts/choose-your-role.md).
+  announcements: [
 `📢 **[Example] T-14 · Registration is open!**
 Sign-up is live, share the link in your networks. Goal: ~100 participants, at least 30 % without a coding background. 🚀`,
 `📢 **[Example] The programme is set, check the event overview!**
 The full Fri/Sat schedule is available as **Discord events** (at the top under "Events", click "Interested" to get reminders). Highlights: crash course, mentor check-in, pitch speedrun → top 10 live. 🏆`,
   ],
-  zeitplan: [
+  schedule: [
 `🗓️ **Programme** (details + reminders under "Events")
 
 **Friday, 20 Nov**
@@ -76,7 +76,7 @@ The full Fri/Sat schedule is available as **Discord events** (at the top under "
 09:00 Doors & Coffee · 09:30 **Hack Start (10h)**
 12:30 Lunch · 14:00 Yoga
 15:00 Mentor Check-in · 17:00 Yoga
-18:30 **Code Freeze** → submission in {#projekte}
+18:30 **Code Freeze** → submission in {#projects}
 19:00 **Pitch Speedrun → Top 10 Live** (stage)
 20:30 🎉 Awards & Apéro`,
   ],
@@ -84,13 +84,13 @@ The full Fri/Sat schedule is available as **Discord events** (at the top under "
 `❓ **FAQ**
 
 **Do I need to know how to code?** No! Domain knowledge, design, facilitation, pitching: it all counts.
-**What do I need?** Laptop, charger, good mood. We provide access to AI tools (→ {#tools-und-credits}).
-**Do I need to bring a team?** No, teams form on Friday evening ({#ideen-marktplatz} / {#team-suche}).
-**How do I submit?** 1 post in {#projekte} with repo/demo + **pitch video ≤ 2 min (as a link!)**.
+**What do I need?** Laptop, charger, good mood. We provide access to AI tools (→ {#tools-and-credits}).
+**Do I need to bring a team?** No, teams form on Friday evening ({#idea-marketplace} / {#team-search}).
+**How do I submit?** 1 post in {#projects} with repo/demo + **pitch video ≤ 2 min (as a link!)**.
 **Cost?** Participation is free. Food included.
 **Language?** English.`,
   ],
-  'tools-und-credits': [
+  'tools-and-credits': [
 `🛠️ **AI Tools & Credits** (examples, final list via tool partners)
 
 • **Claude** (Anthropic): coding, text, analysis
@@ -101,7 +101,7 @@ The full Fri/Sat schedule is available as **Discord events** (at the top under "
 
 🎟️ Team credits/codes will be posted here on Friday evening. Ask a member of **@Orga** if you need anything.`,
   ],
-  'crashkurs-videos': [
+  'crash-course-videos': [
 `🎥 **Crash Course & Video Series** (30 min "from idea to prototype with AI")
 
 [Example links, hosted externally and only linked here]
@@ -111,20 +111,20 @@ The full Fri/Sat schedule is available as **Discord events** (at the top under "
 
 *Why external? Pitch/course videos exceed Discord's upload limit, so always post them as a link.*`,
   ],
-  vorstellung: [
+  introductions: [
 `👋 [Example] **Amina**, doctor from Damascus, now in Bern. No code, but lots of ideas around **health access**. Looking for a team! 🩺`,
 `👋 [Example] **Luca**, UX designer from Bern. Figma, prototyping, likes accessible interfaces. 🎨`,
 `👋 [Example] **Sara**, computer science student at BFH. React/Next.js, into legal tech. First hackathon! 💻`,
   ],
-  'team-suche': [
+  'team-search': [
 `🔎 [Example] **Looking for a dev** for "Authority Navigator" (photo → to-do list). I have the concept + domain knowledge, need someone for prototyping. (Amina)`,
 `🙋 [Example] **Offering design** (UX/UI, Figma). Happy to join a team working on access or education. (Luca)`,
 `🔎 [Example] We are two (legal domain + PM) and **looking for 1 dev** for "Access Law". (Team Tenancy Law)`,
   ],
-  'pitch-fragen': [
+  'pitch-questions': [
 `💬 [Example] To team "Authority Navigator": how do you handle sensitive data from the letters? Does processing run locally or in the cloud? 🔐`,
   ],
-  bewertung: [
+  scoring: [
 `⚖️ **Jury: Scoring** (internal)
 
 Scoring sheet (4 criteria, 1–5 each): **[Example]** https://docs.google.com/spreadsheets/AI4A-jury
@@ -133,7 +133,7 @@ Scoring sheet (4 criteria, 1–5 each): **[Example]** https://docs.google.com/sp
 • **Prototype**: does it work?
 • **Pitch**: clarity & story?
 
-Process: review speedrun videos in {#projekte} → top 10 → score live pitches → consensus here in the channel.`,
+Process: review speedrun videos in {#projects} → top 10 → score live pitches → consensus here in the channel.`,
   ],
 };
 
@@ -161,7 +161,7 @@ const FORUM_SEED = {
 **Resources:** Anonymised CV examples, occupational classification, alumni as testers.
 **Challenge owner:** @Powercoders` },
   ],
-  'ideen-marktplatz': [
+  'idea-marketplace': [
     { name: '💡 Digi-Coach: AI companion for people left behind digitally',
       body: `[Example idea · path 2: own idea]
 A step-by-step assistant that guides through online processes (tax return, doctor's appointment, switching health insurance). Voice-based, patient, in plain language.
@@ -175,13 +175,13 @@ AI answers everyday legal questions (rent, work, insurance) in plain language an
 A tool that scans government websites and generates concrete accessibility improvements + a report.
 **Looking for:** frontend dev interested in a11y, designer. 🎨` },
   ],
-  'mentor-anfragen': [
+  'mentor-requests': [
     { name: '🧑‍🏫 [Example] Team Digi-Coach: scoping help',
       body: `We want too much for 10h. Can a mentor help us cut the scope down to **one** feature? Around 15:00. 🙏` },
     { name: '🧑‍🏫 [Example] Team Access Law: deploy question',
       body: `The prototype runs locally, but we can't get it deployed on Vercel. Quick support possible? 🚀` },
   ],
-  projekte: [
+  projects: [
     { name: '🚀 Authority Navigator: Team Amina & Sara',
       body: `**Team:** Amina (domain/health), Sara (dev), Luca (design)
 **Challenge:** Authority Navigator (KantonTech)

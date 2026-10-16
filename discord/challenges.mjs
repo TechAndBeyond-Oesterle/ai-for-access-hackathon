@@ -12,7 +12,7 @@
  *   node challenges.mjs --hide            # Forum für @everyone unsichtbar
  *   node challenges.mjs --reveal          # Forum freischalten (Samstagmorgen)
  *   node challenges.mjs --report          # ✋-Reaktionen → "Challenge → Teams"
- *   node challenges.mjs --report --post-summary   # Übersicht zusätzlich nach #orga-intern
+ *   node challenges.mjs --report --post-summary   # Übersicht zusätzlich nach #organizers-internal
  *
  * Jeder Modus versteht --dry-run.
  *
@@ -46,7 +46,7 @@ const POST_SUMMARY = has('--post-summary');
 const ANY_STATUS = has('--any-status');
 
 const FORUM = 'challenges';
-const SUMMARY_CHANNEL = 'orga-intern';
+const SUMMARY_CHANNEL = 'organizers-internal';
 const CLAIM = '✋';
 const DISCORD_LIMIT = 2000;
 const THREAD_NAME_LIMIT = 100;
@@ -306,7 +306,7 @@ async function runVisibility(guild, reveal) {
   }
   await forum.permissionOverwrites.edit(guild.roles.everyone, { ViewChannel: reveal });
   console.log(`${reveal ? '🔓' : '🔒'} #${FORUM} ist jetzt ${what} — ${threads.length} Challenge(s).`);
-  if (reveal) console.log('   Ansage in #ankuendigungen nicht vergessen.');
+  if (reveal) console.log('   Ansage in #announcements nicht vergessen.');
   return 0;
 }
 

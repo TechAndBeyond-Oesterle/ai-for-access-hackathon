@@ -9,7 +9,7 @@
  *   node seed-teams.mjs
  *
  * Idempotent: existierende team-<slug>-Channels werden übersprungen.
- * (Beispiel-Teams — passend zu den eingereichten Projekten in #projekte.)
+ * (Beispiel-Teams — passend zu den eingereichten Projekten in #projects.)
  */
 
 import 'dotenv/config';
@@ -78,7 +78,7 @@ client.once(Events.ClientReady, async () => {
         name: `team-${s}-voice`, type: ChannelType.GuildVoice, parent: category?.id,
         permissionOverwrites: ow, reason: 'Example team',
       });
-      await text.send(`👋 [Example] Team **${name}**: private room. In the real event this is created with \`/team create\`; add members via \`/team add @person\`. Submit your project in #projekte (pitch video ≤2 min as a link).`);
+      await text.send(`👋 [Example] Team **${name}**: private room. In the real event this is created with \`/team create\`; add members via \`/team add @person\`. Submit your project in #projects (pitch video ≤2 min as a link).`);
     }
 
     console.log(`\n✅ ${DRY ? 'Dry-Run fertig.' : 'Beispiel-Teams angelegt.'}`);

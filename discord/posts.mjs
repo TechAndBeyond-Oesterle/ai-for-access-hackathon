@@ -8,7 +8,7 @@
  * jemand die alte Version löschen muss.
  *
  *   node posts.mjs --dry-run                 # zeigt nur, was passieren würde
- *   node posts.mjs --channel orga-intern     # alles in den Orga-Channel (Preview/Abnahme)
+ *   node posts.mjs --channel organizers-internal     # alles in den Orga-Channel (Preview/Abnahme)
  *   node posts.mjs                           # in die in der Datei angegebenen Channels
  *   node posts.mjs --only team-anleitung-en  # nur eine Datei
  *
@@ -19,7 +19,7 @@
  * Aufbau einer Datei (Frontmatter + Text):
  *
  *   ---
- *   channel: team-suche
+ *   channel: team-search
  *   ---
  *   # Überschrift
  *   Text …

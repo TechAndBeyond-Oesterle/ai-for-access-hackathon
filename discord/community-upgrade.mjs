@@ -4,8 +4,8 @@
  * ---------------------------------
  * Wandelt (nachdem der Server auf COMMUNITY umgestellt wurde) zwei Channels in ihre
  * "echten" Typen um:
- *   #ankuendigungen : Text  -> Announcement   (via edit, in-place, behält Rechte)
- *   #Bühne          : Voice -> Stage          (Voice→Stage geht nur per neu anlegen:
+ *   #announcements : Text  -> Announcement   (via edit, in-place, behält Rechte)
+ *   #Stage          : Voice -> Stage          (Voice→Stage geht nur per neu anlegen:
  *                                              alte Voice-Bühne wird gelöscht + Stage neu erstellt)
  *
  *   node community-upgrade.mjs --dry-run
@@ -24,7 +24,7 @@ if (!DISCORD_TOKEN || !GUILD_ID) {
   process.exit(1);
 }
 
-const STAGE_CATEGORY = '🎤 BÜHNE & PITCHES';
+const STAGE_CATEGORY = '🎤 STAGE & PITCHES';
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, async () => {
@@ -37,38 +37,38 @@ client.once(Events.ClientReady, async () => {
     const channels = await guild.channels.fetch();
     console.log(`\n🏛️  ${guild.name}  (${DRY ? 'DRY-RUN' : 'LIVE'})`);
 
-    // 1) #ankuendigungen: Text -> Announcement
-    const ank = channels.find((c) => c && c.name === 'ankuendigungen');
+    // 1) #announcements: Text -> Announcement
+    const ank = channels.find((c) => c && c.name === 'announcements');
     if (!ank) {
-      console.log('│ ⚠️  #ankuendigungen nicht gefunden.');
+      console.log('│ ⚠️  #announcements nicht gefunden.');
     } else if (ank.type === ChannelType.GuildAnnouncement) {
-      console.log('│ ✓ #ankuendigungen ist bereits Announcement.');
+      console.log('│ ✓ #announcements ist bereits Announcement.');
     } else {
-      console.log('│ ~ #ankuendigungen: Text → Announcement');
+      console.log('│ ~ #announcements: Text → Announcement');
       if (!DRY) await ank.edit({ type: ChannelType.GuildAnnouncement });
     }
 
-    // 2) #Bühne: Voice -> Stage (löschen + neu anlegen)
-    const buehne = channels.find((c) => c && c.name === 'Bühne');
+    // 2) #Stage: Voice -> Stage (löschen + neu anlegen)
+    const buehne = channels.find((c) => c && c.name === 'Stage');
     if (buehne && buehne.type === ChannelType.GuildStageVoice) {
-      console.log('│ ✓ #Bühne ist bereits Stage.');
+      console.log('│ ✓ #Stage ist bereits Stage.');
     } else if (buehne && buehne.type === ChannelType.GuildVoice) {
       const parentId = buehne.parentId;
       const position = buehne.rawPosition;
-      console.log('│ ~ #Bühne: Voice → Stage (Voice löschen, Stage neu anlegen)');
+      console.log('│ ~ #Stage: Voice → Stage (Voice löschen, Stage neu anlegen)');
       if (!DRY) {
         await buehne.delete('Community-Upgrade: Voice → Stage');
         await guild.channels.create({
-          name: 'Bühne', type: ChannelType.GuildStageVoice,
+          name: 'Stage', type: ChannelType.GuildStageVoice,
           parent: parentId, position, reason: 'Community-Upgrade',
         });
       }
     } else if (!buehne) {
-      // Bühne fehlt ganz -> Stage neu anlegen unter der Kategorie
+      // Stage fehlt ganz -> Stage neu anlegen unter der Kategorie
       const cat = channels.find((c) => c && c.type === ChannelType.GuildCategory && c.name === STAGE_CATEGORY);
-      console.log('│ + #Bühne (Stage) neu anlegen');
+      console.log('│ + #Stage (Stage) neu anlegen');
       if (!DRY) await guild.channels.create({
-        name: 'Bühne', type: ChannelType.GuildStageVoice,
+        name: 'Stage', type: ChannelType.GuildStageVoice,
         parent: cat ? cat.id : undefined, reason: 'Community-Upgrade',
       });
     }

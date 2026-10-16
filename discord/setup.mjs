@@ -49,7 +49,7 @@ const ROLES = [
   { key: 'challenge',   name: 'Challenge-Owner',   color: 0x7C5CFF, hoist: true },
   { key: 'media',       name: 'Media / Doku',      color: 0xEC4899, hoist: true },
   { key: 'participant', name: 'Teilnehmer:in',     color: 0x2EA043, hoist: true },
-  // Skill-Tags (Selbstvergabe via #rollen-waehlen) — nur Matching, keine Rechte
+  // Skill-Tags (Selbstvergabe via #choose-your-role) — nur Matching, keine Rechte
   { key: 't_dev',       name: 'Dev',               color: 0x58A6FF },
   { key: 't_design',    name: 'Design',            color: 0xBC8CFF },
   { key: 't_domain',    name: 'Domain-Expert',     color: 0x3FB950 },
@@ -64,30 +64,30 @@ const ROLES = [
 //   private:[roleKeys] -> nur diese Rollen (+ Orga via Admin) sehen die Kategorie/Channel
 // ---------------------------------------------------------------------------
 const CATEGORIES = [
-  { name: '📢 START-HIER', readonly: true, channels: [
-    { name: 'willkommen',        type: 'text', topic: 'Welcome to the AI for Access Hackathon! Start here: read the rules, pick your role, introduce yourself.' },
-    { name: 'verhaltenskodex',   type: 'text', topic: 'Code of Conduct: short & binding.' },
-    { name: 'rollen-waehlen',    type: 'text', topic: 'Pick your skill tags: Dev / Design / Domain Expert / Newcomer / PM.' },
-    { name: 'ankuendigungen',    type: 'announcement', topic: 'Official announcements from the organizers.' }, // braucht Community-Modus
-    { name: 'zeitplan',          type: 'text', topic: 'Programme Fri 20 Nov (warm-up) + Sat 21 Nov (10h hack). Details also as Discord events.' },
+  { name: '📢 START HERE', readonly: true, channels: [
+    { name: 'welcome',        type: 'text', topic: 'Welcome to the AI for Access Hackathon! Start here: read the rules, pick your role, introduce yourself.' },
+    { name: 'code-of-conduct',   type: 'text', topic: 'Code of Conduct: short & binding.' },
+    { name: 'choose-your-role',    type: 'text', topic: 'Pick your skill tags: Dev / Design / Domain Expert / Newcomer / PM.' },
+    { name: 'announcements',    type: 'announcement', topic: 'Official announcements from the organizers.' }, // braucht Community-Modus
+    { name: 'schedule',          type: 'text', topic: 'Programme Fri 20 Nov (warm-up) + Sat 21 Nov (10h hack). Details also as Discord events.' },
     { name: 'faq',               type: 'text', topic: 'Frequently asked questions. English is our common language.' },
-    { name: 'tools-und-credits', type: 'text', topic: 'AI tools, API credits, licences from our tool partners.' },
-    { name: 'crashkurs-videos',  type: 'text', topic: 'Opening talk + 30-min tool crash course as video (hosted externally, linked here).' },
+    { name: 'tools-and-credits', type: 'text', topic: 'AI tools, API credits, licences from our tool partners.' },
+    { name: 'crash-course-videos',  type: 'text', topic: 'Opening talk + 30-min tool crash course as video (hosted externally, linked here).' },
   ]},
 
-  { name: '🤝 TEAMFINDUNG', channels: [
+  { name: '🤝 TEAM FINDING', channels: [
     // Bewusst ohne Forum-Tags (17.09.): bei einer einstelligen Zahl an Challenges ist eine
     // Filterleiste mehr Bedienoberflaeche als Nutzen. challenges.mjs setzt Tags, falls doch welche da sind.
     { name: 'challenges',       type: 'forum', readonly: true, post: ['challenge'], topic: '1 post per company challenge: problem, target group, resources, owner.' },
-    { name: 'ideen-marktplatz', type: 'forum', topic: '1 post = 1 idea. The thread becomes your future team chat.' },
-    { name: 'team-suche',       type: 'text',  topic: 'Looking for / offering skills: "Looking for a designer" / "Offering legal domain knowledge".' },
+    { name: 'idea-marketplace', type: 'forum', topic: '1 post = 1 idea. The thread becomes your future team chat.' },
+    { name: 'team-search',       type: 'text',  topic: 'Looking for / offering skills: "Looking for a designer" / "Offering legal domain knowledge".' },
   ]},
 
-  { name: '💬 ALLGEMEIN', channels: [
-    { name: 'vorstellung',         type: 'text' },
-    { name: 'smalltalk',           type: 'text' },
-    { name: 'hilfe-und-support',   type: 'text' },
-    { name: 'verpflegung-logistik', type: 'text' },
+  { name: '💬 GENERAL', channels: [
+    { name: 'introductions',         type: 'text' },
+    { name: 'small-talk',           type: 'text' },
+    { name: 'help-and-support',   type: 'text' },
+    { name: 'food-and-logistics', type: 'text' },
     { name: 'Lounge',       type: 'voice' },
     { name: 'Networking-1',  type: 'voice' },
     { name: 'Networking-2',  type: 'voice' },
@@ -97,36 +97,36 @@ const CATEGORIES = [
   { name: '🛠️ TEAMS', channels: [] },
 
   { name: '🧑‍🏫 MENTORING', channels: [
-    { name: 'mentor-anfragen', type: 'forum', topic: 'Post your mentoring request here (1 post per request). Mentors pick up threads.' },
+    { name: 'mentor-requests', type: 'forum', topic: 'Post your mentoring request here (1 post per request). Mentors pick up threads.' },
     { name: 'Mentoring-1', type: 'voice' },
     { name: 'Mentoring-2', type: 'voice' },
     { name: 'Mentoring-3', type: 'voice' },
   ]},
 
-  { name: '🎤 BÜHNE & PITCHES', channels: [
-    { name: 'Bühne',        type: 'stage' }, // braucht Community-Modus (kein Topic: Stage/Voice-Topics werden streng gefiltert)
-    { name: 'projekte',     type: 'forum', topic: '1 post per team = project: team, repo/demo, pitch video (≤2 min, as an EXTERNAL link!), 2-sentence description. Read-only after code freeze.' },
-    { name: 'pitch-fragen', type: 'text',  topic: 'Questions for the team that is pitching.' },
+  { name: '🎤 STAGE & PITCHES', channels: [
+    { name: 'Stage',        type: 'stage' }, // braucht Community-Modus (kein Topic: Stage/Voice-Topics werden streng gefiltert)
+    { name: 'projects',     type: 'forum', topic: '1 post per team = project: team, repo/demo, pitch video (≤2 min, as an EXTERNAL link!), 2-sentence description. Read-only after code freeze.' },
+    { name: 'pitch-questions', type: 'text',  topic: 'Questions for the team that is pitching.' },
     { name: 'voting',       type: 'text',  topic: 'Native polls: speedrun top 10 selection & audience award.' },
   ]},
 
-  { name: '📸 DOKU & PRESSE', private: ['media'], channels: [
-    { name: 'doku-und-presse', type: 'text', topic: 'Photo/video collection (Samir), social media approvals. Respect consent for images/audio.' },
+  { name: '📸 DOCS & PRESS', private: ['media'], channels: [
+    { name: 'docs-and-press', type: 'text', topic: 'Photo/video collection (Samir), social media approvals. Respect consent for images/audio.' },
   ]},
 
   { name: '🏆 JURY', private: ['jury'], channels: [
-    { name: 'jury-intern', type: 'text' },
-    { name: 'bewertung',   type: 'text', topic: 'Scoring sheet (4 criteria: Impact/AI/Prototype/Pitch), link here.' },
+    { name: 'jury-internal', type: 'text' },
+    { name: 'scoring',   type: 'text', topic: 'Scoring sheet (4 criteria: Impact/AI/Prototype/Pitch), link here.' },
   ]},
 
-  { name: '🏢 SPONSOREN', private: ['challenge'], channels: [
-    { name: 'sponsoren-koordination', type: 'text' },
+  { name: '🏢 SPONSORS', private: ['challenge'], channels: [
+    { name: 'sponsor-coordination', type: 'text' },
   ]},
 
   { name: '🔧 ORGA', private: [], channels: [ // private:[] = nur Orga (Admin)
-    { name: 'orga-intern', type: 'text' },
-    { name: 'logistik',    type: 'text' },
-    { name: 'notfall',     type: 'text' },
+    { name: 'organizers-internal', type: 'text' },
+    { name: 'logistics',    type: 'text' },
+    { name: 'emergency',     type: 'text' },
     { name: 'bot-logs',    type: 'text' },
   ]},
 ];
@@ -177,6 +177,21 @@ async function ensureRoles(guild) {
   return map;
 }
 
+// Alte deutsche Namen -> aktuelle. Beim erneuten Lauf wird umbenannt statt neu angelegt.
+const LEGACY_NAMES = {
+  'willkommen': 'welcome', 'verhaltenskodex': 'code-of-conduct', 'rollen-waehlen': 'choose-your-role',
+  'ankuendigungen': 'announcements', 'zeitplan': 'schedule', 'tools-und-credits': 'tools-and-credits',
+  'crashkurs-videos': 'crash-course-videos', 'ideen-marktplatz': 'idea-marketplace', 'team-suche': 'team-search',
+  'vorstellung': 'introductions', 'smalltalk': 'small-talk', 'hilfe-und-support': 'help-and-support',
+  'verpflegung-logistik': 'food-and-logistics', 'mentor-anfragen': 'mentor-requests', 'Bühne': 'Stage',
+  'projekte': 'projects', 'pitch-fragen': 'pitch-questions', 'doku-und-presse': 'docs-and-press',
+  'jury-intern': 'jury-internal', 'bewertung': 'scoring', 'sponsoren-koordination': 'sponsor-coordination',
+  'orga-intern': 'organizers-internal', 'logistik': 'logistics', 'notfall': 'emergency',
+  '📢 START-HIER': '📢 START HERE', '🤝 TEAMFINDUNG': '🤝 TEAM FINDING', '💬 ALLGEMEIN': '💬 GENERAL',
+  '🎤 BÜHNE & PITCHES': '🎤 STAGE & PITCHES', '📸 DOKU & PRESSE': '📸 DOCS & PRESS', '🏢 SPONSOREN': '🏢 SPONSORS',
+};
+const legacyOf = (name) => Object.keys(LEGACY_NAMES).find((k) => LEGACY_NAMES[k] === name);
+
 async function ensureStructure(guild, roleMap) {
   const channels = await guild.channels.fetch();
   const findByName = (name, type, parentId = null) =>
@@ -186,6 +201,12 @@ async function ensureStructure(guild, roleMap) {
   for (const cat of CATEGORIES) {
     log(`\n▸ ${cat.name}`);
     let category = findByName(cat.name, ChannelType.GuildCategory);
+    const oldCat = !category && legacyOf(cat.name) && findByName(legacyOf(cat.name), ChannelType.GuildCategory);
+    if (oldCat) {
+      step(`~ Kategorie umbenennen: ${oldCat.name} -> ${cat.name}`);
+      if (!DRY) await oldCat.setName(cat.name);
+      category = oldCat;
+    }
     const catOw = overwrites(guild, roleMap, cat);
     if (category) {
       step(`✓ Kategorie vorhanden: ${cat.name}`);
@@ -201,8 +222,14 @@ async function ensureStructure(guild, roleMap) {
     for (const ch of cat.channels) {
       const type = TYPE[ch.type];
       const parentId = category ? category.id : null;
-      const existing = findByName(ch.name, type, parentId)
+      let existing = findByName(ch.name, type, parentId)
         || findByName(ch.name, type); // evtl. noch ohne Parent
+      const old = !existing && legacyOf(ch.name) && findByName(legacyOf(ch.name), type);
+      if (old) {
+        step(`  ~ umbenennen: #${old.name} -> #${ch.name}`);
+        if (!DRY) await old.setName(ch.name);
+        existing = old;
+      }
       // Channel erbt Sichtbarkeit der Kategorie; readonly/post nur auf Channel-Ebene nötig
       const chOw = overwrites(guild, roleMap, { readonly: ch.readonly, post: ch.post });
       if (existing) {

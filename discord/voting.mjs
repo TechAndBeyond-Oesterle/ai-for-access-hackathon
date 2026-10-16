@@ -3,12 +3,12 @@
  * AI for Access — Publikumspreis als native Discord-Umfrage
  * ---------------------------------------------------------
  * Die Optionen tippt am Samstagabend niemand von Hand ab: Jedes Team postet sein
- * Projekt als Thread in #projekte, dieses Skript macht daraus die Umfrage in #voting.
+ * Projekt als Thread in #projects, dieses Skript macht daraus die Umfrage in #voting.
  *
  *   node voting.mjs --poll --dry-run    # zeigt die Optionen, postet nichts
  *   node voting.mjs --poll              # Umfrage in #voting (Default: 2 Stunden Laufzeit)
  *   node voting.mjs --poll --nominated  # nur die von der Jury mit 🏅 markierten Projekte
- *   node voting.mjs --poll --duration 1 --channel orga-intern   # Probelauf im Orga-Kanal
+ *   node voting.mjs --poll --duration 1 --channel organizers-internal   # Probelauf im Orga-Kanal
  *   node voting.mjs --result            # Zwischenstand oder Endergebnis als Markdown
  *   node voting.mjs --end               # Umfrage vorzeitig schließen
  *
@@ -35,9 +35,9 @@ const DURATION = Number(argOf('--duration') ?? 2);
 const NOMINATED = has('--nominated');
 const TARGET = argOf('--channel') ?? 'voting';
 
-const PROJECTS = 'projekte';
+const PROJECTS = 'projects';
 const QUESTION = '🏆 Audience award: which project won you over?';
-const NOMINEE = '🏅'; // setzt die Jury beim Speedrun (18:45) auf den Startpost in #projekte
+const NOMINEE = '🏅'; // setzt die Jury beim Speedrun (18:45) auf den Startpost in #projects
 const MAX_ANSWERS = 10;
 const ANSWER_LIMIT = 55;
 

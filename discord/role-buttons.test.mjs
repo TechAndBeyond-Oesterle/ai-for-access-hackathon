@@ -70,7 +70,7 @@ test('Markdown erklärt private Bestätigung und Migration, passt ins Limit', as
   assert.ok(content.endsWith(ROLE_POST_MARKER) && content.length <= 2000);
 });
 test('Migration und Neustart: gleicher Post und keine Rollenänderung', async () => {
-  const f = fixture({ legacy: true }); f.channel.name = 'rollen-waehlen'; f.assigned.add('0');
+  const f = fixture({ legacy: true }); f.channel.name = 'choose-your-role'; f.assigned.add('0');
   const content = await loadRolePost();
   assert.equal(await f.service.initialize(content), f.message);
   assert.deepEqual(f.message.components, roleButtons());
